@@ -5,10 +5,17 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
 .content {
     display: flex;
-    flex-flow: column;
-    width: 300px;
+    flex-direction: column;
+    padding: 10px;
+    height: 100%;
+    width: 200px;
 }
 
 .vbox {

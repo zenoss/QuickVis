@@ -2,7 +2,27 @@
 (function(){
     "use strict";
 
+    // from https://github.com/mapbox/simple-linear-scaleA
+    // TODO - check license for this function
+    function linearScale(domain, range, clamp) {
+        return function(value) {
+            if (domain[0] === domain[1] || range[0] === range[1]) {
+                return range[0];
+            }
+            var ratio = (range[1] - range[0]) / (domain[1] - domain[0]),
+                result = range[0] + ratio * (value - domain[0]);
+            return clamp ? Math.min(range[1], Math.max(range[0], result)) : result;
+        };
+    }
 
+    // http://stackoverflow.com/a/37411738
+    function createNode(n, v) {
+        n = document.createElementNS("http://www.w3.org/2000/svg", n);
+        for (var p in v){
+            n.setAttributeNS(null, p.replace(/[A-Z]/g, function(m, p, o, s) { return "-" + m.toLowerCase(); }), v[p]);
+        }
+        return n;
+    }
 
     function defaultTemplate(vm){
         return `
@@ -19,8 +39,11 @@
         }
 
         // stores the data then calls render
+        // NOTE: el must be attached to the DOM to get
+        // predictable results here
         render(data){
             this.data = data;
+            // TODO - if not attached to DOM, throw
             this._render();
         }
 
@@ -54,6 +77,8 @@
         `;
     }
 
+    const SPARKLINE_PADDING = 4;
+
     class Sparkline extends QuickVis {
         constructor(config){
             super();
@@ -66,9 +91,62 @@
         _render(){
             super._render();
             this.svg = this.el.querySelector(".graph");
-            // TODO - determine height
-            // TODO - draw series
-            // TODO - draw threshold
+            let {width, height} = this.svg.getBoundingClientRect();
+            this.xScale = linearScale([0, this.data.length], [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
+            this.yScale = linearScale([Math.max.apply(Math, this.data),
+                                      Math.min.apply(Math, this.data)],
+                                      [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
+            this.drawSparkline();
+            this.drawThreshold();
+            this.drawLastPoint();
+        }
+
+        drawSparkline(){
+            let {svg, xScale, yScale} = this,
+                d = [];
+
+            d.push(`M${xScale(0)},${yScale(this.data[0])}`);
+            this.data.forEach((dp, i) => {
+                d.push(`L${xScale(i)},${yScale(dp)}`);
+            });
+
+            svg.appendChild(createNode("path", {
+                d: d.join(" "),
+                stroke: "#555",
+                strokeWidth: 1,
+                // TODO - configurable fill
+                fill: "transparent"
+            }));
+        }
+
+        drawLastPoint(){
+            let {svg, xScale, yScale} = this,
+                x = this.data.length - 1,
+                y = this.data[this.data.length-1];
+            svg.appendChild(createNode("circle", {
+                cx: xScale(x),
+                cy: yScale(y),
+                r: 3,
+                fill: this.lastExceedsThreshold() ? "red" : "#555"
+            }));
+        }
+
+        drawThreshold(){
+            if(this.threshold === undefined){
+                return;
+            }
+
+            let {svg, xScale, yScale} = this;
+            svg.appendChild(createNode("line", {
+                x1: xScale(0),
+                y1: yScale(this.threshold),
+                x2: xScale(this.data.length),
+                y2: yScale(this.threshold),
+                stroke: "#AAA",
+                strokeWidth: 2,
+                strokeDasharray: "2,2",
+                fill: "transparent"
+            }));
         }
 
         /*************

@@ -1,6 +1,9 @@
-.stacked-bar * {
-    color: #555;
+.sparkline * {
     display: flex;
+}
+
+.sparkline {
+    color: #555;
 }
 
 .sparkline .metric {
@@ -12,7 +15,6 @@
 }
 
 .sparkline .graph {
-    max-width: 120px;
     margin-right: 6px;
     /* NOTE - matches .last font-size */
     height: 3em;
@@ -40,7 +42,7 @@
     color: #CC7C7C;
 }
 .sparkline .spark-value .spark-trend.up {
-    color: #B8CC7C;
+    color: #8DA642;
 }
 
 .sparkline .spark-value .spark-trend .trend {
@@ -59,6 +61,7 @@
 }
 */
 .sparkline .indicator {
+    flex: 1 0 auto;
     height: 2em;
     width: 5px;
     margin-left: 5px;

@@ -1,6 +1,9 @@
 .stacked-bar * {
-    color: #555;
     display: flex;
+}
+
+.stacked-bar {
+    color: #555;
 }
 
 .stacked-bar .stacked-title {
