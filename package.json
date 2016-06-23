@@ -1,0 +1,17 @@
+{
+  "name": "catgen",
+  "version": "0.0.0",
+  "description": "Generates cats. Name em. Neat.",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {
+    "globule": "^1.0.0",
+    "gulp": "~3.9.0",
+    "gulp-concat": "~2.6.0",
+    "gulp-livereload": "~3.8.1",
+    "gulp-sequence": "~0.4.1",
+    "gulp-sourcemaps": "~1.6.0"
+  }
+}

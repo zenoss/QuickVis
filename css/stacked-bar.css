@@ -1,0 +1,40 @@
+.stacked-bar * {
+    color: #555;
+    display: flex;
+}
+
+.stacked-bar .stacked-title {
+    align-items: flex-end;
+    margin-bottom: 2px;
+}
+
+.stacked-bar .stacked-title .name {
+    font-size: 1.3em;
+}
+
+.stacked-bar .stacked-title .capacity {
+    margin-left: auto;
+    color: #999;
+}
+
+.stacked-bar .bars {
+    height: 30px;
+    position: relative;
+    border: solid #999 1px;
+    background-color: #EEE;
+    min-width: 0;
+}
+
+.stacked-bar .bars .bar {
+    align-items: center;
+    background-color: #555;
+    color: #EEE;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding-left: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.stacked-bar .bars .bar.empty {
+    background-color: #EEE;
+}

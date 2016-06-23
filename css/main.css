@@ -1,0 +1,22 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.content {
+    display: flex;
+    flex-flow: column;
+    width: 300px;
+}
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.hbox {
+    display: flex;
+    flex-direction: row;
+}

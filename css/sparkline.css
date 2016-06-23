@@ -1,0 +1,69 @@
+.stacked-bar * {
+    color: #555;
+    display: flex;
+}
+
+.sparkline .metric {
+    font-size: 1.2em;
+}
+
+.sparkline .spark-content {
+    align-items: center;
+}
+
+.sparkline .graph {
+    max-width: 120px;
+    margin-right: 6px;
+    /* NOTE - matches .last font-size */
+    height: 3em;
+}
+
+.sparkline .last {
+    font-size: 3em;
+    margin-right: 5px;
+    letter-spacing: -2px;
+}
+
+.sparkline .spark-value {
+    line-height: 1.2em;
+}
+
+.sparkline .spark-value .units {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.sparkline .spark-value .spark-trend {
+    color: #999;
+}
+.sparkline .spark-value .spark-trend.down {
+    color: #CC7C7C;
+}
+.sparkline .spark-value .spark-trend.up {
+    color: #B8CC7C;
+}
+
+.sparkline .spark-value .spark-trend .trend {
+    margin-right: 2px;
+}
+
+/* dot indicator
+.sparkline .indicator:after {
+    font-size: 1.3em;
+    margin: -5px 5px 0 5px;
+    color: #CCC;
+    content: "●";
+}
+.sparkline .indicator.on:after {
+    color: red;
+}
+*/
+.sparkline .indicator {
+    height: 2em;
+    width: 5px;
+    margin-left: 5px;
+    background-color: #EEE;
+}
+.sparkline .indicator.on {
+    background-color: red;
+}
