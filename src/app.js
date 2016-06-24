@@ -2,8 +2,9 @@
 (function(){
     "use strict";
 
-    function rand(min, max){
-        return Math.floor(Math.random() * (max - min)) + min;
+    function rand(min, max, floor){
+        let val = (Math.random() * (max - min)) + min;
+        return floor ? Math.floor(val) : val;
     }
     function randVals(min, max, count=1){
         let a = [];
@@ -13,15 +14,32 @@
         return a;
     }
 
+    function trendyRandVals(min, max, count=1){
+        let vals = [rand(min,max)],
+            violence = 0.2,
+            dirRange = ((max - min) / count) * 2,
+            dir = rand(-dirRange,dirRange);
+
+        for(let i = 0; i < count; i++){
+            if(rand(0,1) >= violence){
+                dir = rand(-10,10);
+            }
+            vals.push(rand(vals[i], vals[i]+dir));
+        }
+        return vals;
+    }
+
     let contentEl = document.querySelector(".content");
 
     for(let i = 0; i < 10; i++){
+        let vals = trendyRandVals(0, 10000, 20);
         let sparky = new quickVis.Sparkline({
             metric:"RAM",
-            threshold: rand(100, 125)
+            threshold: vals[rand(0, vals.length-1, true)],
+            unit: "B"
         });
         contentEl.appendChild(sparky.el);
-        sparky.render(randVals(50,150,20));
+        sparky.render(vals);
     }
 
     var bars = new quickVis.StackedBar({

@@ -9,7 +9,7 @@
             if (domain[0] === domain[1] || range[0] === range[1]) {
                 return range[0];
             }
-            var ratio = (range[1] - range[0]) / (domain[1] - domain[0]),
+            let ratio = (range[1] - range[0]) / (domain[1] - domain[0]),
                 result = range[0] + ratio * (value - domain[0]);
             return clamp ? Math.min(range[1], Math.max(range[0], result)) : result;
         };
@@ -18,7 +18,7 @@
     // http://stackoverflow.com/a/37411738
     function createNode(n, v) {
         n = document.createElementNS("http://www.w3.org/2000/svg", n);
-        for (var p in v){
+        for (let p in v){
             n.setAttributeNS(null, p.replace(/[A-Z]/g, function(m, p, o, s) { return "-" + m.toLowerCase(); }), v[p]);
         }
         return n;
@@ -28,6 +28,79 @@
         return `
             <strong>hi</strong>
         `;
+    }
+
+    let SYMBOLS = {
+        "-8": "y",
+        "-7:": "z",
+        "-6": "a",
+        "-5": "f",
+        "-4": "p",
+        "-3": "n",
+        "-2": "u",
+        "-1": "m",
+        "0": "",
+        "1": "K",
+        "2": "M",
+        "3": "G",
+        "4": "T",
+        "5": "P",
+        "6": "E",
+        "7": "Z",
+        "8": "Y"
+    };
+
+    // max number of places after the decimal point.
+    // actual number may be less than this
+    const DEFAULT_MAX_FLOAT_PRECISION = 1;
+
+    function toEng(val, preferredUnit, width=DEFAULT_MAX_FLOAT_PRECISION+1, base=1000) {
+        val = Math.abs(val);
+
+        let result,
+            unit,
+            symbol;
+
+        // if preferredUnit is provided, target that value
+        if (preferredUnit !== undefined) {
+            unit = preferredUnit;
+        } else if (val === 0) {
+            unit = 0;
+        } else {
+            unit = Math.floor(Math.log(Math.abs(val)) / Math.log(base));
+        }
+
+        symbol = SYMBOLS[unit];
+
+        // TODO - if Math.abs(unit) > 8, return value in scientific notation
+        result = val / Math.pow(base, unit);
+
+        return [shortenNumber(result, width), symbol];
+    }
+
+    // attempts to make a long floating point number
+    // fit in `length` characters. It will trim the
+    // fractional part of the number, but never the
+    // whole part of the number
+    // NOTE - does not round the number! it just chops it off
+    function shortenNumber(num, targetLength) {
+        let numStr = num.toString(),
+            parts = numStr.split("."),
+            whole = parts[0],
+            fractional = parts[1] || "";
+
+        // if the number is already short enough
+        if (whole.length + fractional.length <= targetLength) {
+            return num;
+        }
+
+        // if the whole part of the number is
+        // too long, return it as is. we tried our best.
+        if (whole.length >= targetLength) {
+            return +whole;
+        }
+
+        return parseFloat(whole + "." + fractional.substring(0, targetLength - whole.length));
     }
 
     // a quick n purty visualization
@@ -42,9 +115,14 @@
         // NOTE: el must be attached to the DOM to get
         // predictable results here
         render(data){
-            this.data = data;
+            this._update(data);
             // TODO - if not attached to DOM, throw
             this._render();
+        }
+
+        // do some work with incoming data
+        _update(data){
+            this.data = data;
         }
 
         // private implementation of render. applies
@@ -64,12 +142,12 @@
             <div class="metric">${vm.metric}</div>
             <div class="hbox spark-content">
                 <svg class="graph"></svg>
-                <div class="last">${vm.getLast()}</div>
+                <div class="last">${vm.getFriendly(vm.last)}</div>
                 <div class="vbox spark-value">
-                    <div class="units">GB</div>
+                    <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
                     <div class="hbox spark-trend ${vm.getDeltaDirectionClass()}">
                         <div class="trend">${vm.getDeltaDirectionArrow()}</div>
-                        <div class="delta">${Math.abs(vm.getDelta())}</div>
+                        <div class="delta">${vm.getFriendlyDelta()}</div>
                     </div>
                 </div>
                 <div class="indicator ${vm.getIndicatorStatus()}"></div>
@@ -86,8 +164,21 @@
             this.metric = config.metric;
             this.threshold = config.threshold;
             this.template = sparklineTemplate;
+            this.unit = config.unit;
         }
 
+        _update(data){
+            this.data = data;
+            this.last = data[data.length - 1];
+            // TODO - dont use 0 to start average calc
+            this.avg = this.data.reduce((acc, val) => acc + val, 0) / this.data.length;
+            this.delta = this.last - this.avg;
+        }
+
+        /*******************
+         * rendering and drawing functions are the only place
+         * that it is ok to touch the dom!
+         */
         _render(){
             super._render();
             this.svg = this.el.querySelector(".graph");
@@ -150,35 +241,52 @@
         }
 
         /*************
-         * VM METHODS
          * vm methods transform model data into something
          * the view can use to make data useful to the user
          */
-        getLast(){
-            return this.data[this.data.length-1];
+        getFriendly(val){
+            if(val < 1){
+                return shortenNumber(val);
+            }
+            return toEng(val)[0];
         }
 
-        getDelta(){
-            // delta between last 2 points
-            //let lastTwo = this.data.slice(-2);
-            //return lastTwo[1] - lastTwo[0];
-            // delta between average and last point
-            let avg = this.data.reduce((acc, val) => (acc + val) * 0.5, 0);
-            return Math.floor(this.data[this.data.length-1] - avg);
+        getMagnitude(val){
+            if(val < 1){
+                return "";
+            }
+            return toEng(val)[1];
+        }
+
+        getFriendlyDelta(){
+            let delta = this.delta;
+            if(delta < 1){
+                return Math.abs(shortenNumber(delta)) + this.unit;
+            }
+            console.log(delta);
+            let [val,magnitude] = toEng(delta);
+
+            return Math.abs(val) + magnitude + this.unit;
         }
 
         getDeltaDirectionArrow(){
-            let delta = this.getDelta();
+            let delta = this.delta;
+            if(delta < 1){
+                delta = shortenNumber(delta);
+            }
             return delta > 0 ? "▴" : delta === 0 ? "" : "▾";
         }
 
         getDeltaDirectionClass(){
-            let delta = this.getDelta();
+            let delta = this.delta;
+            if(delta < 1){
+                delta = shortenNumber(delta);
+            }
             return delta > 0 ? "up" : delta === 0 ? "" : "down";
         }
 
         lastExceedsThreshold(){
-            return this.getLast() > this.threshold;
+            return this.last > this.threshold;
         }
 
         getIndicatorStatus(){
