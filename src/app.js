@@ -20,9 +20,9 @@
             dirRange = ((max - min) / count) * 2,
             dir = rand(-dirRange,dirRange);
 
-        for(let i = 0; i < count; i++){
+        for(let i = 0; i < count-1; i++){
             if(rand(0,1) >= violence){
-                dir = rand(-10,10);
+                dir = rand(-dirRange,dirRange);
             }
             vals.push(rand(vals[i], vals[i]+dir));
         }
@@ -32,7 +32,7 @@
     let contentEl = document.querySelector(".content");
 
     for(let i = 0; i < 10; i++){
-        let vals = trendyRandVals(0, 10000, 20);
+        let vals = trendyRandVals(0, 10000, 10);
         let sparky = new quickVis.Sparkline({
             metric:"RAM",
             threshold: vals[rand(0, vals.length-1, true)],

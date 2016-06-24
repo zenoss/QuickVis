@@ -156,6 +156,7 @@
     }
 
     const SPARKLINE_PADDING = 4;
+    const SPARKLINE_DATA_PADDING = 1;
 
     class Sparkline extends QuickVis {
         constructor(config){
@@ -171,7 +172,7 @@
             this.data = data;
             this.last = data[data.length - 1];
             // TODO - dont use 0 to start average calc
-            this.avg = this.data.reduce((acc, val) => acc + val, 0) / this.data.length;
+            this.avg = this.data.reduce((acc, val) => acc + val, 0) / (this.data.length - 1);
             this.delta = this.last - this.avg;
         }
 
@@ -182,32 +183,78 @@
         _render(){
             super._render();
             this.svg = this.el.querySelector(".graph");
-            let {width, height} = this.svg.getBoundingClientRect();
-            this.xScale = linearScale([0, this.data.length], [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
-            this.yScale = linearScale([Math.max.apply(Math, this.data),
-                                      Math.min.apply(Math, this.data)],
-                                      [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
-            this.drawSparkline();
+            let {width, height} = this.svg.getBoundingClientRect(),
+                xRange = [0, this.data.length],
+                yRange = [Math.max.apply(Math, this.data) + SPARKLINE_DATA_PADDING,
+                    Math.min.apply(Math, this.data) - SPARKLINE_DATA_PADDING];
+            this.xScale = linearScale(xRange, [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
+            this.yScale = linearScale(yRange, [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
+            this.drawableArea = {
+                x1: this.xScale(xRange[0]),
+                y1: this.yScale(yRange[0]),
+                x2: this.xScale(xRange[1]),
+                y2: this.yScale(yRange[1])
+            };
+            this.drawableArea.width = this.drawableArea.x2 - this.drawableArea.x1;
+            this.drawableArea.height = this.drawableArea.y2 - this.drawableArea.y1;
+
+            //this.fillSparkline(true);
+            //this.drawSparkline();
+            this.drawBars();
             this.drawThreshold();
-            this.drawLastPoint();
+            //this.drawLastPoint();
         }
 
-        drawSparkline(){
+        fillSparkline(){
+            this.drawSparkline(true);
+        }
+
+        drawSparkline(shaded=false){
             let {svg, xScale, yScale} = this,
+                {x1, y1, x2, y2} = this.drawableArea,
                 d = [];
 
-            d.push(`M${xScale(0)},${yScale(this.data[0])}`);
+            if(shaded){
+                d.push(`M${x1},${y2}`);
+                d.push(`L${x1},${y1}`);
+            } else {
+                //d.push(`M${x1},${y2}`);
+                d.push(`M${x1},${yScale(this.data[0])}`);
+            }
             this.data.forEach((dp, i) => {
                 d.push(`L${xScale(i)},${yScale(dp)}`);
             });
+            if(shaded){
+                d.push(`L${x2},${y2}`);
+            }
 
             svg.appendChild(createNode("path", {
                 d: d.join(" "),
-                stroke: "#555",
+                stroke: shaded ? "transparent" : "#555",
                 strokeWidth: 1,
                 // TODO - configurable fill
-                fill: "transparent"
+                fill: shaded ? "#CCC" : "transparent"
             }));
+        }
+
+        drawBars(){
+            const BAR_PADDING = 1;
+            let {svg, xScale, yScale} = this,
+                {x2, y2, width} = this.drawableArea,
+                barWidth = (width / this.data.length) - BAR_PADDING;
+
+            this.data.forEach((dp, i) => {
+                let barDiff = this.yScale(dp),
+                    barHeight = (y2 - barDiff) || 1;
+                svg.appendChild(createNode("rect", {
+                    x: this.xScale(i),
+                    y: y2 - barHeight,
+                    width: barWidth,
+                    height: barHeight,
+                    stroke: "transparent",
+                    fill: dp > this.threshold ? "red" : "#AAA"
+                }));
+            });
         }
 
         drawLastPoint(){
@@ -227,11 +274,12 @@
                 return;
             }
 
-            let {svg, xScale, yScale} = this;
+            let {svg, xScale, yScale} = this,
+                {x1, y1, x2, y2} = this.drawableArea;
             svg.appendChild(createNode("line", {
-                x1: xScale(0),
+                x1: x1,
                 y1: yScale(this.threshold),
-                x2: xScale(this.data.length),
+                x2: x2,
                 y2: yScale(this.threshold),
                 stroke: "#AAA",
                 strokeWidth: 2,
