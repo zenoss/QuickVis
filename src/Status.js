@@ -159,8 +159,12 @@
         }
 
         getDelta(){
-            let lastTwo = this.data.slice(-2);
-            return lastTwo[1] - lastTwo[0];
+            // delta between last 2 points
+            //let lastTwo = this.data.slice(-2);
+            //return lastTwo[1] - lastTwo[0];
+            // delta between average and last point
+            let avg = this.data.reduce((acc, val) => (acc + val) * 0.5, 0);
+            return Math.floor(this.data[this.data.length-1] - avg);
         }
 
         getDeltaDirectionArrow(){
