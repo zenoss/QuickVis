@@ -31,12 +31,14 @@
 
     let contentEl = document.querySelector(".content");
 
+    let types = ["line", "area", "bar", "scatter"];
     for(let i = 0; i < 10; i++){
         let vals = trendyRandVals(0, 10000, 10);
         let sparky = new quickVis.Sparkline({
             metric:"RAM",
             threshold: vals[rand(0, vals.length-1, true)],
-            unit: "B"
+            unit: "B",
+            style: types[rand(0,types.length,true)]
         });
         contentEl.appendChild(sparky.el);
         sparky.render(vals);

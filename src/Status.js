@@ -166,6 +166,7 @@
             this.threshold = config.threshold;
             this.template = sparklineTemplate;
             this.unit = config.unit;
+            this.style = config.style || "line";
         }
 
         _update(data){
@@ -198,15 +199,32 @@
             this.drawableArea.width = this.drawableArea.x2 - this.drawableArea.x1;
             this.drawableArea.height = this.drawableArea.y2 - this.drawableArea.y1;
 
-            //this.fillSparkline(true);
-            //this.drawSparkline();
-            this.drawBars();
-            this.drawThreshold();
-            //this.drawLastPoint();
+            switch(this.style){
+                case "line":
+                    this.fillSparkline()
+                        .drawSparkline()
+                        .drawThreshold()
+                        .drawLastPoint();
+                    break;
+                case "area":
+                    this.drawSparkline()
+                        .drawThreshold()
+                        .drawLastPoint();
+                    break;
+                case "bar":
+                    this.drawBars()
+                        .drawThreshold();
+                    break;
+                case "scatter":
+                    this.drawScatter()
+                        .drawThreshold();
+                    break;
+            }
         }
 
         fillSparkline(){
             this.drawSparkline(true);
+            return this;
         }
 
         drawSparkline(shaded=false){
@@ -235,6 +253,7 @@
                 // TODO - configurable fill
                 fill: shaded ? "#CCC" : "transparent"
             }));
+            return this;
         }
 
         drawBars(){
@@ -245,7 +264,7 @@
 
             this.data.forEach((dp, i) => {
                 let barDiff = this.yScale(dp),
-                    barHeight = (y2 - barDiff) || 1;
+                    barHeight = Math.ceil(y2 - barDiff) || 1;
                 svg.appendChild(createNode("rect", {
                     x: this.xScale(i),
                     y: y2 - barHeight,
@@ -255,6 +274,22 @@
                     fill: dp > this.threshold ? "red" : "#AAA"
                 }));
             });
+            return this;
+        }
+
+        drawScatter(){
+            let {svg, xScale, yScale} = this,
+                {x2, y2, width} = this.drawableArea;
+
+            this.data.forEach((dp, i) => {
+                svg.appendChild(createNode("circle", {
+                    cx: this.xScale(i),
+                    cy: this.yScale(dp),
+                    r: 4,
+                    fill: dp > this.threshold ? "red" : "#AAA"
+                }));
+            });
+            return this;
         }
 
         drawLastPoint(){
@@ -267,11 +302,13 @@
                 r: 3,
                 fill: this.lastExceedsThreshold() ? "red" : "#555"
             }));
+            return this;
         }
 
         drawThreshold(){
+            return this;
             if(this.threshold === undefined){
-                return;
+                return this;
             }
 
             let {svg, xScale, yScale} = this,
@@ -286,6 +323,7 @@
                 strokeDasharray: "2,2",
                 fill: "transparent"
             }));
+            return this;
         }
 
         /*************
@@ -293,14 +331,14 @@
          * the view can use to make data useful to the user
          */
         getFriendly(val){
-            if(val < 1){
+            if(Math.abs(val) < 1){
                 return shortenNumber(val);
             }
             return toEng(val)[0];
         }
 
         getMagnitude(val){
-            if(val < 1){
+            if(Math.abs(val) < 1){
                 return "";
             }
             return toEng(val)[1];
@@ -308,10 +346,9 @@
 
         getFriendlyDelta(){
             let delta = this.delta;
-            if(delta < 1){
+            if(Math.abs(delta) < 1){
                 return Math.abs(shortenNumber(delta)) + this.unit;
             }
-            console.log(delta);
             let [val,magnitude] = toEng(delta);
 
             return Math.abs(val) + magnitude + this.unit;
@@ -319,7 +356,7 @@
 
         getDeltaDirectionArrow(){
             let delta = this.delta;
-            if(delta < 1){
+            if(Math.abs(delta) < 1){
                 delta = shortenNumber(delta);
             }
             return delta > 0 ? "▴" : delta === 0 ? "" : "▾";
@@ -327,7 +364,7 @@
 
         getDeltaDirectionClass(){
             let delta = this.delta;
-            if(delta < 1){
+            if(Math.abs(delta) < 1){
                 delta = shortenNumber(delta);
             }
             return delta > 0 ? "up" : delta === 0 ? "" : "down";

@@ -15,6 +15,7 @@
 }
 
 .sparkline .graph {
+    flex: 1 0 120px;
     margin-right: 6px;
     /* NOTE - matches .last font-size */
     height: 3em;
@@ -61,7 +62,7 @@
 }
 */
 .sparkline .indicator {
-    flex: 1 0 auto;
+    flex: 0 0 5px;
     height: 2em;
     width: 5px;
     margin-left: 5px;
