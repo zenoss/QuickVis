@@ -25,7 +25,10 @@ gulp.task("default", function(callback){
 gulp.task("build", ["concatJS", "concatCSS"]);
 
 gulp.task("concatJS", function(){
-    var files = globule.find([paths.src + "**/*.js", "!"+ paths.src +"app.js"]);
+    var files = globule.find([paths.src + "**/*.js", "!"+ paths.src +"app.js", "!"+ paths.src +"core.js"]);
+    // make sure core quickvis stuff loads first
+    files.unshift(paths.src + "core.js");
+    // make sure app stuff loads last
     files.push(paths.src + "app.js");
     return gulp.src(files)
         .pipe(sourcemaps.init())
