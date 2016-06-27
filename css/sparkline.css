@@ -15,7 +15,7 @@
 }
 
 .sparkline .graph {
-    flex: 1 0 120px;
+    flex: 1 1 120px;
     margin-right: 6px;
     /* NOTE - matches .last font-size */
     height: 3em;
@@ -50,11 +50,11 @@
     margin-right: 2px;
 }
 
-/* dot indicator
+/*
 .sparkline .indicator:after {
     font-size: 1.3em;
     margin: -5px 5px 0 5px;
-    color: #CCC;
+    color: transparent;
     content: "●";
 }
 .sparkline .indicator.on:after {

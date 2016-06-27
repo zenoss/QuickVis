@@ -145,7 +145,7 @@
                 <div class="last">${vm.getFriendly(vm.last)}</div>
                 <div class="vbox spark-value">
                     <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
-                    <div class="hbox spark-trend ${vm.getDeltaDirectionClass()}">
+                    <div class="hbox spark-trend">
                         <div class="trend">${vm.getDeltaDirectionArrow()}</div>
                         <div class="delta">${vm.getFriendlyDelta()}</div>
                     </div>
@@ -185,7 +185,7 @@
             super._render();
             this.svg = this.el.querySelector(".graph");
             let {width, height} = this.svg.getBoundingClientRect(),
-                xRange = [0, this.data.length],
+                xRange = [0, this.data.length-1],
                 yRange = [Math.max.apply(Math, this.data) + SPARKLINE_DATA_PADDING,
                     Math.min.apply(Math, this.data) - SPARKLINE_DATA_PADDING];
             this.xScale = linearScale(xRange, [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
@@ -260,13 +260,13 @@
             const BAR_PADDING = 1;
             let {svg, xScale, yScale} = this,
                 {x2, y2, width} = this.drawableArea,
-                barWidth = (width / this.data.length) - BAR_PADDING;
+                barWidth = (width / (this.data.length)) - BAR_PADDING;
 
             this.data.forEach((dp, i) => {
                 let barDiff = this.yScale(dp),
                     barHeight = Math.ceil(y2 - barDiff) || 1;
                 svg.appendChild(createNode("rect", {
-                    x: this.xScale(i),
+                    x: this.xScale(i) - i,
                     y: y2 - barHeight,
                     width: barWidth,
                     height: barHeight,
@@ -306,7 +306,6 @@
         }
 
         drawThreshold(){
-            return this;
             if(this.threshold === undefined){
                 return this;
             }
