@@ -1,3 +1,6 @@
+/* jshint node: true */
+
+"use strict";
 // TODO - test runner
 // TODO - transpiler
 
@@ -5,10 +8,14 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     livereload = require("gulp-livereload"),
     sourcemaps = require("gulp-sourcemaps"),
+    source = require("vinyl-source-stream"),
+    buffer = require("vinyl-buffer"),
     sequence = require("gulp-sequence"),
     serv = require("./serv"),
     exec = require("child_process").exec,
-    globule = require("globule");
+    globule = require("globule"),
+    rollup = require("rollup-stream"),
+    rollupIncludePaths = require("rollup-plugin-includepaths");
 
 var paths = {
     src: "src/",
@@ -25,17 +32,23 @@ gulp.task("default", function(callback){
 gulp.task("build", ["concatJS", "concatCSS"]);
 
 gulp.task("concatJS", function(){
-    var files = globule.find([paths.src + "**/*.js", "!"+ paths.src +"app.js", "!"+ paths.src +"core.js"]);
-    // make sure core quickvis stuff loads first
-    files.unshift(paths.src + "core.js");
-    // make sure app stuff loads last
-    files.push(paths.src + "app.js");
-    return gulp.src(files)
-        .pipe(sourcemaps.init())
-            .pipe(concat("app.js"))
-        .pipe(sourcemaps.write("./", { sourceRoot: "src" }))
-        .pipe(gulp.dest(paths.build));
+    return rollup({
+        entry: paths.src + "app.js",
+        sourceMap: true,
+        format: "iife",
+        plugins: [
+            // hacky workaround for make sure rollup
+            // knows where to look for deps
+            rollupIncludePaths(paths.src)
+        ]
+    })
+    .pipe(source("app.js", paths.src))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write("."))
+    .pipe(gulp.dest(paths.build));
 });
+
 gulp.task("concatCSS", function(){
     return gulp.src(paths.css + "**/*.css")
         .pipe(concat("app.css"))
