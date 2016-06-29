@@ -1,6 +1,8 @@
 #QuickVis
 QuickVis is a graphing library with the goal of visualizing data in a way that is fast and easy to read. The visualizations are minimally interactive, not pan or zoomable, and do not refresh themselves. You put some data in and you get a visualization. END!
 
+![some quickvis vis's](quickvis1.png)
+
 ## Development
 [TODO - gulp stuff]
 

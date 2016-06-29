@@ -3,6 +3,7 @@
 "use strict";
 // TODO - test runner
 // TODO - transpiler
+// TODO - lint
 
 var gulp = require("gulp"),
     concat = require("gulp-concat"),
