@@ -16,7 +16,8 @@ var gulp = require("gulp"),
     exec = require("child_process").exec,
     globule = require("globule"),
     rollup = require("rollup-stream"),
-    rollupIncludePaths = require("rollup-plugin-includepaths");
+    rollupIncludePaths = require("rollup-plugin-includepaths"),
+    fs = require("fs");
 
 var paths = {
     src: "src/",
@@ -27,7 +28,7 @@ var paths = {
 };
 
 gulp.task("default", function(callback){
-    sequence("build", "copy", "reload")(callback);
+    sequence("build", "injectCSS", "copy", "reload")(callback);
 });
 
 gulp.task("build", ["concatJS", "concatCSS"]);
@@ -56,6 +57,37 @@ gulp.task("concatCSS", function(){
         .pipe(gulp.dest(paths.build));
 });
 
+gulp.task("injectCSS", function(cb){
+    fs.readFile(paths.build + "app.css", "utf-8", function(err, data){
+        if (err) {
+            cb(err);
+            return;
+        }
+        var css = data.replace(/(?:\r\n|\r|\n)/g, "")
+            .replace(/"/g, "'")
+            .replace(/\t/g, "")
+            .replace("    ", "");
+        var injectorScript = `
+(function injectCSS(){
+    let style = document.createElement("style");
+    style.innerHTML = "${css}";
+    document.body.appendChild(style);
+    // force layout/paint
+    document.querySelector("body").clientWidth;
+})();
+        `;
+        fs.readFile(paths.build + "app.js", "utf-8", function(err, data){
+            if (err) {
+                cb(err);
+                return;
+            }
+            let edited = injectorScript + "\n\n" + data;
+            fs.writeFile(paths.build + "app.js", edited, "utf-8", function (err) {
+                cb(err);
+            });
+        });
+    });
+});
 
 gulp.task("copy", function(callback){
     sequence(["copyBuild", "copyIndex", "copyLib"])(callback);
