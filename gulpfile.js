@@ -4,6 +4,7 @@
 // TODO - test runner
 // TODO - transpiler
 // TODO - lint
+// TODO - minify
 
 var gulp = require("gulp"),
     concat = require("gulp-concat"),
@@ -17,57 +18,62 @@ var gulp = require("gulp"),
     globule = require("globule"),
     rollup = require("rollup-stream"),
     rollupIncludePaths = require("rollup-plugin-includepaths"),
-    fs = require("fs");
+    fs = require("fs"),
+    through = require("through2");
 
 var paths = {
     src: "src/",
     build: "build/",
     www: "www/",
-    css: "css/",
-    lib: "lib/"
+    webapp: "demo/"
 };
 
-gulp.task("default", function(callback){
-    sequence("build", "injectCSS", "copy", "reload")(callback);
+gulp.task("default", ["dist"]);
+
+// quickvis distributable bundle
+gulp.task("dist", function(callback){
+    sequence("buildJS", "injectCSS")(callback);
 });
 
-gulp.task("build", ["concatJS", "concatCSS"]);
+// build the demo page/app
+gulp.task("demo", function(callback){
+    sequence("dist", "copyDemo", "copyDemoDist")(callback);
+});
 
-gulp.task("concatJS", function(){
+
+
+
+// build the javascript lib by bundling all visualizations
+gulp.task("buildJS", function(){
     return rollup({
-        entry: paths.src + "app.js",
+        entry: paths.src + "quickvis.js",
         sourceMap: true,
+        moduleName: "quickvis",
         format: "iife",
         plugins: [
             // hacky workaround for make sure rollup
             // knows where to look for deps
-            rollupIncludePaths(paths.src)
+            rollupIncludePaths({
+                paths: [
+                    paths.src,
+                    // TODO - shouldnt need to include every module :/
+                    paths.src + "Sparkline",
+                    paths.src + "StackedBar",
+                ]
+            })
         ]
     })
-    .pipe(source("app.js", paths.src))
+    .pipe(source("quickvis.js", paths.src))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest(paths.build));
 });
 
-gulp.task("concatCSS", function(){
-    return gulp.src(paths.css + "**/*.css")
-        .pipe(concat("app.css"))
-        .pipe(gulp.dest(paths.build));
-});
-
-gulp.task("injectCSS", function(cb){
-    fs.readFile(paths.build + "app.css", "utf-8", function(err, data){
-        if (err) {
-            cb(err);
-            return;
-        }
-        var css = data.replace(/(?:\r\n|\r|\n)/g, "")
-            .replace(/"/g, "'")
-            .replace(/\t/g, "")
-            .replace("    ", "");
-        var injectorScript = `
+// generates a string of js that will inject the
+// provided CSS into the DOM
+function injectCSSTemplate(css){
+    return `
 (function injectCSS(){
     let style = document.createElement("style");
     style.innerHTML = "${css}";
@@ -75,50 +81,80 @@ gulp.task("injectCSS", function(cb){
     // force layout/paint
     document.querySelector("body").clientWidth;
 })();
-        `;
-        fs.readFile(paths.build + "app.js", "utf-8", function(err, data){
+    `;
+}
+
+function injectCSS(dest){
+    let bufferContent = function(file, enc, cb){
+        // TODO - ensure file exists, etc
+        var css = file.contents.toString()
+            .replace(/\s\s+/g, " ")
+            .replace(/(?:\r\n|\r|\n)/g, "")
+            .replace(/"/g, "'");
+        var injectorScript = injectCSSTemplate(css);
+        fs.readFile(dest, "utf-8", function(err, data){
             if (err) {
                 cb(err);
                 return;
             }
             let edited = injectorScript + "\n\n" + data;
-            fs.writeFile(paths.build + "app.js", edited, "utf-8", function (err) {
+            fs.writeFile(dest, edited, "utf-8", function (err) {
                 cb(err);
             });
         });
-    });
+       cb();
+    };
+
+    let endStream = function(cb){
+        console.log("endStream");
+        cb();
+    };
+
+    return through.obj(bufferContent, endStream);
+}
+
+// inject CSS for all visualizations into the js lib
+gulp.task("injectCSS", function(cb){
+    return gulp.src(paths.src + "**/*.css")
+        .pipe(concat("quickvis.css"))
+        .pipe(injectCSS(paths.build + "quickvis.js"));
 });
 
-gulp.task("copy", function(callback){
-    sequence(["copyBuild", "copyIndex", "copyLib"])(callback);
+
+
+
+// gather all the files needed for the demo page
+gulp.task("copyDemo", function(){
+    return gulp.src([
+        paths.webapp + "app.js",
+        paths.webapp + "index.html",
+        paths.webapp + "main.css"
+    ]).pipe(gulp.dest(paths.www));
 });
 
-gulp.task("copyBuild", function(){
-    return gulp.src(paths.build + "**/*")
-        .pipe(gulp.dest(paths.www));
-});
-gulp.task("copyIndex", function(){
-    return gulp.src("index.html")
-        .pipe(gulp.dest(paths.www));
-});
-gulp.task("copyLib", function(){
-    return gulp.src(paths.lib + "**/*")
+gulp.task("copyDemoDist", function(){
+    return gulp.src([paths.build + "quickvis.js", paths.build + "quickvis.js.map"])
         .pipe(gulp.dest(paths.www));
 });
 
+// livereload the demo page
 gulp.task("reload", function(){
     livereload.reload();
 });
 
-gulp.task("watch", ["default"], function(){
+// bring up a server with the demo page, and 
+// watch the demo page and quickvis source
+// and livereload as needed
+gulp.task("watch", ["demo"], function(){
     var port = 3006,
         hostname = "localhost";
 
     livereload.listen();
 
-    gulp.watch(paths.src + "**/*.js", ["default"]);
-    gulp.watch(paths.css + "**/*.css", ["default"]);
-    gulp.watch("index.html", ["default"]);
+    // rebuild the quickvis lib and copy into www
+    gulp.watch(paths.src + "**/*", ["dist", "copyDemoDist"]);
+    // copy demo stuff into  www
+    gulp.watch(paths.webapp + "**/*", ["copyDemo"]);
 
     // start webserver
     serv(paths.www, port);

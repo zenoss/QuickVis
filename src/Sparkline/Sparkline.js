@@ -1,6 +1,6 @@
 "use strict";
 
-import {QuickVis, toEng, linearScale, createNode, shortenNumber} from "quickvis";
+import {QuickVis, toEng, linearScale, createNode, shortenNumber} from "quickviscore";
 
 // template functions should take a viewmodel and return a string
 // that can be put into the DOM. there should be as little logic in
@@ -30,11 +30,11 @@ const SPARKLINE_DATA_PADDING = 1;
 export default class Sparkline extends QuickVis {
     // setup configuration related thingies
     constructor(config){
-        super();
+        config.template = sparklineTemplate;
+        super(config);
         this.el.classList.add("sparkline");
         this.metric = config.metric;
         this.threshold = config.threshold;
-        this.template = sparklineTemplate;
         this.unit = config.unit;
         this.style = config.style || "line";
     }

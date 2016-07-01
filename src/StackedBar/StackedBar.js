@@ -1,6 +1,6 @@
 "use strict";
 
-import {QuickVis, toEng, linearScale, createNode, shortenNumber} from "quickvis";
+import {QuickVis, toEng, linearScale, createNode, shortenNumber} from "quickviscore";
 
 function stackedBarTemplate(vm){
     return `
@@ -31,11 +31,11 @@ let colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
 
 export default class StackedBar extends QuickVis {
     constructor(config){
-        super();
+        config.template = stackedBarTemplate;
+        super(config);
         this.el.classList.add("stacked-bar");
         this.name = config.name;
         this.capacity = config.capacity;
-        this.template = stackedBarTemplate;
     }
 
     _render(){
