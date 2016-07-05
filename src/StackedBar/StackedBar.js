@@ -1,6 +1,7 @@
 "use strict";
 
-import {QuickVis, toEng, linearScale, createNode, shortenNumber} from "quickviscore";
+import QuickVis from "quickviscore";
+import {toEng, linearScale, createNode, shortenNumber} from "utils";
 
 function stackedBarTemplate(vm){
     return `

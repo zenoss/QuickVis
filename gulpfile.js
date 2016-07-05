@@ -1,8 +1,7 @@
 /* jshint node: true */
 
 "use strict";
-// TODO - test runner
-// TODO - transpiler
+// TODO - es6 transpiler
 // TODO - lint
 // TODO - minify
 
@@ -19,7 +18,9 @@ var gulp = require("gulp"),
     rollup = require("rollup-stream"),
     rollupIncludePaths = require("rollup-plugin-includepaths"),
     fs = require("fs"),
-    through = require("through2");
+    path = require("path"),
+    through = require("through2"),
+    karma = require("karma");
 
 var paths = {
     src: "src/",
@@ -41,6 +42,12 @@ gulp.task("demo", function(callback){
 });
 
 
+// rollup needs an explicit list of places to
+// look for deps, so generate a flat list of
+// directories in the src directory
+let srcSubdirectories = (function(srcPath){
+    return fs.readdirSync(srcPath).filter(f => fs.statSync(path.join(srcPath, f)).isDirectory());
+})(paths.src).map(dir => path.join(paths.src, dir));
 
 
 // build the javascript lib by bundling all visualizations
@@ -54,12 +61,7 @@ gulp.task("buildJS", function(){
             // hacky workaround for make sure rollup
             // knows where to look for deps
             rollupIncludePaths({
-                paths: [
-                    paths.src,
-                    // TODO - shouldnt need to include every module :/
-                    paths.src + "Sparkline",
-                    paths.src + "StackedBar",
-                ]
+                paths: [paths.src].concat(srcSubdirectories)
             })
         ]
     })
@@ -142,7 +144,7 @@ gulp.task("reload", function(){
     livereload.reload();
 });
 
-// bring up a server with the demo page, and 
+// bring up a server with the demo page, and
 // watch the demo page and quickvis source
 // and livereload as needed
 gulp.task("watch", ["demo"], function(){
@@ -166,4 +168,74 @@ gulp.task("watch", ["demo"], function(){
             console.error("Huh...", stdout, stderr);
         }
     });
+});
+
+
+
+
+
+gulp.task("test", ["testJS"], function(cb){
+    new karma.Server({
+        configFile: __dirname + "/karma.conf.js",
+        singleRun: true,
+        reporters: ["dots"]
+        // TODO - chromedriver or *shudder* phantom
+    }, cb).start();
+});
+
+gulp.task("tdd", ["JSbuildTestJS"], function (cb) {
+    livereload.listen();
+    gulp.watch(paths.src + "**/*", ["buildTestJS"]);
+    new karma.Server({
+        configFile: __dirname + '/karma.conf.js',
+        reporters: ["dots"]
+    }, cb).start();
+});
+
+gulp.task("testJS", function(callback){
+    sequence("generateTestJS", "buildTestJS")(callback);
+});
+
+// generate a js file that imports all of the
+// available specs
+gulp.task("generateTestJS", function(cb){
+    // find all specs
+    let specs = globule.find({
+            src: "**/*.spec.js",
+            srcBase: paths.src
+        });
+
+    // generate the import for each spec
+    let jsString = ['"use strict";'].concat(
+            specs.map(s => `import "${s}";`)
+        ).join("\n");
+
+    var cb2 = function(){
+        console.log("callin back");
+        cb();
+    };
+
+    // write the file
+    // TODO - ensure build dir is present
+    fs.writeFile(paths.build + "tests.js", jsString, "utf8", cb);
+});
+
+gulp.task("buildTestJS", function(){
+    return rollup({
+        entry: paths.build + "tests.js",
+        sourceMap: true,
+        format: "iife",
+        plugins: [
+            // hacky workaround for make sure rollup
+            // knows where to look for deps
+            rollupIncludePaths({
+                paths: [paths.src].concat(srcSubdirectories)
+            })
+        ]
+    })
+    .pipe(source("tests.js", paths.src))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write("."))
+    .pipe(gulp.dest(paths.build));
 });

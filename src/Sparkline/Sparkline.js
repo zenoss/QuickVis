@@ -1,6 +1,7 @@
 "use strict";
 
-import {QuickVis, toEng, linearScale, createNode, shortenNumber} from "quickviscore";
+import QuickVis from "quickviscore";
+import {toEng, linearScale, createNode, shortenNumber} from "utils";
 
 // template functions should take a viewmodel and return a string
 // that can be put into the DOM. there should be as little logic in
