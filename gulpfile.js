@@ -17,10 +17,10 @@ require("./gulp/injectcss.js");
 require("./gulp/demoapp.js");
 require("./gulp/buildjs.js");
 
-gulp.task("default", ["dist"]);
+gulp.task("default", ["release"]);
 
 // quickvis distributable bundle
-gulp.task("dist", function(callback){
+gulp.task("release", function(callback){
     sequence("buildJS", "injectCSS")(callback);
 });
 
@@ -34,6 +34,6 @@ gulp.task("clean", function(){
 
 // build the demo page/app
 gulp.task("demo", function(callback){
-    sequence("dist", "copyDemo", "copyDemoDist")(callback);
+    sequence("release", "copyDemo", "copyDemoDist")(callback);
 });
 

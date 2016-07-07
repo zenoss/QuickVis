@@ -19,8 +19,7 @@ var gulp = require("gulp"),
 
 let {paths, srcSubdirectories} = require("./config");
 
-let headlessChromiumPath = path.join(__dirname,
-        "../node_modules/run-headless-chromium/run-headless-chromium.js");
+let headlessChromiumPath = path.join(__dirname, "../chrome-headless.sh");
 
 gulp.task("test", ["testJS"], function(cb){
     new karma.Server({

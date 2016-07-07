@@ -45,7 +45,6 @@ function injectCSS(dest){
     };
 
     let endStream = function(cb){
-        console.log("endStream");
         cb();
     };
 

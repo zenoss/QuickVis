@@ -1,7 +1,7 @@
 {
-  "name": "catgen",
-  "version": "0.0.0",
-  "description": "Generates cats. Name em. Neat.",
+  "name": "quickvis",
+  "version": "0.1.0",
+  "description": "put some data in, get a visualization. done",
   "repository": {
     "type": "git",
     "url": ""
