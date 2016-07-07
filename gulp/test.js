@@ -19,12 +19,15 @@ var gulp = require("gulp"),
 
 let {paths, srcSubdirectories} = require("./config");
 
+let headlessChromiumPath = path.join(__dirname,
+        "../node_modules/run-headless-chromium/run-headless-chromium.js");
+
 gulp.task("test", ["testJS"], function(cb){
     new karma.Server({
         configFile: paths.root + "/karma.conf.js",
         singleRun: true,
-        reporters: ["dots"]
-        // TODO - chromedriver or *shudder* phantom
+        reporters: ["dots"],
+        browsers: [headlessChromiumPath]
     }, cb).start();
 });
 
