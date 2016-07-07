@@ -27,7 +27,12 @@ gulp.task("test", ["testJS"], function(cb){
         singleRun: true,
         reporters: ["dots"],
         browsers: [headlessChromiumPath]
-    }, cb).start();
+    }, function(e){
+        cb(e);
+        // HACK because karma refuses to exit
+        // after run completes :/
+        process.exit(0);
+    }).start();
 });
 
 gulp.task("tdd", ["testJS"], function (cb) {
@@ -36,7 +41,12 @@ gulp.task("tdd", ["testJS"], function (cb) {
     new karma.Server({
         configFile: paths.root + '/karma.conf.js',
         reporters: ["dots"]
-    }, cb).start();
+    }, function(e){
+        cb(e);
+        // HACK because karma refuses to exit
+        // after run completes :/
+        process.exit(0);
+    }).start();
 });
 
 gulp.task("testJS", function(callback){
