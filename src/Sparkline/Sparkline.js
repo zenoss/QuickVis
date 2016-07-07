@@ -1,20 +1,20 @@
 "use strict";
 
 import QuickVis from "quickviscore";
-import {toEng, linearScale, createNode, shortenNumber} from "utils";
+import {toEng, linearScale, createNode,
+    shortenNumber, getFormattedNumber} from "utils";
 
 // template functions should take a viewmodel and return a string
 // that can be put into the DOM. there should be as little logic in
 // here as possible. Prefer to create viewmodel methods to handle
 // logic.
-function sparklineTemplate(vm){
+function template(vm){
     return `
         <div class="metric">${vm.metric}</div>
         <div class="hbox spark-content">
             <svg class="graph"></svg>
             <div class="last">${vm.getFriendly(vm.last)}</div>
             <div class="vbox spark-value">
-                <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
                 <div class="hbox spark-trend">
                     <div class="trend">${vm.getDeltaDirectionArrow()}</div>
                     <div class="delta">${vm.getFriendlyDelta()}</div>
@@ -28,16 +28,22 @@ function sparklineTemplate(vm){
 const SPARKLINE_PADDING = 4;
 const SPARKLINE_DATA_PADDING = 1;
 
+const defaultConfig = {
+    template: template,
+    metric: "",
+    style: "line",
+    threshold: Infinity
+};
+
 export default class Sparkline extends QuickVis {
     // setup configuration related thingies
     constructor(config){
-        config.template = sparklineTemplate;
+        config = Object.assign({}, defaultConfig, config);
         super(config);
         this.el.classList.add("sparkline");
         this.metric = config.metric;
         this.threshold = config.threshold;
-        this.unit = config.unit;
-        this.style = config.style || "line";
+        this.style = config.style;
     }
 
     // update the model data and generate new data as
@@ -45,6 +51,10 @@ export default class Sparkline extends QuickVis {
     // and if new data is needed, be sure its actual data
     // and not just view-related stuff (like text formatting)
     _update(data){
+        if(!data || !data.length){
+            throw new Error("cannot create sparkline from empty data");
+        }
+
         this.data = data;
         this.last = data[data.length - 1];
         // TODO - dont use 0 to start average calc
@@ -59,20 +69,9 @@ export default class Sparkline extends QuickVis {
     _render(){
         super._render();
         this.svg = this.el.querySelector(".graph");
-        let {width, height} = this.svg.getBoundingClientRect(),
-            xRange = [0, this.data.length-1],
-            yRange = [Math.max.apply(Math, this.data) + SPARKLINE_DATA_PADDING,
-                Math.min.apply(Math, this.data) - SPARKLINE_DATA_PADDING];
-        this.xScale = linearScale(xRange, [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
-        this.yScale = linearScale(yRange, [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
-        this.drawableArea = {
-            x1: this.xScale(xRange[0]),
-            y1: this.yScale(yRange[0]),
-            x2: this.xScale(xRange[1]),
-            y2: this.yScale(yRange[1])
-        };
-        this.drawableArea.width = this.drawableArea.x2 - this.drawableArea.x1;
-        this.drawableArea.height = this.drawableArea.y2 - this.drawableArea.y1;
+        let bb = this.svg.getBoundingClientRect();
+        this.setScales(bb.width, bb.height);
+        this.setDrawableArea(bb.width, bb.height);
 
         switch(this.style){
             case "line":
@@ -95,6 +94,34 @@ export default class Sparkline extends QuickVis {
                     .drawThreshold();
                 break;
         }
+    }
+
+    // sets up x and y scales, with consideration to including
+    // padding in the drawable area
+    setScales(width, height){
+        this.xDomain = [0, this.data.length-1];
+        this.yDomain = [Math.max.apply(Math, this.data) + SPARKLINE_DATA_PADDING,
+                Math.min.apply(Math, this.data) - SPARKLINE_DATA_PADDING];
+        this.xScale = linearScale(this.xDomain, [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
+        this.yScale = linearScale(this.yDomain, [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
+    }
+
+    // creates the bounds of the drawable area of the svg
+    // to prevent elements from being clipped off the edges
+    setDrawableArea(width, height){
+        if(!this.xScale || !this.yScale){
+            throw new Error("Cannot setup drawable area; scales have not been setup");
+        }
+
+        this.drawableArea = {
+            x1: this.xScale(this.xDomain[0]),
+            y1: this.yScale(this.yDomain[0]),
+            x2: this.xScale(this.xDomain[1]),
+            y2: this.yScale(this.yDomain[1])
+        };
+        this.drawableArea.width = this.drawableArea.x2 - this.drawableArea.x1;
+        this.drawableArea.height = this.drawableArea.y2 - this.drawableArea.y1;
+
     }
 
     fillSparkline(){
@@ -181,7 +208,7 @@ export default class Sparkline extends QuickVis {
     }
 
     drawThreshold(){
-        if(this.threshold === undefined){
+        if(this.threshold === Infinity){
             return this;
         }
 
@@ -205,43 +232,26 @@ export default class Sparkline extends QuickVis {
      * the view can use to make data useful to the user
      */
     getFriendly(val){
-        if(Math.abs(val) < 1){
-            return shortenNumber(val);
-        }
-        return toEng(val)[0];
+        return getFormattedNumber(val)[0];
     }
 
     getMagnitude(val){
-        if(Math.abs(val) < 1){
-            return "";
-        }
-        return toEng(val)[1];
+        return getFormattedNumber(val)[1];
     }
 
     getFriendlyDelta(){
-        let delta = this.delta;
-        if(Math.abs(delta) < 1){
-            return Math.abs(shortenNumber(delta)) + this.unit;
-        }
-        let [val,magnitude] = toEng(delta);
-
-        return Math.abs(val) + magnitude + this.unit;
+        let [val, magnitude] = getFormattedNumber(this.delta);
+        return Math.abs(val) + magnitude;
     }
 
     getDeltaDirectionArrow(){
-        let delta = this.delta;
-        if(Math.abs(delta) < 1){
-            delta = shortenNumber(delta);
-        }
-        return delta > 0 ? "▴" : delta === 0 ? "" : "▾";
+        let [val] = getFormattedNumber(this.delta);
+        return val > 0 ? "▴" : val === 0 ? "" : "▾";
     }
 
     getDeltaDirectionClass(){
-        let delta = this.delta;
-        if(Math.abs(delta) < 1){
-            delta = shortenNumber(delta);
-        }
-        return delta > 0 ? "up" : delta === 0 ? "" : "down";
+        let [val] = getFormattedNumber(this.delta);
+        return val > 0 ? "up" : val === 0 ? "" : "down";
     }
 
     lastExceedsThreshold(){
@@ -252,3 +262,4 @@ export default class Sparkline extends QuickVis {
         return this.lastExceedsThreshold() ? "on" : "off";
     }
 }
+

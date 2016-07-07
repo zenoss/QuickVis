@@ -43,10 +43,11 @@ let SYMBOLS = {
 };
 
 // max number of places after the decimal point.
-// actual number may be less than this
-const DEFAULT_MAX_FLOAT_PRECISION = 1;
+// actual number after decimal may end up being less than this
+const DEFAULT_MAX_FLOAT_PRECISION = 2;
 
-function toEng(val, preferredUnit, width=DEFAULT_MAX_FLOAT_PRECISION+1, base=1000) {
+function toEng(val, preferredUnit, width=DEFAULT_MAX_FLOAT_PRECISION, base=1000) {
+    let sign = val < 0 ? -1 : 1;
     val = Math.abs(val);
 
     let result,
@@ -67,7 +68,11 @@ function toEng(val, preferredUnit, width=DEFAULT_MAX_FLOAT_PRECISION+1, base=100
     // TODO - if Math.abs(unit) > 8, return value in scientific notation
     result = val / Math.pow(base, unit);
 
-    return [shortenNumber(result, width), symbol];
+    return [
+        // shorten the number if its too long, add sign back
+        sign * shortenNumber(result, width),
+        symbol
+    ];
 }
 
 // attempts to make a long floating point number
@@ -75,11 +80,18 @@ function toEng(val, preferredUnit, width=DEFAULT_MAX_FLOAT_PRECISION+1, base=100
 // fractional part of the number, but never the
 // whole part of the number
 // NOTE - does not round the number! it just chops it off
-function shortenNumber(num, targetLength) {
+function shortenNumber(num, targetLength=DEFAULT_MAX_FLOAT_PRECISION){
     let numStr = num.toString(),
         parts = numStr.split("."),
         whole = parts[0],
-        fractional = parts[1] || "";
+        fractional = parts[1] || "",
+        sign = "";
+
+    // if negative, slice off the minus sign
+    // so that we can count the number of digits
+    if(whole[0] === "-"){
+        whole = whole.substr(1);
+    }
 
     // if the number is already short enough
     if (whole.length + fractional.length <= targetLength) {
@@ -92,12 +104,32 @@ function shortenNumber(num, targetLength) {
         return +whole;
     }
 
-    return parseFloat(whole + "." + fractional.substring(0, targetLength - whole.length));
+    return parseFloat(sign + whole + "." + fractional.substring(0, targetLength - whole.length));
+}
+
+// given a value, returns an array where
+// index 0 is between 0 and 999, and
+// index 1 describes the magnitude of the
+// value. long floating point values are
+// shortened
+function getFormattedNumber(val){
+    let result;
+
+    // if this number is a float, attempt
+    // to shorten it
+    if(Math.abs(val) < 1){
+        result = [shortenNumber(val), ""];
+    } else {
+        result = toEng(val);
+    }
+
+    return result;
 }
 
 export {
     linearScale,
     createNode,
     toEng,
-    shortenNumber
+    shortenNumber,
+    getFormattedNumber
 };
