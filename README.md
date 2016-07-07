@@ -4,7 +4,41 @@ QuickVis is a graphing library with the goal of visualizing data in a way that i
 ![some quickvis vis's](quickvis1.png)
 
 ## Development
-[TODO - gulp stuff]
+To develop this project you will need `node` and `npm` installed. Once that's all squared away, install some npm packages
+
+```
+# global packages
+npm install -g gulp
+
+#local dependencies
+npm install
+```
+
+Now you can use `gulp` to do things
+
+```
+# generate the distributable js lib
+gulp release
+
+# bring up the demo page with livereload for active development
+gulp watch
+
+# run unit tests
+gulp test
+
+# continuously run unit tests for active development
+gulp tdd
+```
+
+If you don't have nodejs :( but you *do* have docker installed, you're in luck! You can do a few things via `make`
+
+```
+# build the distributable js lib
+make build-js
+
+# run unit tests
+make test
+```
 
 ## Development Best Practices
 
