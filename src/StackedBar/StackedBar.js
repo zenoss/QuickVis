@@ -1,7 +1,7 @@
 "use strict";
 
 import QuickVis from "quickviscore";
-import {toEng, linearScale, createNode, shortenNumber} from "utils";
+import {createSVGNode, shortenNumber} from "utils";
 
 function stackedBarTemplate(vm){
     return `

@@ -105,9 +105,10 @@ describe("Sparkline", () => {
 
     it("returns a friendly delta value with correct magnitude", () => {
         let vals = [2,4000],
-            friendlyDelta = "1.9K";
+            unit = "B",
+            friendlyDelta = "1.9KB";
 
-        let sparky = new Sparkline({});
+        let sparky = new Sparkline({unit: "B"});
         document.body.appendChild(sparky.el);
         sparky.render(vals);
         expect(sparky.getFriendlyDelta()).toEqual(friendlyDelta);
@@ -115,9 +116,10 @@ describe("Sparkline", () => {
 
     it("returns a friendly delta that ain't too long", () => {
         let vals = [0,0.01],
-            friendlyDelta = "0";
+            unit = "B",
+            friendlyDelta = "0B";
 
-        let sparky = new Sparkline({});
+        let sparky = new Sparkline({unit: "B"});
         document.body.appendChild(sparky.el);
         sparky.render(vals);
         expect(sparky.getFriendlyDelta()).toEqual(friendlyDelta);

@@ -14,7 +14,7 @@ function linearScale(domain, range, clamp) {
 }
 
 // http://stackoverflow.com/a/37411738
-function createNode(n, v) {
+function createSVGNode(n, v) {
     n = document.createElementNS("http://www.w3.org/2000/svg", n);
     for (let p in v){
         n.setAttributeNS(null, p.replace(/[A-Z]/g, function(m, p, o, s) { return "-" + m.toLowerCase(); }), v[p]);
@@ -128,8 +128,6 @@ function getFormattedNumber(val){
 
 export {
     linearScale,
-    createNode,
-    toEng,
-    shortenNumber,
+    createSVGNode,
     getFormattedNumber
 };

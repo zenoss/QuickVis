@@ -1,8 +1,7 @@
 "use strict";
 
 import QuickVis from "quickviscore";
-import {toEng, linearScale, createNode,
-    shortenNumber, getFormattedNumber} from "utils";
+import {linearScale, createSVGNode, getFormattedNumber} from "utils";
 
 // template functions should take a viewmodel and return a string
 // that can be put into the DOM. there should be as little logic in
@@ -191,7 +190,7 @@ export default class Sparkline extends QuickVis {
             d.push(`L${x2},${y2}`);
         }
 
-        svg.appendChild(createNode("path", {
+        svg.appendChild(createSVGNode("path", {
             d: d.join(" "),
             stroke: shaded ? "transparent" : "#555",
             strokeWidth: 1,
@@ -210,7 +209,7 @@ export default class Sparkline extends QuickVis {
         this.data.forEach((dp, i) => {
             let barDiff = this.yScale(dp),
                 barHeight = Math.ceil(y2 - barDiff) || 1;
-            svg.appendChild(createNode("rect", {
+            svg.appendChild(createSVGNode("rect", {
                 x: this.xScale(i) - i,
                 y: y2 - barHeight,
                 width: barWidth,
@@ -227,7 +226,7 @@ export default class Sparkline extends QuickVis {
             {x2, y2, width} = this.drawableArea;
 
         this.data.forEach((dp, i) => {
-            svg.appendChild(createNode("circle", {
+            svg.appendChild(createSVGNode("circle", {
                 cx: this.xScale(i),
                 cy: this.yScale(dp),
                 r: 4,
@@ -241,7 +240,7 @@ export default class Sparkline extends QuickVis {
         let {svg, xScale, yScale} = this,
             x = this.data.length - 1,
             y = this.data[this.data.length-1];
-        svg.appendChild(createNode("circle", {
+        svg.appendChild(createSVGNode("circle", {
             cx: xScale(x),
             cy: yScale(y),
             r: 3,
@@ -257,7 +256,7 @@ export default class Sparkline extends QuickVis {
 
         let {svg, xScale, yScale} = this,
             {x1, y1, x2, y2} = this.drawableArea;
-        svg.appendChild(createNode("line", {
+        svg.appendChild(createSVGNode("line", {
             x1: x1,
             y1: yScale(this.threshold),
             x2: x2,
