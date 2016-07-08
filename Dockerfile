@@ -23,6 +23,7 @@ RUN apt update -qqy && \
     apt install -qqy \
     vim build-essential \
     google-chrome-beta \
+    python2.7 \
     xvfb \
     nodejs
 
