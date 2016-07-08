@@ -17,23 +17,29 @@ require("./gulp/injectcss.js");
 require("./gulp/demoapp.js");
 require("./gulp/buildjs.js");
 
-gulp.task("default", ["release"]);
+gulp.task("default", ["dist"]);
 
-// quickvis distributable bundle
+// build quickvis distributable bundle
+gulp.task("dist", function(cb){
+    sequence("buildJS", "injectCSS")(cb);
+});
+
+// build js bundle and run tests
 gulp.task("release", function(callback){
-    sequence("buildJS", "injectCSS")(callback);
+    // TODO - increment version number?
+    sequence("dist", "test")(callback);
 });
 
 gulp.task("clean", function(){
     return gulp.src([
-            paths.build + "*",
-            paths.www + "*"
+            paths.build,
+            paths.www
         ])
         .pipe(clean());
 });
 
 // build the demo page/app
 gulp.task("demo", function(callback){
-    sequence("release", "copyDemo", "copyDemoDist")(callback);
+    sequence("dist", "copyDemo", "copyDemoDist")(callback);
 });
 
