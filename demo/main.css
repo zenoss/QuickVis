@@ -10,10 +10,13 @@ html, body {
     width: 100%;
 }
 
+body {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .content {
     display: flex;
     flex-direction: column;
     padding: 10px;
-    height: 100%;
-    width: 250px;
 }

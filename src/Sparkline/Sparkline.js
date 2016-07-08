@@ -8,13 +8,14 @@ import {toEng, linearScale, createNode,
 // that can be put into the DOM. there should be as little logic in
 // here as possible. Prefer to create viewmodel methods to handle
 // logic.
-function template(vm){
+function fullTemplate(vm){
     return `
         <div class="metric">${vm.metric}</div>
         <div class="hbox spark-content">
             <svg class="graph"></svg>
             <div class="last">${vm.getFriendly(vm.last)}</div>
             <div class="vbox spark-value">
+                <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
                 <div class="hbox spark-trend">
                     <div class="trend">${vm.getDeltaDirectionArrow()}</div>
                     <div class="delta">${vm.getFriendlyDelta()}</div>
@@ -25,25 +26,67 @@ function template(vm){
     `;
 }
 
+function compactTemplate(vm){
+    return `
+        <div class="metric">${vm.metric}</div>
+        <div class="hbox spark-content">
+            <svg class="graph"></svg>
+            <div class="last">
+                <span class="last-val">${vm.getFriendly(vm.last)}</span>
+                <span class="unit">${vm.getMagnitude(vm.last) + vm.unit}</span>
+            </div>
+            <div class="indicator ${vm.getIndicatorStatus()}"></div>
+        </div>
+    `;
+}
+
+function rowTemplate(vm){
+    return `
+        <div class="hbox spark-content">
+            <div class="metric">${vm.metric}</div>
+            <svg class="graph"></svg>
+            <div class="last-val">${vm.getFriendly(vm.last)}</div>
+            <div class="unit">${vm.getMagnitude(vm.last) + vm.unit}</div>
+            <div class="indicator ${vm.getIndicatorStatus()}"></div>
+        </div>
+    `;
+}
+
+let templates = {
+    full: fullTemplate,
+    compact: compactTemplate,
+    row: rowTemplate
+};
+
 const SPARKLINE_PADDING = 4;
 const SPARKLINE_DATA_PADDING = 1;
 
 const defaultConfig = {
-    template: template,
     metric: "",
     style: "line",
-    threshold: Infinity
+    threshold: Infinity,
+    size: "full",
+    template: fullTemplate,
+    unit: "B"
 };
 
 export default class Sparkline extends QuickVis {
     // setup configuration related thingies
     constructor(config){
         config = Object.assign({}, defaultConfig, config);
+
+        config.template = templates[config.size];
+        if(!config.template){
+            throw new Error(`Invalid sparkline size '${config.size}'`);
+        }
+
         super(config);
         this.el.classList.add("sparkline");
+        this.el.classList.add(config.size);
         this.metric = config.metric;
         this.threshold = config.threshold;
         this.style = config.style;
+        this.unit = config.unit;
     }
 
     // update the model data and generate new data as
@@ -74,13 +117,13 @@ export default class Sparkline extends QuickVis {
         this.setDrawableArea(bb.width, bb.height);
 
         switch(this.style){
-            case "line":
+            case "area":
                 this.fillSparkline()
                     .drawSparkline()
                     .drawThreshold()
                     .drawLastPoint();
                 break;
-            case "area":
+            case "line":
                 this.drawSparkline()
                     .drawThreshold()
                     .drawLastPoint();
@@ -241,7 +284,7 @@ export default class Sparkline extends QuickVis {
 
     getFriendlyDelta(){
         let [val, magnitude] = getFormattedNumber(this.delta);
-        return Math.abs(val) + magnitude;
+        return Math.abs(val) + magnitude + this.unit;
     }
 
     getDeltaDirectionArrow(){

@@ -71,3 +71,57 @@
 .sparkline .indicator.on {
     background-color: red;
 }
+
+
+
+
+
+.sparkline.row {
+    font-size: 0.8em;
+}
+
+.sparkline.row .graph {
+    flex: 1 1 50px;
+    margin-right: 6px;
+    /* NOTE - matches .last font-size */
+    height: 1.5em;
+}
+
+.sparkline.row .last-val {
+    font-size: 1.5em;
+}
+
+.sparkline.row .unit {
+    color: #AAA;
+}
+.sparkline.row .indicator {
+    height: 1.3em;
+}
+
+
+
+.sparkline.compact .graph {
+    flex: 1 1 50px;
+    margin-right: 6px;
+    /* NOTE - matches .last font-size */
+    height: 1.5em;
+}
+
+.sparkline.compact .last {
+    font-size: 1.5em;
+    letter-spacing: 0;
+    margin-right: 2px;
+}
+
+.sparkline.compact .last .last-val {
+}
+
+.sparkline.compact .last .unit {
+    color: #AAA;
+    font-size: 0.8em;
+}
+
+.sparkline.compact .indicator {
+    height: 1.4em;
+}
+

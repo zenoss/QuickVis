@@ -28,6 +28,14 @@ gulp.task("reload", function(){
     livereload.reload();
 });
 
+gulp.task("rebuild", function(cb){
+    sequence("demo", "reload")(cb);
+});
+
+gulp.task("copyDemoReload", function(cb){
+    sequence("copyDemo", "reload")(cb);
+});
+
 // bring up a server with the demo page, and
 // watch the demo page and quickvis source
 // and livereload as needed
@@ -38,9 +46,9 @@ gulp.task("watch", ["demo"], function(){
     livereload.listen();
 
     // rebuild the quickvis lib and copy into www
-    gulp.watch(paths.src + "**/*", ["dist", "copyDemoDist"]);
+    gulp.watch(paths.src + "**/*", ["rebuild"]);
     // copy demo stuff into  www
-    gulp.watch(paths.webapp + "**/*", ["copyDemo"]);
+    gulp.watch(paths.webapp + "**/*", ["copyDemoReload"]);
 
     // start webserver
     serv(paths.www, port);
