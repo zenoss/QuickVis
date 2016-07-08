@@ -21,6 +21,7 @@ let {paths, srcSubdirectories} = require("./config");
 
 let headlessChromiumPath = path.join(__dirname, "../chrome-headless.sh");
 
+// run unit tests
 gulp.task("test", ["testJS"], function(cb){
     new karma.Server({
         configFile: paths.root + "/karma.conf.js",
@@ -35,6 +36,7 @@ gulp.task("test", ["testJS"], function(cb){
     }).start();
 });
 
+// continuously run unit tests
 gulp.task("tdd", ["testJS"], function (cb) {
     livereload.listen();
     gulp.watch(paths.src + "**/*", ["testJS"]);
@@ -49,6 +51,8 @@ gulp.task("tdd", ["testJS"], function (cb) {
     }).start();
 });
 
+// bundles all the unit tests into a single file
+// that can be executed in the test runner
 gulp.task("testJS", function(callback){
     sequence("generateTestJS", "buildTestJS")(callback);
 });
@@ -67,11 +71,20 @@ gulp.task("generateTestJS", function(cb){
             specs.map(s => `import "${s}";`)
         ).join("\n");
 
+    // try to make the build dir. if it exists
+    // already, ignore the expection
+    try {
+        fs.mkdirSync(paths.build);
+    } catch(e) {
+        if ( e.code != 'EEXIST' ){
+            throw e;
+        }
+    }
     // write the file
-    // TODO - ensure build dir is present
     fs.writeFile(paths.build + "tests.js", jsString, "utf8", cb);
 });
 
+// rollup quickvis code into tests.js file
 gulp.task("buildTestJS", function(){
     return rollup({
         entry: paths.build + "tests.js",
