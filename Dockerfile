@@ -1,29 +1,25 @@
-FROM ubuntu:xenial
+FROM zenoss/centos-base:latest
 MAINTAINER Zenoss, Inc <dev@zenoss.com>
 
-# SETUP
-# tools needed for setup
-RUN apt update -qqy && \
-    apt -qqy install curl wget \
-    # needed for nodejs install
-    apt-transport-https
-
 # add chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+RUN printf '[google-chrome]\n\
+name=google-chrome - \$basearch\n\
+baseurl=http://dl.google.com/linux/chrome/rpm/stable/\$basearch\n\
+enabled=1\n\
+gpgcheck=1\n\
+gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub\n'\
+>> /etc/yum.repos.d/google-chrome.repo
 
 # add nodejs and npm
-#RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-RUN echo 'deb https://deb.nodesource.com/node_6.x xenial main' > /etc/apt/sources.list.d/nodesource.list
+RUN curl -sL https://rpm.nodesource.com/setup_6.x | bash -
 
 
 # INSTALL
-RUN apt update -qqy && \
-    apt install -qqy \
-    vim build-essential \
+RUN yum update -y && \
+    yum install -y \
     google-chrome-beta \
-    xvfb \
+    xorg-x11-server-Xvfb \
+    gcc-c++ \
     nodejs
 
 # global nodejs deps
