@@ -6,7 +6,8 @@ let gulp = require("gulp"),
     rollupIncludePaths = require("rollup-plugin-includepaths"),
     sourcemaps = require("gulp-sourcemaps"),
     source = require("vinyl-source-stream"),
-    buffer = require("vinyl-buffer");
+    buffer = require("vinyl-buffer"),
+    rename = require("gulp-rename");
 
 let {paths, srcSubdirectories} = require("./config.js");
 
@@ -26,6 +27,7 @@ gulp.task("buildJS", function(){
         ]
     })
     .pipe(source("quickvis.js", paths.src))
+    .pipe(rename(paths.versionedQuickVis))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write("."))

@@ -55,5 +55,5 @@ function injectCSS(dest){
 gulp.task("injectCSS", function(cb){
     return gulp.src(paths.src + "**/*.css")
         .pipe(concat("quickvis.css"))
-        .pipe(injectCSS(paths.build + "quickvis.js"));
+        .pipe(injectCSS(paths.build + paths.versionedQuickVis));
 });
