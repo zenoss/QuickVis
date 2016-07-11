@@ -1,4 +1,4 @@
-FROM zenoss/centos-base:latest
+FROM zenoss/centos-base:1.0.3
 MAINTAINER Zenoss, Inc <dev@zenoss.com>
 
 # add chrome
@@ -28,3 +28,7 @@ RUN npm install -g gulp
 
 # CONFIGURE
 ADD userdo.sh /root/userdo.sh
+
+# workaround "D-Bus library appears to be incorrectly set up" error
+# when running xvfb/chrome
+RUN dbus-uuidgen > /var/lib/dbus/machine-id
