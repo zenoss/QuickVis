@@ -23,6 +23,7 @@ RUN apt update -qqy && \
     apt install -qqy \
     vim build-essential \
     google-chrome-beta \
+    python2.7 \
     xvfb \
     nodejs
 
@@ -32,3 +33,4 @@ RUN npm install -g gulp
 
 # CONFIGURE
 ADD userdo.sh /root/userdo.sh
+RUN ln -s /usr/bin/python2.7 /usr/bin/python
