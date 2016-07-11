@@ -4,7 +4,7 @@ UID = $(shell id -u)
 GID = $(shell id -g)
 PWD = $(shell pwd)
 
-BUILD_VERSION = "v1"
+BUILD_VERSION = v2
 
 default: build
 

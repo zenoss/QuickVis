@@ -27,6 +27,7 @@ gulp.task("dist", function(cb){
 // build js bundle and run tests
 gulp.task("release", function(callback){
     // TODO - increment version number?
+    // TODO - zip js and map file
     sequence("dist", "test")(callback);
 });
 
