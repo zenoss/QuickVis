@@ -4,7 +4,7 @@ UID = $(shell id -u)
 GID = $(shell id -g)
 PWD = $(shell pwd)
 
-DOCKER_IMAGE_VERSION = v2
+DOCKER_IMAGE_VERSION = v3
 
 default: build
 

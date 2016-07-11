@@ -33,3 +33,4 @@ RUN npm install -g gulp
 
 # CONFIGURE
 ADD userdo.sh /root/userdo.sh
+RUN ln -s /usr/bin/python2.7 /usr/bin/python
