@@ -29,8 +29,8 @@ gulp test
 # continuously run unit tests for active development
 gulp tdd
 
-# generate the distributable js lib, run tests, [TODO] bump version.
-# use this when `git-flow release`ing
+# generate the distributable js lib, run tests, zip lib and map,
+# [TODO] bump version. use this when `git-flow release`ing
 gulp release
 
 ```
@@ -43,6 +43,9 @@ make build
 
 # run unit tests
 make test
+
+# build, test, zip
+make release
 ```
 
 ## Development Best Practices
