@@ -5,7 +5,7 @@ GID = $(shell id -g)
 PWD = $(shell pwd)
 
 IMAGENAME = build-tools
-VERSION = 0.0.1-dev-7
+VERSION = 0.0.2
 TAG = zenoss/$(IMAGENAME):$(VERSION)
 
 default: build
