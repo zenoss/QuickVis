@@ -17,7 +17,7 @@ build: npm-install
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp dist\""; \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp dist\"";
 
 # test the quickvis lib
 test: npm-install
@@ -26,7 +26,7 @@ test: npm-install
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp test\""; \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp test\"";
 
 # build, zip, test quickvis lib
 release: npm-install
@@ -35,7 +35,7 @@ release: npm-install
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp release\""; \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp release\"";
 
 # install npm packages
 npm-install:
@@ -44,6 +44,6 @@ npm-install:
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\""; \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\"";
 
 .PHONY: default build test release npm-install

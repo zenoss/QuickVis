@@ -41,7 +41,6 @@ function injectCSS(dest){
                 cb(err);
             });
         });
-       cb();
     };
 
     let endStream = function(cb){
