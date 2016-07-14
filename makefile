@@ -4,35 +4,46 @@ UID = $(shell id -u)
 GID = $(shell id -g)
 PWD = $(shell pwd)
 
-BUILD_VERSION = "v1"
+IMAGENAME = build-tools
+VERSION = 0.0.2
+TAG = zenoss/$(IMAGENAME):$(VERSION)
 
-default: build-js
+default: build
 
-build-docker:
-	docker build -t zenoss/quickvis-build:${BUILD_VERSION} .
-
-npm-install: build-docker
+# build the quickvis lib
+build: npm-install
 	docker run --rm \
 		-v $(PWD):$(docker_working_DIR) \
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
-		zenoss/quickvis-build:$(BUILD_VERSION) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\""; \
+		$(TAG) \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp dist\"";
 
-build-js: build-docker npm-install
+# test the quickvis lib
+test: npm-install
 	docker run --rm \
 		-v $(PWD):$(docker_working_DIR) \
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
-		zenoss/quickvis-build:$(BUILD_VERSION) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp release\""; \
+		$(TAG) \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp test\"";
 
-test: build-docker npm-install
+# build, zip, test quickvis lib
+release: npm-install
 	docker run --rm \
 		-v $(PWD):$(docker_working_DIR) \
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
-		zenoss/quickvis-build:$(BUILD_VERSION) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp test\""; \
+		$(TAG) \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp release\"";
 
-.PHONY: default build npm-install build-docker
+# install npm packages
+npm-install:
+	docker run --rm \
+		-v $(PWD):$(docker_working_DIR) \
+		-e UID_X=$(UID) \
+		-e GID_X=$(GID) \
+		$(TAG) \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\"";
+
+.PHONY: default build test release npm-install

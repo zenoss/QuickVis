@@ -4,12 +4,15 @@
 let fs = require("fs"),
     path = require("path");
 
+let VERSION = "0.1.0";
+
 let paths = {
     src: "src/",
     build: "build/",
     www: "www/",
     webapp: "demo/",
-    root: process.cwd()
+    root: process.cwd(),
+    versionedQuickVis: `quickvis-${VERSION}.js`
 };
 
 // rollup needs an explicit list of places to
@@ -21,5 +24,6 @@ let srcSubdirectories = (function(srcPath){
 
 module.exports = {
     paths: paths,
-    srcSubdirectories: srcSubdirectories
+    srcSubdirectories: srcSubdirectories,
+    VERSION: VERSION
 };

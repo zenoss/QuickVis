@@ -4,7 +4,8 @@
 var gulp = require("gulp"),
     livereload = require("gulp-livereload"),
     sequence = require("gulp-sequence"),
-    exec = require("child_process").exec;
+    exec = require("child_process").exec,
+    rename = require("gulp-rename");
 
 let {paths} = require("./config"),
     serv = require("./../serv");
@@ -18,8 +19,16 @@ gulp.task("copyDemo", function(){
     ]).pipe(gulp.dest(paths.www));
 });
 
-gulp.task("copyDemoDist", function(){
-    return gulp.src([paths.build + "quickvis.js", paths.build + "quickvis.js.map"])
+gulp.task("copyDemoDist", ["copyDemoJSLib", "copyDemoJSMap"]);
+
+gulp.task("copyDemoJSLib", function(){
+    return gulp.src(paths.build + paths.versionedQuickVis)
+        .pipe(rename("quickvis.js"))
+        .pipe(gulp.dest(paths.www));
+});
+
+gulp.task("copyDemoJSMap", function(){
+    return gulp.src(paths.build + paths.versionedQuickVis)
         .pipe(gulp.dest(paths.www));
 });
 
@@ -55,6 +64,7 @@ gulp.task("watch", ["demo"], function(){
 
     // open in browser
     // TODO - reuse existing tab
+    // TODO - on exit, close browser tab?
     exec("xdg-open http://"+ hostname +":"+ port, function(err, stdout, stderr){
         if(err){
             console.error("Huh...", stdout, stderr);
