@@ -1,3 +1,5 @@
+@import "../shared";
+
 .sparkline * {
     display: flex;
 }
@@ -43,7 +45,7 @@
     content: "●";
 }
 .sparkline .indicator.on:after {
-    color: #9C1200;
+    color: $bad-color;
 }
 
 
