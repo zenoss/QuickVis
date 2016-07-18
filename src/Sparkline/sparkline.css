@@ -36,20 +36,6 @@
     font-weight: bold;
 }
 
-.sparkline .spark-value .spark-trend {
-    color: #999;
-}
-.sparkline .spark-value .spark-trend.down {
-    color: #CC7C7C;
-}
-.sparkline .spark-value .spark-trend.up {
-    color: #8DA642;
-}
-
-.sparkline .spark-value .spark-trend .trend {
-    margin-right: 2px;
-}
-
 .sparkline .indicator:after {
     font-size: 1.5em;
     margin: -5px 5px 0 5px;

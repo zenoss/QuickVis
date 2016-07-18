@@ -15,10 +15,6 @@ function fullTemplate(vm){
             <div class="last">${vm.getFriendly(vm.last)}</div>
             <div class="vbox spark-value">
                 <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
-                <div class="hbox spark-trend">
-                    <div class="trend">${vm.getDeltaDirectionArrow()}</div>
-                    <div class="delta">${vm.getFriendlyDelta()}</div>
-                </div>
             </div>
             <div class="indicator ${vm.getIndicatorStatus()}"></div>
         </div>
@@ -100,9 +96,6 @@ export default class Sparkline extends QuickVis {
 
         this.data = data;
         this.last = data[data.length - 1];
-        // TODO - dont use 0 to start average calc
-        this.avg = this.data.reduce((acc, val) => acc + val, 0) / this.data.length;
-        this.delta = this.last - this.avg;
     }
 
     /*******************
@@ -291,21 +284,6 @@ export default class Sparkline extends QuickVis {
 
     getMagnitude(val){
         return getFormattedNumber(val)[1];
-    }
-
-    getFriendlyDelta(){
-        let [val, magnitude] = getFormattedNumber(this.delta);
-        return Math.abs(val) + magnitude + this.unit;
-    }
-
-    getDeltaDirectionArrow(){
-        let [val] = getFormattedNumber(this.delta);
-        return val > 0 ? "▴" : val === 0 ? "" : "▾";
-    }
-
-    getDeltaDirectionClass(){
-        let [val] = getFormattedNumber(this.delta);
-        return val > 0 ? "up" : val === 0 ? "" : "down";
     }
 
     lastExceedsThreshold(){
