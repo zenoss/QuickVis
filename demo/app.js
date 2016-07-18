@@ -35,12 +35,13 @@
     fullSparklineEl.style.width = "250px";
     document.body.appendChild(fullSparklineEl);
 
-    let types = ["line", "area", "bar", "scatter"];
+    let types = ["line", "area"];
     for(let i = 0; i < 5; i++){
         let vals = trendyRandVals(0, 10000, 15);
         let sparky = new Sparkline({
             metric:"RAM",
-            threshold: vals[rand(0, vals.length-1, true)],
+            threshold: 5000,
+            forceThreshold: Math.random() > 0.5 ? true : false,
             unit: "B",
             style: types[rand(0,types.length,true)]
         });

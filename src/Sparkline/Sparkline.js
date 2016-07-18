@@ -84,6 +84,7 @@ export default class Sparkline extends QuickVis {
         this.el.classList.add(config.size);
         this.metric = config.metric;
         this.threshold = config.threshold;
+        this.forceThreshold = config.forceThreshold;
         this.style = config.style;
         this.unit = config.unit;
     }
@@ -119,13 +120,11 @@ export default class Sparkline extends QuickVis {
             case "area":
                 this.fillSparkline()
                     .drawSparkline()
-                    .drawThreshold()
-                    .drawLastPoint();
+                    .drawThreshold();
                 break;
             case "line":
                 this.drawSparkline()
-                    .drawThreshold()
-                    .drawLastPoint();
+                    .drawThreshold();
                 break;
             case "bar":
                 this.drawBars()
@@ -141,9 +140,22 @@ export default class Sparkline extends QuickVis {
     // sets up x and y scales, with consideration to including
     // padding in the drawable area
     setScales(width, height){
+        let dataRange = this.data;
+
+        // if forceThreshold, add it to the dataRange
+        // so that min/max will include it
+        if(this.forceThreshold){
+            dataRange = dataRange.concat(this.threshold);
+        }
+
+        let min = Math.min.apply(Math, dataRange),
+            max = Math.max.apply(Math, dataRange);
+
         this.xDomain = [0, this.data.length-1];
-        this.yDomain = [Math.max.apply(Math, this.data) + SPARKLINE_DATA_PADDING,
-                Math.min.apply(Math, this.data) - SPARKLINE_DATA_PADDING];
+        // NOTE - min and max are swappped since the 
+        // 0,0 origin is upper left (aka going down on
+        // y axis is actually incrementing the y value)
+        this.yDomain = [max + SPARKLINE_DATA_PADDING, min - SPARKLINE_DATA_PADDING];
         this.xScale = linearScale(this.xDomain, [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
         this.yScale = linearScale(this.yDomain, [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
     }
@@ -236,19 +248,6 @@ export default class Sparkline extends QuickVis {
         return this;
     }
 
-    drawLastPoint(){
-        let {svg, xScale, yScale} = this,
-            x = this.data.length - 1,
-            y = this.data[this.data.length-1];
-        svg.appendChild(createSVGNode("circle", {
-            cx: xScale(x),
-            cy: yScale(y),
-            r: 3,
-            fill: this.lastExceedsThreshold() ? "red" : "#555"
-        }));
-        return this;
-    }
-
     drawThreshold(){
         if(this.threshold === Infinity){
             return this;
@@ -265,6 +264,19 @@ export default class Sparkline extends QuickVis {
             strokeWidth: 2,
             strokeDasharray: "2,2",
             fill: "transparent"
+        }));
+        return this;
+    }
+
+    drawLastPoint(){
+        let {svg, xScale, yScale} = this,
+            x = this.data.length - 1,
+            y = this.data[this.data.length-1];
+        svg.appendChild(createSVGNode("circle", {
+            cx: xScale(x),
+            cy: yScale(y),
+            r: 3,
+            fill: this.lastExceedsThreshold() ? "red" : "#555"
         }));
         return this;
     }

@@ -50,26 +50,14 @@
     margin-right: 2px;
 }
 
-/*
 .sparkline .indicator:after {
-    font-size: 1.3em;
+    font-size: 1.5em;
     margin: -5px 5px 0 5px;
     color: transparent;
     content: "●";
 }
 .sparkline .indicator.on:after {
-    color: red;
-}
-*/
-.sparkline .indicator {
-    flex: 0 0 5px;
-    height: 2em;
-    width: 5px;
-    margin-left: 5px;
-    background-color: #EEE;
-}
-.sparkline .indicator.on {
-    background-color: red;
+    color: #9C1200;
 }
 
 
