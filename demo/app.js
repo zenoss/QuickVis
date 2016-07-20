@@ -35,7 +35,7 @@
     fullSparklineEl.style.width = "250px";
     document.body.appendChild(fullSparklineEl);
 
-    let types = ["line", "area"];
+    let types = ["line", "area", "bar", "scatter"];
     for(let i = 0; i < 5; i++){
         let vals = trendyRandVals(0, 10000, 15);
         let sparky = new Sparkline({

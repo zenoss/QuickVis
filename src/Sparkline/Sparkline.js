@@ -212,16 +212,18 @@ export default class Sparkline extends QuickVis {
     }
 
     drawBars(){
-        const BAR_PADDING = 1;
+        const BAR_PADDING = 2;
         let {svg, xScale, yScale} = this,
             {x2, y2, width} = this.drawableArea,
-            barWidth = (width / (this.data.length)) - BAR_PADDING;
+            barWidth = (width / (this.data.length)) - BAR_PADDING,
+            offsetLeft = xScale(0);
 
         this.data.forEach((dp, i) => {
             let barDiff = this.yScale(dp),
                 barHeight = Math.ceil(y2 - barDiff) || 1;
             svg.appendChild(createSVGNode("rect", {
-                x: this.xScale(i) - i,
+                // TODO - dont apply padding to last item
+                x: offsetLeft + ((barWidth + BAR_PADDING) * i),
                 y: y2 - barHeight,
                 width: barWidth,
                 height: barHeight,
