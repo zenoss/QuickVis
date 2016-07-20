@@ -1,5 +1,9 @@
 @import "../shared";
 
+$full-last-font-size: 2em;
+$compact-last-font-size: 1.5em;
+$row-last-font-size: 1em;
+
 .sparkline * {
     display: flex;
 }
@@ -19,23 +23,30 @@
 .sparkline .graph {
     flex: 1 1 120px;
     margin-right: 6px;
-    /* NOTE - matches .last font-size */
-    height: 3em;
+    height: $full-last-font-size;
 }
 
 .sparkline .last {
-    font-size: 3em;
-    margin-right: 5px;
-    letter-spacing: -2px;
+    font-size: $full-last-font-size;
+    display: flex;
+    align-items: baseline;
+    line-height: 0.7em;
+    letter-spacing: -1px;
 }
 
-.sparkline .spark-value {
-    line-height: 1.2em;
+.sparkline .last-val {
+    margin-right: 2px;
 }
 
-.sparkline .spark-value .units {
-    font-size: 1.2em;
-    font-weight: bold;
+.sparkline .units {
+    font-size: 0.8em;
+    color: #AAA;
+}
+
+.sparkline .annotation {
+    font-size: 0.9em;
+    color: #AAA;
+    margin-left: 2px;
 }
 
 .sparkline .indicator:after {
@@ -51,53 +62,47 @@
 
 
 
-
-.sparkline.row {
-    font-size: 0.8em;
-}
-
-.sparkline.row .graph {
-    flex: 1 1 50px;
-    margin-right: 6px;
-    /* NOTE - matches .last font-size */
-    height: 1.5em;
-}
-
-.sparkline.row .last-val {
-    font-size: 1.5em;
-}
-
-.sparkline.row .unit {
-    color: #AAA;
-}
-.sparkline.row .indicator {
-    height: 1.3em;
-}
-
-
-
 .sparkline.compact .graph {
     flex: 1 1 50px;
     margin-right: 6px;
-    /* NOTE - matches .last font-size */
-    height: 1.5em;
+    height: $compact-last-font-size;
 }
 
 .sparkline.compact .last {
-    font-size: 1.5em;
     letter-spacing: 0;
-    margin-right: 2px;
-}
-
-.sparkline.compact .last .last-val {
-}
-
-.sparkline.compact .last .unit {
-    color: #AAA;
-    font-size: 0.8em;
+    font-size: $compact-last-font-size;
 }
 
 .sparkline.compact .indicator {
     height: 1.4em;
 }
 
+
+
+.sparkline.row {
+}
+
+.sparkline.row .metric {
+    font-size: 0.8em;
+}
+
+.sparkline.row .graph {
+    flex: 1 1 50px;
+    margin-right: 6px;
+    height: $row-last-font-size;
+}
+
+.sparkline.row .last {
+    letter-spacing: 0;
+    font-size: $row-last-font-size;
+}
+
+.sparkline.row .last-val {
+}
+
+.sparkline.row .units {
+    font-size: 1em;
+}
+.sparkline.row .indicator {
+    height: 1.3em;
+}

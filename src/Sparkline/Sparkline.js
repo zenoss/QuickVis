@@ -12,9 +12,12 @@ function fullTemplate(vm){
         <div class="metric">${vm.metric}</div>
         <div class="hbox spark-content">
             <svg class="graph"></svg>
-            <div class="last">${vm.getFriendly(vm.last)}</div>
-            <div class="vbox spark-value">
-                <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
+            <div style="display: flex; flex-flow: column nowrap">
+                <div class="last">
+                    <div class="last-val">${vm.getFriendly(vm.last)}</div>
+                    <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
+                </div>
+                <div class="annotation">${vm.getAnnotation()}</div>
             </div>
             <div class="indicator ${vm.getIndicatorStatus()}"></div>
         </div>
@@ -28,7 +31,7 @@ function compactTemplate(vm){
             <svg class="graph"></svg>
             <div class="last">
                 <span class="last-val">${vm.getFriendly(vm.last)}</span>
-                <span class="unit">${vm.getMagnitude(vm.last) + vm.unit}</span>
+                <span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
             </div>
             <div class="indicator ${vm.getIndicatorStatus()}"></div>
         </div>
@@ -40,8 +43,10 @@ function rowTemplate(vm){
         <div class="hbox spark-content">
             <div class="metric">${vm.metric}</div>
             <svg class="graph"></svg>
-            <div class="last-val">${vm.getFriendly(vm.last)}</div>
-            <div class="unit">${vm.getMagnitude(vm.last) + vm.unit}</div>
+            <div class="last">
+                <div class="last-val">${vm.getFriendly(vm.last)}</div>
+                <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
+            </div>
             <div class="indicator ${vm.getIndicatorStatus()}"></div>
         </div>
     `;
@@ -83,6 +88,7 @@ export default class Sparkline extends QuickVis {
         this.forceThreshold = config.forceThreshold;
         this.style = config.style;
         this.unit = config.unit;
+        this.annotation = config.annotation;
     }
 
     // update the model data and generate new data as
@@ -292,6 +298,10 @@ export default class Sparkline extends QuickVis {
 
     getIndicatorStatus(){
         return this.lastExceedsThreshold() ? "on" : "off";
+    }
+
+    getAnnotation(){
+        return this.annotation || "";
     }
 }
 

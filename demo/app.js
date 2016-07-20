@@ -43,7 +43,8 @@
             threshold: 5000,
             forceThreshold: Math.random() > 0.5 ? true : false,
             unit: "B",
-            style: types[rand(0,types.length,true)]
+            style: types[rand(0,types.length,true)],
+            annotation: Math.random() > 0.5 ? "64GB total" : undefined
         });
         fullSparklineEl.appendChild(sparky.el);
         sparky.render(vals);
