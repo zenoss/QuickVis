@@ -4,10 +4,6 @@ $full-last-font-size: 2em;
 $compact-last-font-size: 1.5em;
 $row-last-font-size: 1em;
 
-.sparkline * {
-    display: flex;
-}
-
 .sparkline {
     color: #555;
 }
@@ -24,6 +20,43 @@ $row-last-font-size: 1em;
     flex: 1 1 120px;
     margin-right: 6px;
     height: $full-last-font-size;
+}
+
+.sparkline .graph .sparkline-path {
+    stroke: #555;
+    stroke-width: 1;
+    fill: transparent;
+}
+
+.sparkline .graph .sparkline-path.shaded {
+    stroke: transparent;
+    fill: #CCC;
+}
+
+.sparkline .graph .sparkline-bar {
+    stroke: transparent;
+    fill: #AAA;
+}
+
+.sparkline .graph .sparkline-bar.bad {
+    fill: $bad-color;
+}
+
+.sparkline .graph .sparkline-scatter,
+.sparkline .graph .sparkline-last-point {
+    fill: #AAA;
+}
+
+.sparkline .graph .sparkline-scatter.bad,
+.sparkline .graph .sparkline-last-point.bad {
+    fill: $bad-color;
+}
+
+.sparkline .graph .sparkline-threshold {
+    stroke: #AAA;
+    stroke-width: 2;
+    stroke-dasharray: 2, 2;
+    fill: transparent;
 }
 
 .sparkline .last {
@@ -50,6 +83,7 @@ $row-last-font-size: 1em;
 }
 
 .sparkline .indicator:after {
+    display: flex;
     font-size: 1.5em;
     margin: -5px 5px 0 5px;
     color: transparent;
@@ -62,47 +96,49 @@ $row-last-font-size: 1em;
 
 
 
-.sparkline.compact .graph {
-    flex: 1 1 50px;
-    margin-right: 6px;
-    height: $compact-last-font-size;
-}
+.sparkline.compact {
 
-.sparkline.compact .last {
-    letter-spacing: 0;
-    font-size: $compact-last-font-size;
-}
+    .graph {
+        flex: 1 1 50px;
+        margin-right: 6px;
+        height: $compact-last-font-size;
+    }
 
-.sparkline.compact .indicator {
-    height: 1.4em;
+    .last {
+        letter-spacing: 0;
+        font-size: $compact-last-font-size;
+    }
+
+    .indicator {
+        height: 1.4em;
+    }
 }
 
 
 
 .sparkline.row {
-}
 
-.sparkline.row .metric {
-    font-size: 0.8em;
-}
+    .metric {
+        font-size: 0.8em;
+    }
 
-.sparkline.row .graph {
-    flex: 1 1 50px;
-    margin-right: 6px;
-    height: $row-last-font-size;
-}
+    .graph {
+        flex: 1 1 50px;
+        margin-right: 6px;
+        height: $row-last-font-size;
+    }
 
-.sparkline.row .last {
-    letter-spacing: 0;
-    font-size: $row-last-font-size;
-}
+    .last {
+        letter-spacing: 0;
+        font-size: $row-last-font-size;
+    }
 
-.sparkline.row .last-val {
-}
+    .units {
+        font-size: 1em;
+    }
 
-.sparkline.row .units {
-    font-size: 1em;
-}
-.sparkline.row .indicator {
-    height: 1.3em;
+    .indicator {
+        height: 1.3em;
+    }
+
 }

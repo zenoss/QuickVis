@@ -203,10 +203,7 @@ export default class Sparkline extends QuickVis {
 
         svg.appendChild(createSVGNode("path", {
             d: d.join(" "),
-            stroke: shaded ? "transparent" : "#555",
-            strokeWidth: 1,
-            // TODO - configurable fill
-            fill: shaded ? "#CCC" : "transparent"
+            class: "sparkline-path" + (shaded ? " shaded" : "")
         }));
         return this;
     }
@@ -227,8 +224,7 @@ export default class Sparkline extends QuickVis {
                 y: y2 - barHeight,
                 width: barWidth,
                 height: barHeight,
-                stroke: "transparent",
-                fill: dp > this.threshold ? "red" : "#AAA"
+                class: "sparkline-bar" + (dp > this.threshold ? " bad" : "")
             }));
         });
         return this;
@@ -243,7 +239,7 @@ export default class Sparkline extends QuickVis {
                 cx: this.xScale(i),
                 cy: this.yScale(dp),
                 r: 4,
-                fill: dp > this.threshold ? "red" : "#AAA"
+                class: "sparkline-scatter" + (dp > this.threshold ? " bad" : "")
             }));
         });
         return this;
@@ -261,10 +257,7 @@ export default class Sparkline extends QuickVis {
             y1: yScale(this.threshold),
             x2: x2,
             y2: yScale(this.threshold),
-            stroke: "#AAA",
-            strokeWidth: 2,
-            strokeDasharray: "2,2",
-            fill: "transparent"
+            class: "sparkline-threshold"
         }));
         return this;
     }
@@ -277,7 +270,7 @@ export default class Sparkline extends QuickVis {
             cx: xScale(x),
             cy: yScale(y),
             r: 3,
-            fill: this.lastExceedsThreshold() ? "red" : "#555"
+            class: "sparkline-last-point" + (this.lastExceedsThreshold() ? " bad" : "")
         }));
         return this;
     }
