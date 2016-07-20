@@ -11,6 +11,11 @@ describe("quickvis", () => {
         expect(q.el instanceof HTMLElement).toBe(true);
     });
 
+    it("creates a DOM element of the specified type", () => {
+        let q = new QuickVis({tag: "tr"});
+        expect(q.el.tagName.toLowerCase()).toBe("tr");
+    });
+
     it("uses the provided template", () => {
         let specialValue = "horseapples!";
         let q = new QuickVis({

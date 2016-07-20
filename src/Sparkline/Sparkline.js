@@ -40,15 +40,15 @@ function compactTemplate(vm){
 
 function rowTemplate(vm){
     return `
-        <div class="hbox spark-content">
-            <div class="metric">${vm.metric}</div>
-            <svg class="graph"></svg>
-            <div class="last">
-                <div class="last-val">${vm.getFriendly(vm.last)}</div>
-                <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
-            </div>
-            <div class="indicator ${vm.getIndicatorStatus()}"></div>
-        </div>
+        <td class="metric">${vm.metric}</td>
+        <td class="graph-row"><svg class="graph"></svg></td>
+        <td class="last">
+            <!-- NOTE: the html comment after this span is to prevent
+                extra whitespace being added between the 2 elements -->
+            <span class="last-val">${vm.getFriendly(vm.last)}</span><!--
+            --><span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
+        </td>
+        <td class="indicator ${vm.getIndicatorStatus()}"></td>
     `;
 }
 
@@ -78,6 +78,12 @@ export default class Sparkline extends QuickVis {
         config.template = templates[config.size];
         if(!config.template){
             throw new Error(`Invalid sparkline size '${config.size}'`);
+        }
+
+        // row sparklines should be wrapped in a tr
+        // element instead of the usual div
+        if(config.size === "row"){
+            config.tag = "tr";
         }
 
         super(config);

@@ -123,18 +123,25 @@ $row-last-font-size: 1em;
     }
 
     .graph {
-        flex: 1 1 50px;
-        margin-right: 6px;
+        width: 100%;
         height: $row-last-font-size;
     }
 
     .last {
+        display: table-cell;
         letter-spacing: 0;
         font-size: $row-last-font-size;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .last-val {
+        font-weight: bold;
     }
 
     .units {
         font-size: 1em;
+        color: #555;
     }
 
     .indicator {
