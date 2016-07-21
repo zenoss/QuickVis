@@ -15,7 +15,7 @@ gulp.task("copyDemo", function(){
     return gulp.src([
         paths.webapp + "app.js",
         paths.webapp + "index.html",
-        paths.webapp + "main.css"
+        paths.webapp + "app.css"
     ]).pipe(gulp.dest(paths.www));
 });
 

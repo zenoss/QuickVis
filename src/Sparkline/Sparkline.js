@@ -65,7 +65,7 @@ const defaultConfig = {
     metric: "",
     style: "line",
     threshold: Infinity,
-    size: "full",
+    layout: "full",
     template: fullTemplate,
     unit: "B"
 };
@@ -75,14 +75,14 @@ export default class Sparkline extends QuickVis {
     constructor(config){
         config = Object.assign({}, defaultConfig, config);
 
-        config.template = templates[config.size];
+        config.template = templates[config.layout];
         if(!config.template){
-            throw new Error(`Invalid sparkline size '${config.size}'`);
+            throw new Error(`Invalid sparkline layout '${config.layout}'`);
         }
 
         super(config);
         this.el.classList.add("sparkline");
-        this.el.classList.add(config.size);
+        this.el.classList.add(config.layout);
         this.metric = config.metric;
         this.threshold = config.threshold;
         this.forceThreshold = config.forceThreshold;

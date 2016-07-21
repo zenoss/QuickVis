@@ -19,7 +19,7 @@ export default class SparklineGrid extends QuickVis {
         this.el.classList.add("sparkline-grid");
         this.sparklines = config.sparklines.map(c => {
             // TODO - reevaluate config object
-            c.config.size = "row";
+            c.config.layout = "row";
             let sparky = new Sparkline(c.config);
             return {
                 config: c.config,
