@@ -117,9 +117,18 @@ $row-last-font-size: 1em;
 
 
 .sparkline.row {
+    display: table-row;
+}
+
+.sparkline.row {
 
     .metric {
+        display: table-cell;
         font-size: 0.8em;
+    }
+
+    .graph-row {
+        display: table-cell;
     }
 
     .graph {
@@ -145,6 +154,7 @@ $row-last-font-size: 1em;
     }
 
     .indicator {
+        display: table-cell;
         height: 1.3em;
     }
 
