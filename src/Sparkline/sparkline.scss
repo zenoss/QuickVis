@@ -1,0 +1,161 @@
+@import "../shared";
+
+$full-last-font-size: 2em;
+$compact-last-font-size: 1.5em;
+$row-last-font-size: 1em;
+
+.sparkline {
+    color: #555;
+}
+
+.sparkline .metric {
+    font-size: 1.2em;
+}
+
+.sparkline .spark-content {
+    align-items: center;
+}
+
+.sparkline .graph {
+    flex: 1 1 120px;
+    margin-right: 6px;
+    height: $full-last-font-size;
+}
+
+.sparkline .graph .sparkline-path {
+    stroke: #555;
+    stroke-width: 1;
+    fill: transparent;
+}
+
+.sparkline .graph .sparkline-path.shaded {
+    stroke: transparent;
+    fill: #CCC;
+}
+
+.sparkline .graph .sparkline-bar {
+    stroke: transparent;
+    fill: #AAA;
+}
+
+.sparkline .graph .sparkline-bar.bad {
+    fill: $bad-color;
+}
+
+.sparkline .graph .sparkline-scatter,
+.sparkline .graph .sparkline-last-point {
+    fill: #AAA;
+}
+
+.sparkline .graph .sparkline-scatter.bad,
+.sparkline .graph .sparkline-last-point.bad {
+    fill: $bad-color;
+}
+
+.sparkline .graph .sparkline-threshold {
+    stroke: #AAA;
+    stroke-width: 2;
+    stroke-dasharray: 2, 2;
+    fill: transparent;
+}
+
+.sparkline .last {
+    font-size: $full-last-font-size;
+    display: flex;
+    align-items: baseline;
+    line-height: 0.7em;
+    letter-spacing: -1px;
+}
+
+.sparkline .last-val {
+    margin-right: 2px;
+}
+
+.sparkline .units {
+    font-size: 0.8em;
+    color: #AAA;
+}
+
+.sparkline .annotation {
+    font-size: 0.9em;
+    color: #AAA;
+    margin-left: 2px;
+}
+
+.sparkline .indicator:after {
+    display: flex;
+    font-size: 1.5em;
+    margin: -5px 5px 0 5px;
+    color: transparent;
+    content: "●";
+}
+.sparkline .indicator.on:after {
+    color: $bad-color;
+}
+
+
+
+
+.sparkline.compact {
+
+    .graph {
+        flex: 1 1 50px;
+        margin-right: 6px;
+        height: $compact-last-font-size;
+    }
+
+    .last {
+        letter-spacing: 0;
+        font-size: $compact-last-font-size;
+    }
+
+    .indicator {
+        height: 1.4em;
+    }
+}
+
+
+
+.sparkline.row {
+    display: table-row;
+}
+
+.sparkline.row {
+
+    .metric {
+        display: table-cell;
+        font-size: 0.8em;
+    }
+
+    .graph-row {
+        display: table-cell;
+    }
+
+    .graph {
+        width: 100%;
+        height: $row-last-font-size;
+    }
+
+    .last {
+        display: table-cell;
+        letter-spacing: 0;
+        font-size: $row-last-font-size;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .last-val {
+        font-weight: bold;
+    }
+
+    .units {
+        font-size: 1em;
+        color: #555;
+    }
+
+    .indicator {
+        display: table-cell;
+        height: 1.3em;
+    }
+
+}

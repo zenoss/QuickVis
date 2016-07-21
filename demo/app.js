@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    let {StackedBar, Sparkline} = quickvis;
+    let {StackedBar, Sparkline, SparklineGrid} = quickvis;
 
     function rand(min, max, floor){
         let val = (Math.random() * (max - min)) + min;
@@ -40,9 +40,11 @@
         let vals = trendyRandVals(0, 10000, 15);
         let sparky = new Sparkline({
             metric:"RAM",
-            threshold: vals[rand(0, vals.length-1, true)],
+            threshold: 5000,
+            forceThreshold: Math.random() > 0.5 ? true : false,
             unit: "B",
-            style: types[rand(0,types.length,true)]
+            style: types[rand(0,types.length,true)],
+            annotation: Math.random() > 0.5 ? "64GB total" : undefined
         });
         fullSparklineEl.appendChild(sparky.el);
         sparky.render(vals);
@@ -66,24 +68,32 @@
         sparky.render(vals);
     }
 
-    let rowSparklineEl = document.createElement("div");
-    rowSparklineEl.classList.add("content");
-    rowSparklineEl.style.width = "200px";
-    rowSparklineEl.style.lineHeight = "1.5em";
-    document.body.appendChild(rowSparklineEl);
+    let sparklineGridEl = document.createElement("div");
+    sparklineGridEl.classList.add("content");
+    sparklineGridEl.style.width = "200px";
+    sparklineGridEl.style.lineHeight = "1.5em";
+    document.body.appendChild(sparklineGridEl);
 
-    for(let i = 0; i < 5; i++){
+    let sparkGridConfigs = [];
+    for(let i = 0; i < 20; i++){
         let vals = trendyRandVals(0, 10000, 10);
-        let sparky = new Sparkline({
-            size: "row",
-            metric:"RAM",
-            threshold: vals[rand(0, vals.length-1, true)],
-            unit: "B",
-            style: "line"
+        sparkGridConfigs.push({
+            vals: vals,
+            config: {
+                metric:"RAM",
+                threshold: vals[rand(0, vals.length-1, true)],
+                unit: "B",
+                style: "line"
+            }
         });
-        rowSparklineEl.appendChild(sparky.el);
-        sparky.render(vals);
     }
+
+    let sparklineGrid = new SparklineGrid({
+        sparklines: sparkGridConfigs
+    });
+    sparklineGridEl.appendChild(sparklineGrid.el);
+    sparklineGrid.render();
+
 
     let barEl = document.createElement("div");
     barEl.classList.add("content");

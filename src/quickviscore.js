@@ -6,7 +6,7 @@ export default class QuickVis {
     // creates a dom element for the vis to live in
     constructor(config){
         config = config || {};
-        this.el = document.createElement("div");
+        this.el = document.createElement(config.tag || "div");
         this.template = config.template || function(vm){
             return `<strong>hi</strong>`;
         };

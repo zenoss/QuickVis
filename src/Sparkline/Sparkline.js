@@ -12,13 +12,12 @@ function fullTemplate(vm){
         <div class="metric">${vm.metric}</div>
         <div class="hbox spark-content">
             <svg class="graph"></svg>
-            <div class="last">${vm.getFriendly(vm.last)}</div>
-            <div class="vbox spark-value">
-                <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
-                <div class="hbox spark-trend">
-                    <div class="trend">${vm.getDeltaDirectionArrow()}</div>
-                    <div class="delta">${vm.getFriendlyDelta()}</div>
+            <div style="display: flex; flex-flow: column nowrap">
+                <div class="last">
+                    <div class="last-val">${vm.getFriendly(vm.last)}</div>
+                    <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
                 </div>
+                <div class="annotation">${vm.getAnnotation()}</div>
             </div>
             <div class="indicator ${vm.getIndicatorStatus()}"></div>
         </div>
@@ -32,7 +31,7 @@ function compactTemplate(vm){
             <svg class="graph"></svg>
             <div class="last">
                 <span class="last-val">${vm.getFriendly(vm.last)}</span>
-                <span class="unit">${vm.getMagnitude(vm.last) + vm.unit}</span>
+                <span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
             </div>
             <div class="indicator ${vm.getIndicatorStatus()}"></div>
         </div>
@@ -41,13 +40,15 @@ function compactTemplate(vm){
 
 function rowTemplate(vm){
     return `
-        <div class="hbox spark-content">
-            <div class="metric">${vm.metric}</div>
-            <svg class="graph"></svg>
-            <div class="last-val">${vm.getFriendly(vm.last)}</div>
-            <div class="unit">${vm.getMagnitude(vm.last) + vm.unit}</div>
-            <div class="indicator ${vm.getIndicatorStatus()}"></div>
+        <div class="metric">${vm.metric}</div>
+        <div class="graph-row"><svg class="graph"></svg></div>
+        <div class="last">
+            <!-- NOTE: the html comment after this span is to prevent
+                extra whitespace being added between the 2 elements -->
+            <span class="last-val">${vm.getFriendly(vm.last)}</span><!--
+            --><span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
         </div>
+        <div class="indicator ${vm.getIndicatorStatus()}"></div>
     `;
 }
 
@@ -84,8 +85,10 @@ export default class Sparkline extends QuickVis {
         this.el.classList.add(config.size);
         this.metric = config.metric;
         this.threshold = config.threshold;
+        this.forceThreshold = config.forceThreshold;
         this.style = config.style;
         this.unit = config.unit;
+        this.annotation = config.annotation;
     }
 
     // update the model data and generate new data as
@@ -99,9 +102,6 @@ export default class Sparkline extends QuickVis {
 
         this.data = data;
         this.last = data[data.length - 1];
-        // TODO - dont use 0 to start average calc
-        this.avg = this.data.reduce((acc, val) => acc + val, 0) / this.data.length;
-        this.delta = this.last - this.avg;
     }
 
     /*******************
@@ -119,13 +119,11 @@ export default class Sparkline extends QuickVis {
             case "area":
                 this.fillSparkline()
                     .drawSparkline()
-                    .drawThreshold()
-                    .drawLastPoint();
+                    .drawThreshold();
                 break;
             case "line":
                 this.drawSparkline()
-                    .drawThreshold()
-                    .drawLastPoint();
+                    .drawThreshold();
                 break;
             case "bar":
                 this.drawBars()
@@ -141,9 +139,22 @@ export default class Sparkline extends QuickVis {
     // sets up x and y scales, with consideration to including
     // padding in the drawable area
     setScales(width, height){
+        let dataRange = this.data;
+
+        // if forceThreshold, add it to the dataRange
+        // so that min/max will include it
+        if(this.forceThreshold){
+            dataRange = dataRange.concat(this.threshold);
+        }
+
+        let min = Math.min.apply(Math, dataRange),
+            max = Math.max.apply(Math, dataRange);
+
         this.xDomain = [0, this.data.length-1];
-        this.yDomain = [Math.max.apply(Math, this.data) + SPARKLINE_DATA_PADDING,
-                Math.min.apply(Math, this.data) - SPARKLINE_DATA_PADDING];
+        // NOTE - min and max are swappped since the 
+        // 0,0 origin is upper left (aka going down on
+        // y axis is actually incrementing the y value)
+        this.yDomain = [max + SPARKLINE_DATA_PADDING, min - SPARKLINE_DATA_PADDING];
         this.xScale = linearScale(this.xDomain, [SPARKLINE_PADDING, width-SPARKLINE_PADDING]);
         this.yScale = linearScale(this.yDomain, [SPARKLINE_PADDING, height-SPARKLINE_PADDING]);
     }
@@ -192,30 +203,28 @@ export default class Sparkline extends QuickVis {
 
         svg.appendChild(createSVGNode("path", {
             d: d.join(" "),
-            stroke: shaded ? "transparent" : "#555",
-            strokeWidth: 1,
-            // TODO - configurable fill
-            fill: shaded ? "#CCC" : "transparent"
+            class: "sparkline-path" + (shaded ? " shaded" : "")
         }));
         return this;
     }
 
     drawBars(){
-        const BAR_PADDING = 1;
+        const BAR_PADDING = 2;
         let {svg, xScale, yScale} = this,
             {x2, y2, width} = this.drawableArea,
-            barWidth = (width / (this.data.length)) - BAR_PADDING;
+            barWidth = (width / (this.data.length)) - BAR_PADDING,
+            offsetLeft = xScale(0);
 
         this.data.forEach((dp, i) => {
             let barDiff = this.yScale(dp),
                 barHeight = Math.ceil(y2 - barDiff) || 1;
             svg.appendChild(createSVGNode("rect", {
-                x: this.xScale(i) - i,
+                // TODO - dont apply padding to last item
+                x: offsetLeft + ((barWidth + BAR_PADDING) * i),
                 y: y2 - barHeight,
                 width: barWidth,
                 height: barHeight,
-                stroke: "transparent",
-                fill: dp > this.threshold ? "red" : "#AAA"
+                class: "sparkline-bar" + (dp > this.threshold ? " bad" : "")
             }));
         });
         return this;
@@ -230,22 +239,9 @@ export default class Sparkline extends QuickVis {
                 cx: this.xScale(i),
                 cy: this.yScale(dp),
                 r: 4,
-                fill: dp > this.threshold ? "red" : "#AAA"
+                class: "sparkline-scatter" + (dp > this.threshold ? " bad" : "")
             }));
         });
-        return this;
-    }
-
-    drawLastPoint(){
-        let {svg, xScale, yScale} = this,
-            x = this.data.length - 1,
-            y = this.data[this.data.length-1];
-        svg.appendChild(createSVGNode("circle", {
-            cx: xScale(x),
-            cy: yScale(y),
-            r: 3,
-            fill: this.lastExceedsThreshold() ? "red" : "#555"
-        }));
         return this;
     }
 
@@ -261,10 +257,20 @@ export default class Sparkline extends QuickVis {
             y1: yScale(this.threshold),
             x2: x2,
             y2: yScale(this.threshold),
-            stroke: "#AAA",
-            strokeWidth: 2,
-            strokeDasharray: "2,2",
-            fill: "transparent"
+            class: "sparkline-threshold"
+        }));
+        return this;
+    }
+
+    drawLastPoint(){
+        let {svg, xScale, yScale} = this,
+            x = this.data.length - 1,
+            y = this.data[this.data.length-1];
+        svg.appendChild(createSVGNode("circle", {
+            cx: xScale(x),
+            cy: yScale(y),
+            r: 3,
+            class: "sparkline-last-point" + (this.lastExceedsThreshold() ? " bad" : "")
         }));
         return this;
     }
@@ -281,27 +287,16 @@ export default class Sparkline extends QuickVis {
         return getFormattedNumber(val)[1];
     }
 
-    getFriendlyDelta(){
-        let [val, magnitude] = getFormattedNumber(this.delta);
-        return Math.abs(val) + magnitude + this.unit;
-    }
-
-    getDeltaDirectionArrow(){
-        let [val] = getFormattedNumber(this.delta);
-        return val > 0 ? "▴" : val === 0 ? "" : "▾";
-    }
-
-    getDeltaDirectionClass(){
-        let [val] = getFormattedNumber(this.delta);
-        return val > 0 ? "up" : val === 0 ? "" : "down";
-    }
-
     lastExceedsThreshold(){
         return this.last > this.threshold;
     }
 
     getIndicatorStatus(){
         return this.lastExceedsThreshold() ? "on" : "off";
+    }
+
+    getAnnotation(){
+        return this.annotation || "";
     }
 }
 

@@ -5,7 +5,8 @@
 let gulp = require("gulp"),
     fs = require("fs"),
     through = require("through2"),
-    concat = require("gulp-concat");
+    concat = require("gulp-concat"),
+    sass = require("gulp-sass");
 
 let {paths} = require("./config");
 
@@ -52,7 +53,12 @@ function injectCSS(dest){
 
 // inject CSS for all visualizations into the js lib
 gulp.task("injectCSS", function(cb){
-    return gulp.src(paths.src + "**/*.css")
+    return gulp.src([
+            paths.src + "**/*.css", 
+            paths.src + "**/*.scss"
+        ])
+        // TODO - sourcemaps
+        .pipe(sass({outputStyle: "compressed"}).on("error", sass.logError))
         .pipe(concat("quickvis.css"))
         .pipe(injectCSS(paths.build + paths.versionedQuickVis));
 });
