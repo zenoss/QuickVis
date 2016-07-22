@@ -1,10 +1,12 @@
 # QuickVis
 QuickVis is a graphing library with the goal of visualizing data in a way that is fast and easy to read. The visualizations are minimally interactive, not pan or zoomable, and do not refresh themselves. You put some data in and you get a visualization. END!
 
+Take a look at [the live demos](https://zenoss.github.io/QuickVis/)
+
 ![some quickvis vis's](quickvis1.png)
 
 ## Development
-To develop this project you will need `node` and `npm` installed. Once that's all squared away, install some npm packages
+To develop this project you will need `node` (v6 or greater) and `npm` installed. Once that's all squared away, install some npm packages
 
 ```
 # global packages
@@ -111,3 +113,7 @@ In order to keep things as reasonable as one can expect in the wild west of webd
 * Don't modify the model. If you need to generate something new from the model data (like taking the average of an array of numbers), do it inside the `_update()` method, and attach the newly generated info to the viewmodel (aka `this`). If the new data is purely for presentation (like converting a timestamp to date), then it belongs in a template helper, not on the viewmodel.
 
 [TODO - sample code]
+
+## Some Other Notes
+* QuickVis visualizations will try to fill the entire available space. It is up to the containing DOM element to control size
+* Visualizations should be attached to the DOM *before* `render()` is called.

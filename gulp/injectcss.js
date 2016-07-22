@@ -15,7 +15,7 @@ let {paths} = require("./config");
 function injectCSSTemplate(css){
     return `
 (function injectCSS(){
-    let style = document.createElement("style");
+    var style = document.createElement("style");
     style.innerHTML = "${css}";
     document.body.appendChild(style);
     // force layout/paint

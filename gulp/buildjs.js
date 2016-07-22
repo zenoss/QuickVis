@@ -4,6 +4,7 @@
 let gulp = require("gulp"),
     rollup = require("rollup-stream"),
     rollupIncludePaths = require("rollup-plugin-includepaths"),
+    babel = require("rollup-plugin-babel"),
     sourcemaps = require("gulp-sourcemaps"),
     source = require("vinyl-source-stream"),
     buffer = require("vinyl-buffer"),
@@ -23,7 +24,9 @@ gulp.task("buildJS", function(){
             // knows where to look for deps
             rollupIncludePaths({
                 paths: [paths.src].concat(srcSubdirectories)
-            })
+            }),
+
+            babel()
         ]
     })
     .pipe(source("quickvis.js", paths.src))
