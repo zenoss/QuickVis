@@ -90,48 +90,40 @@
     // sparkline grids
     var sparklineGridEl = document.querySelector(".sparkline-grid");
     var grid = new SparklineGrid({
-        sparklines: [{
-            vals: [98,72,6,18,18,27,95,38,54,11],
-            config: { metric: "Unicorns", unit: "" }
-        },{
-            vals: [2,7,99,77,14,10,23,21,16,2],
-            config: { metric: "Pegasii", unit: "" }
-        },{
-            vals: [30,32,33,56,22,46,56,43,24,94],
-            config: { metric: "Minotaurs", unit: "" }
-        },{
-            vals: [23,65,49,57,34,43,16,48,29,96],
-            config: { metric: "Deepcrows", unit: "" }
-        },{
-            vals: [65,63,73,82,50,41,93,63,11,57],
-            config: { metric: "Hippogryphs", unit: "" }
-        },{
-            vals: [2,7,99,77,14,10,23,21,16,2],
-            config: { metric: "Wraiths", unit: "" }
-        },{
-            vals: [30,32,33,56,22,46,56,43,24,94],
-            config: { 
+        sparklines: [
+            { metric: "Unicorns", unit: "" },
+            { metric: "Pegasii", unit: "" },
+            { metric: "Minotaurs", unit: "" },
+            { metric: "Deepcrows", unit: "" },
+            { metric: "Hippogryphs", unit: "" },
+            { metric: "Wraiths", unit: "" },
+            { 
                 metric: "Donkeys",
                 unit: "",
                 threshold: 50
-            }
-        },{
-            vals: [0,0,0,0,0,0,0,0,2,2],
-            config: { 
+            },
+            { 
                 metric: "Phoenix",
                 unit: "",
                 threshold: 1
-            }
-        },{
-            vals: [65,63,73,82,50,41,93,63,11,57],
-            config: { metric: "Dragons", unit: "" }
-        },{
-            vals: [65,63,73,82,50,41,93,63,11,57],
-            config: { metric: "Werewolves", unit: "" }
-        }]
+            },
+            { metric: "Dragons", unit: "" },
+            { metric: "Werewolves", unit: "" }
+        ]
     });
     sparklineGridEl.appendChild(grid.el);
-    grid.render();
+    grid.render([
+        [98,72,6,18,18,27,95,38,54,11],
+        [2,7,99,77,14,10,23,21,16,2],
+        [30,32,33,56,22,46,56,43,24,94],
+        [23,65,49,57,34,43,16,48,29,96],
+        [65,63,73,82,50,41,93,63,11,57],
+        [2,7,99,77,14,10,23,21,16,2],
+        [30,32,33,56,22,46,56,43,24,94],
+        [0,0,0,0,0,0,0,0,2,2],
+        [65,63,73,82,50,41,93,63,11,57],
+        [65,63,73,82,50,41,93,63,11,57],
+    ]);
 
 
     /*

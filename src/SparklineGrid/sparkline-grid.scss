@@ -1,9 +1,59 @@
 @import "../shared";
 
+$row-last-font-size: 1em;
+
+
 .sparkline-grid {
 
     .sparklines {
+        display: table;
         width: 100%;
         table-layout: auto;
+    }
+
+    .sparkline {
+        display: table-row;
+    }
+
+    .sparkline {
+
+        .metric {
+            display: table-cell;
+            font-size: 0.8em;
+        }
+
+        .graph-row {
+            display: table-cell;
+            padding-right: 4px;
+        }
+
+        .graph {
+            width: 100%;
+            height: $row-last-font-size;
+            margin: 0;
+        }
+
+        .last {
+            display: table-cell;
+            letter-spacing: 0;
+            font-size: $row-last-font-size;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .last-val {
+            font-weight: bold;
+        }
+
+        .units {
+            font-size: 1em;
+            color: #555;
+        }
+
+        .indicator {
+            display: table-cell;
+            height: 1.3em;
+        }
+
     }
 }

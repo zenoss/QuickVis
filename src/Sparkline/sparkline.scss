@@ -1,8 +1,6 @@
 @import "../shared";
 
 $full-last-font-size: 2em;
-$compact-last-font-size: 1.5em;
-$row-last-font-size: 1em;
 
 .sparkline {
     color: #555;
@@ -91,71 +89,4 @@ $row-last-font-size: 1em;
 }
 .sparkline .indicator.on:after {
     color: $bad-color;
-}
-
-
-
-
-.sparkline.compact {
-
-    .graph {
-        flex: 1 1 50px;
-        margin-right: 6px;
-        height: $compact-last-font-size;
-    }
-
-    .last {
-        letter-spacing: 0;
-        font-size: $compact-last-font-size;
-    }
-
-    .indicator {
-        height: 1.4em;
-    }
-}
-
-
-
-.sparkline.row {
-    display: table-row;
-}
-
-.sparkline.row {
-
-    .metric {
-        display: table-cell;
-        font-size: 0.8em;
-    }
-
-    .graph-row {
-        display: table-cell;
-    }
-
-    .graph {
-        width: 100%;
-        height: $row-last-font-size;
-    }
-
-    .last {
-        display: table-cell;
-        letter-spacing: 0;
-        font-size: $row-last-font-size;
-        text-align: right;
-        white-space: nowrap;
-    }
-
-    .last-val {
-        font-weight: bold;
-    }
-
-    .units {
-        font-size: 1em;
-        color: #555;
-    }
-
-    .indicator {
-        display: table-cell;
-        height: 1.3em;
-    }
-
 }
