@@ -7,7 +7,7 @@ import {linearScale, createSVGNode, getFormattedNumber} from "utils";
 // that can be put into the DOM. there should be as little logic in
 // here as possible. Prefer to create viewmodel methods to handle
 // logic.
-function fullTemplate(vm){
+function template(vm){
     return `
         <div class="metric">${vm.metric}</div>
         <div class="hbox spark-content">
@@ -24,40 +24,6 @@ function fullTemplate(vm){
     `;
 }
 
-function compactTemplate(vm){
-    return `
-        <div class="metric">${vm.metric}</div>
-        <div class="hbox spark-content">
-            <svg class="graph"></svg>
-            <div class="last">
-                <span class="last-val">${vm.getFriendly(vm.last)}</span>
-                <span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
-            </div>
-            <div class="indicator ${vm.getIndicatorStatus()}"></div>
-        </div>
-    `;
-}
-
-function rowTemplate(vm){
-    return `
-        <div class="metric">${vm.metric}</div>
-        <div class="graph-row"><svg class="graph"></svg></div>
-        <div class="last">
-            <!-- NOTE: the html comment after this span is to prevent
-                extra whitespace being added between the 2 elements -->
-            <span class="last-val">${vm.getFriendly(vm.last)}</span><!--
-            --><span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
-        </div>
-        <div class="indicator ${vm.getIndicatorStatus()}"></div>
-    `;
-}
-
-let templates = {
-    full: fullTemplate,
-    compact: compactTemplate,
-    row: rowTemplate
-};
-
 const SPARKLINE_PADDING = 4;
 const SPARKLINE_DATA_PADDING = 1;
 
@@ -65,8 +31,7 @@ const defaultConfig = {
     metric: "",
     style: "line",
     threshold: Infinity,
-    layout: "full",
-    template: fullTemplate,
+    template: template,
     unit: "B"
 };
 
@@ -75,14 +40,8 @@ export default class Sparkline extends QuickVis {
     constructor(config){
         config = Object.assign({}, defaultConfig, config);
 
-        config.template = templates[config.layout];
-        if(!config.template){
-            throw new Error(`Invalid sparkline layout '${config.layout}'`);
-        }
-
         super(config);
         this.el.classList.add("sparkline");
-        this.el.classList.add(config.layout);
         this.metric = config.metric;
         this.threshold = config.threshold;
         this.forceThreshold = config.forceThreshold;

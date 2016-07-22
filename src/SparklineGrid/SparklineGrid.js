@@ -6,9 +6,25 @@ import {linearScale, createSVGNode, getFormattedNumber} from "utils";
 
 function template(vm){
     return `
-        <table class="sparklines"></table>
+        <div class="sparklines"></div>
     `;
 }
+
+// row based template for sparkline
+function rowTemplate(vm){
+    return `
+        <div class="metric">${vm.metric}</div>
+        <div class="graph-row"><svg class="graph"></svg></div>
+        <div class="last">
+            <!-- NOTE: the html comment after this span is to prevent
+                extra whitespace being added between the 2 elements -->
+            <span class="last-val">${vm.getFriendly(vm.last)}</span><!--
+            --><span class="units">${vm.getMagnitude(vm.last) + vm.unit}</span>
+        </div>
+        <div class="indicator ${vm.getIndicatorStatus()}"></div>
+    `;
+}
+
 
 export default class SparklineGrid extends QuickVis {
 
@@ -19,7 +35,7 @@ export default class SparklineGrid extends QuickVis {
         this.el.classList.add("sparkline-grid");
         this.sparklines = config.sparklines.map(c => {
             // TODO - reevaluate config object
-            c.config.layout = "row";
+            c.config.template = rowTemplate;
             let sparky = new Sparkline(c.config);
             return {
                 config: c.config,
