@@ -1,27 +1,27 @@
 (function(){
     "use strict";
 
-    let {StackedBar, Sparkline, SparklineGrid} = quickvis;
+    var {StackedBar, Sparkline, SparklineGrid} = quickvis;
 
     function rand(min, max, floor){
-        let val = (Math.random() * (max - min)) + min;
+        var val = (Math.random() * (max - min)) + min;
         return floor ? Math.floor(val) : val;
     }
     function randVals(min, max, count=1){
-        let a = [];
-        for(let i = 0; i < count; i++){
+        var a = [];
+        for(var i = 0; i < count; i++){
             a.push(rand(min,max));
         }
         return a;
     }
 
     function trendyRandVals(min, max, count=1){
-        let vals = [rand(min,max)],
+        var vals = [rand(min,max)],
             violence = 0.2,
             dirRange = ((max - min) / count) * 2,
             dir = rand(-dirRange,dirRange);
 
-        for(let i = 0; i < count-1; i++){
+        for(var i = 0; i < count-1; i++){
             if(rand(0,1) >= violence){
                 dir = rand(-dirRange,dirRange);
             }
@@ -33,18 +33,17 @@
     // just like, make a sparkline and attach
     // to dom el with specified id
     function attachSparky(index, config, vals){
-        let sparkyEl = document.querySelectorAll(".sparky")[index];
-        let sparky = new Sparkline(config);
+        var sparkyEl = document.querySelectorAll(".sparky")[index];
+        var sparky = new Sparkline(config);
         sparkyEl.appendChild(sparky.el);
         sparky.render(vals);
     }
 
-    let nightToggleEl = document.querySelector(".night-toggle");
-    nightToggleEl.addEventListener("click", e => {
+    document.querySelector(".night-toggle").addEventListener("click", function(e){
         document.body.classList.toggle("night"); 
     });
 
-    let contentEl = document.querySelector(".content-wrap");
+    var contentEl = document.querySelector(".content-wrap");
 
     // basic sparkline
     attachSparky(0, {
@@ -80,7 +79,7 @@
     }, [1, 4, 7, 18, 24, 20, 22, 23]);
 
     // styles
-    ["line", "area", "bar", "scatter"].forEach(style => {
+    ["line", "area", "bar", "scatter"].forEach(function(style){
         attachSparky(5, {
             metric: style,
             style: style,
@@ -89,8 +88,8 @@
     });
 
     // sparkline grids
-    let sparklineGridEl = document.querySelector(".sparkline-grid");
-    let grid = new SparklineGrid({
+    var sparklineGridEl = document.querySelector(".sparkline-grid");
+    var grid = new SparklineGrid({
         sparklines: [{
             vals: [98,72,6,18,18,27,95,38,54,11],
             config: { metric: "Unicorns", unit: "" }
@@ -136,12 +135,12 @@
 
 
     /*
-    let barEl = document.createElement("div");
+    var barEl = document.createElement("div");
     barEl.classList.add("content");
     barEl.style.width = "600px";
     contentEl.appendChild(barEl);
 
-    for(let i = 0; i < 3; i++){
+    for(var i = 0; i < 3; i++){
         var bars = new StackedBar({
             name: "Some Exciting Bars",
             capacity: 200
