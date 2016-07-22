@@ -34,12 +34,10 @@ export default class SparklineGrid extends QuickVis {
 
         this.el.classList.add("sparkline-grid");
         this.sparklines = config.sparklines.map(c => {
-            // TODO - reevaluate config object
-            c.config.template = rowTemplate;
-            let sparky = new Sparkline(c.config);
+            c.template = rowTemplate;
+            let sparky = new Sparkline(c);
             return {
-                config: c.config,
-                vals: c.vals,
+                config: c,
                 sparkline: sparky
             };
         });
@@ -49,9 +47,9 @@ export default class SparklineGrid extends QuickVis {
         super._render();
         let sparklinesEl = this.el.querySelector(".sparklines");
         // TODO - detach sparklinesEl first?
-        this.sparklines.forEach(s => {
+        this.sparklines.forEach((s, i) => {
             sparklinesEl.appendChild(s.sparkline.el);
-            s.sparkline.render(s.vals);
+            s.sparkline.render(this.data[i]);
         });
     }
 }
