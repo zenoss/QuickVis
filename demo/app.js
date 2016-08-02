@@ -126,25 +126,17 @@
     ]);
 
 
-    /*
-    var barEl = document.createElement("div");
-    barEl.classList.add("content");
-    barEl.style.width = "600px";
-    contentEl.appendChild(barEl);
-
-    for(var i = 0; i < 3; i++){
-        var bars = new StackedBar({
-            name: "Some Exciting Bars",
-            capacity: 200
-        });
-        barEl.appendChild(bars.el);
-        bars.render([
-            { name: "series 1", val: rand(10, 40)},
-            { name: "your mom", val: rand(30, 80)},
-            { name: "my mom", val: rand(30, 80)},
-            { name: "another mom", val: rand(30, 80)},
-        ]);
-    }
-    */
+    var barEl = document.querySelectorAll(".stacked")[0];
+    var bar = new StackedBar({
+        name: "Horses of a different color",
+        capacity: 10000000,
+        threshold: 10000000 * 0.9
+    });
+    barEl.appendChild(bar.el);
+    bar.render([
+        { name: "Brown", val: 4000000 },
+        { name: "Magenta", val: 2000 },
+        { name: "Other", val: 2000004 }
+    ]);
 
 })();

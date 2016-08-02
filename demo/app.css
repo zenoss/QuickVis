@@ -135,6 +135,9 @@ a {
     width: 200px;
 }
 
+.quickvis-example .vis .stacked {
+    width: 100%;
+}
 
 
 body.night {

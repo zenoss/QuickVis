@@ -1,5 +1,4 @@
 .stacked-bar * {
-    display: flex;
 }
 
 .stacked-bar {
@@ -17,27 +16,44 @@
 
 .stacked-bar .stacked-title .capacity {
     margin-left: auto;
-    color: #999;
 }
 
 .stacked-bar .bars {
+    display: flex;
     height: 30px;
     position: relative;
     border: solid #999 1px;
     background-color: #EEE;
-    min-width: 0;
 }
 
 .stacked-bar .bars .bar {
-    align-items: center;
     background-color: #555;
     color: #EEE;
     font-weight: bold;
     font-size: 0.9em;
-    padding-left: 3px;
+    padding-left: 5px;
+    cursor: default;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 .stacked-bar .bars .bar.empty {
     background-color: #EEE;
+}
+
+.stacked-bar .bars .bar-label {
+    position: relative;
+    top: 3px;
+}
+
+.stacked-bar .bars .threshold {
+    border-left: dotted #555 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.stacked-bar .stacked-footer {
+    font-size: 0.8em;
+    display: flex;
+    justify-content: flex-end;
 }
