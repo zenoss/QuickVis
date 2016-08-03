@@ -3,29 +3,45 @@
 import QuickVis from "quickviscore";
 import {createSVGNode, getFormattedNumber} from "utils";
 
+const COLOR_PALETTE_LENGTH = 10;
+
 function stackedBarTemplate(vm){
     return `
-        <div class="hbox stacked-title">
-            <div class="name">${vm.name}</div>
-            <div class="capacity">${vm.getFormattedNumber(vm.capacity)}${vm.unit}</div>
+        <div class="stacked-wrapper">
+            <div class="hbox stacked-title">
+                <div class="name">${vm.name}</div>
+                <div class="capacity">${vm.getFormattedNumber(vm.capacity)}${vm.unit}</div>
+            </div>
+            <div class="bars">
+                ${vm.data.map(bar => barTemplate(vm, bar)).join("")}
+
+                <!-- empty bar for free space -->
+                ${ vm.getFree() ?
+                    barTemplate(vm, {name:"free", val: vm.getFree()}) :
+                    ""}
+
+                ${ vm.exceedsThreshold() ?
+                    `<div class="overage-shading" style="left: ${vm.getThresholdPosition()}%; width: ${100 - vm.getThresholdPosition()}%"></div>` :
+                    ""}
+
+                ${ vm.threshold ? 
+                    `<div class="threshold" style="left: ${vm.getThresholdPosition()}%;"></div>` :
+                    ""}
+
+            </div>
+            <div class="stacked-footer">
+                <div class="free">Free: ${vm.getFormattedNumber(vm.getFree())}${vm.unit}</div> 
+            </div>
         </div>
-        <div class="bars">
-            ${vm.data.map(bar => barTemplate(vm, bar)).join("")}
-            <!-- empty bar for free space -->
-            ${barTemplate(vm, {name:"free", val: vm.getFree()})}
-            ${ vm.threshold ? 
-                `<div class="threshold" style="left: ${vm.getRatio(vm.threshold) * 100}%;"></div>` :
-                ""}
-        </div>
-        <div class="stacked-footer">
-            <div class="free">Free: ${vm.getFormattedNumber(vm.getFree())}${vm.unit}</div> 
-        </div>
+
+        <div class="indicator ${vm.getIndicatorStatus()}"></div>
     `;
 }
 
 function barTemplate(vm, bar){
     return `
-        <div class="bar" style="flex: ${vm.getRatio(bar.val)} 0 0; background-color: ${vm.getColor(bar)};"
+        <div class="bar ${vm.getColorClass(bar)}"
+                style="flex: ${vm.getRatio(bar.val)} 0 0;"
                 title="${bar.name +": "+ vm.getFormattedNumber(bar.val) + vm.unit}">
             <div class="bar-label">
                 <!-- this is a hack to cause labels that are
@@ -36,10 +52,6 @@ function barTemplate(vm, bar){
         </div>
     `;
 }
-
-// TODO - better palette
-let colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
-    "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
 
 export default class StackedBar extends QuickVis {
     constructor(config){
@@ -53,26 +65,28 @@ export default class StackedBar extends QuickVis {
     }
 
     _render(){
+        this.total = this.data.reduce((acc, d) => d.val + acc, 0);
+
+        if(this.total > this.capacity){
+            console.warn("StackedBar total (" + getFormattedNumber(this.total).join("") + ") " +
+                "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " +
+                "by " + getFormattedNumber(this.total-this.capacity).join(""));
+        }
         super._render();
-        this.barsEl = this.el.querySelector(".bars");
     }
 
-    getTotal(){
-        return this.data.reduce((acc, d) => acc + d.val, 0);
-    }
-
-    // returns fraction of capacity that val occupies
+    // returns fraction of total that val occupies
     getRatio(val){
-        return val / this.capacity;
+        return Math.floor(val / this.total * 100);
     }
 
-    getColor(bar){
+    getColorClass(bar){
         // empty bar for free space
         if(bar.name === "free"){
-            return "transparent";
+            return "bar-color-none";
         } else {
-            // TODO - choose colors
-            return colors[this.getIndexOf(bar)];
+            // TODO - other color palettes?
+            return "bar-color-" + (this.getIndexOf(bar) % COLOR_PALETTE_LENGTH);
         }
     }
 
@@ -81,10 +95,26 @@ export default class StackedBar extends QuickVis {
     }
 
     getFree(){
-        return this.capacity - this.getTotal();
+        let free = this.capacity - this.total;
+        return free >= 0 ? free : 0;
     }
 
     getFormattedNumber(val){
         return getFormattedNumber(val).join("");
+    }
+
+    // if a threshold is set and the total exceeds
+    // it, return true
+    exceedsThreshold(){
+        return this.threshold && this.total > this.threshold;
+    }
+
+    getIndicatorStatus(){
+        return this.exceedsThreshold() ? "on" : "off";
+    }
+
+    // get percent position of threshold indicator
+    getThresholdPosition(){
+        return this.threshold / this.capacity * 100;
     }
 }

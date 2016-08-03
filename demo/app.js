@@ -129,14 +129,23 @@
     var barEl = document.querySelectorAll(".stacked")[0];
     var bar = new StackedBar({
         name: "Horses of a different color",
-        capacity: 10000000,
-        threshold: 10000000 * 0.9
+        capacity: 100000,
+        threshold: 100000 * 0.75
     });
     barEl.appendChild(bar.el);
     bar.render([
-        { name: "Brown", val: 4000000 },
-        { name: "Magenta", val: 2000 },
-        { name: "Other", val: 2000004 }
+        { name: "Brown", val: rand(100,1000,true) },
+        { name: "Few-sha", val: rand(100,1000,true) },
+        { name: "Purple", val: rand(100,1000,true) },
+        { name: "Horse", val: rand(100,1000,true) },
+        { name: "Green", val: rand(100,100000,true) },
+        { name: "Other", val: rand(100,1000,true) },
+        { name: "Other", val: rand(100,1000,true) },
+        { name: "Other", val: rand(100,1000,true) },
+        { name: "Other", val: rand(100,1000,true) },
+        { name: "Other", val: rand(100,1000,true) },
+        { name: "Other", val: rand(100,100000,true) },
+        { name: "Other", val: rand(100,1000,true) }
     ]);
 
 })();

@@ -1,0 +1,111 @@
+@import "../shared";
+
+$bar-height: 30px;
+
+.stacked-bar {
+    position: relative;
+}
+
+.stacked-bar .stacked-wrapper {
+    display: flex;
+    flex-direction: column;
+    color: #555;
+    margin-right: 25px;
+}
+
+.stacked-bar .stacked-title {
+    align-items: flex-end;
+    margin-bottom: 2px;
+}
+
+.stacked-bar .stacked-title .name {
+    font-size: 1.3em;
+}
+
+.stacked-bar .stacked-title .capacity {
+    margin-left: auto;
+    color: #999;
+}
+
+.stacked-bar .bars {
+    display: flex;
+    height: $bar-height;
+    position: relative;
+    border: solid #999 1px;
+    background-color: #EEE;
+}
+
+.stacked-bar .bars .bar-color-none { background-color: transparent !important; }
+.stacked-bar .bars .bar-color-0 { background-color: #6A95A9 !important; }
+.stacked-bar .bars .bar-color-1 { background-color: #314F5C !important; }
+.stacked-bar .bars .bar-color-2 { background-color: #8F8B3E !important; }
+.stacked-bar .bars .bar-color-3 { background-color: #A8A551 !important; }
+.stacked-bar .bars .bar-color-4 { background-color: #3A583B !important; }
+.stacked-bar .bars .bar-color-5 { background-color: #5CA45E !important; }
+.stacked-bar .bars .bar-color-6 { background-color: #8B6A4E !important; }
+.stacked-bar .bars .bar-color-7 { background-color: #A48164 !important; }
+.stacked-bar .bars .bar-color-8 { background-color: #A44C73 !important; }
+.stacked-bar .bars .bar-color-9 { background-color: #572038 !important; }
+
+.stacked-bar .bars .bar {
+    background-color: #555;
+    color: #EEE;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding-left: 5px;
+    cursor: default;
+    overflow: hidden;
+    line-height: $bar-height;
+}
+
+$threshold-overhang: 10px;
+$threshold-height: $bar-height + $threshold-overhang;
+
+.stacked-bar .bars .threshold {
+    position: absolute;
+    left: 0;
+    top: -($threshold-overhang * 0.5) - 1px;
+    height: $threshold-height;
+    width: 6px;
+    background-color: white;
+    border-right: solid #999 1px;
+    border-left: solid #999 1px;
+}
+
+.stacked-bar .bars .overage-shading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: repeating-linear-gradient(
+        135deg,
+        #EEE,
+        #EEE 3px,
+        transparent 4px,
+        transparent 8px
+    );
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.stacked-bar .stacked-footer {
+    font-size: 0.8em;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 2px;
+}
+
+.stacked-bar .indicator {
+    font-size: 1.8em;
+    position: absolute;
+    top: 25px;
+    right: 0;
+}
+.stacked-bar .indicator:after {
+    display: flex;
+    color: transparent;
+    content: "●";
+}
+.stacked-bar .indicator.on:after {
+    color: $bad-color;
+}
