@@ -31,12 +31,19 @@
     }
 
     // just like, make a sparkline and attach
-    // to dom el with specified id
+    // to dom el with specified index
     function attachSparky(index, config, vals){
         var sparkyEl = document.querySelectorAll(".sparky")[index];
         var sparky = new Sparkline(config);
         sparkyEl.appendChild(sparky.el);
         sparky.render(vals);
+    }
+
+    function attachStacked(index, config, vals){
+        var stackedEl = document.querySelectorAll(".stacked")[index];
+        var stacked = new StackedBar(config);
+        stackedEl.appendChild(stacked.el);
+        stacked.render(vals);
     }
 
     document.querySelector(".night-toggle").addEventListener("click", function(e){
@@ -90,69 +97,82 @@
     // sparkline grids
     var sparklineGridEl = document.querySelector(".sparkline-grid");
     var grid = new SparklineGrid({
-        sparklines: [{
-            vals: [98,72,6,18,18,27,95,38,54,11],
-            config: { metric: "Unicorns", unit: "" }
-        },{
-            vals: [2,7,99,77,14,10,23,21,16,2],
-            config: { metric: "Pegasii", unit: "" }
-        },{
-            vals: [30,32,33,56,22,46,56,43,24,94],
-            config: { metric: "Minotaurs", unit: "" }
-        },{
-            vals: [23,65,49,57,34,43,16,48,29,96],
-            config: { metric: "Deepcrows", unit: "" }
-        },{
-            vals: [65,63,73,82,50,41,93,63,11,57],
-            config: { metric: "Hippogryphs", unit: "" }
-        },{
-            vals: [2,7,99,77,14,10,23,21,16,2],
-            config: { metric: "Wraiths", unit: "" }
-        },{
-            vals: [30,32,33,56,22,46,56,43,24,94],
-            config: { 
+        sparklines: [
+            { metric: "Unicorns", unit: "" },
+            { metric: "Pegasii", unit: "" },
+            { metric: "Minotaurs", unit: "" },
+            { metric: "Deepcrows", unit: "" },
+            { metric: "Hippogryphs", unit: "" },
+            { metric: "Wraiths", unit: "" },
+            { 
                 metric: "Donkeys",
                 unit: "",
                 threshold: 50
-            }
-        },{
-            vals: [0,0,0,0,0,0,0,0,2,2],
-            config: { 
+            },
+            { 
                 metric: "Phoenix",
                 unit: "",
                 threshold: 1
-            }
-        },{
-            vals: [65,63,73,82,50,41,93,63,11,57],
-            config: { metric: "Dragons", unit: "" }
-        },{
-            vals: [65,63,73,82,50,41,93,63,11,57],
-            config: { metric: "Werewolves", unit: "" }
-        }]
+            },
+            { metric: "Dragons", unit: "" },
+            { metric: "Werewolves", unit: "" }
+        ]
     });
     sparklineGridEl.appendChild(grid.el);
-    grid.render();
+    grid.render([
+        [98,72,6,18,18,27,95,38,54,11],
+        [2,7,99,77,14,10,23,21,16,2],
+        [30,32,33,56,22,46,56,43,24,94],
+        [23,65,49,57,34,43,16,48,29,96],
+        [65,63,73,82,50,41,93,63,11,57],
+        [2,7,99,77,14,10,23,21,16,2],
+        [30,32,33,56,22,46,56,43,24,94],
+        [0,0,0,0,0,0,0,0,2,2],
+        [65,63,73,82,50,41,93,63,11,57],
+        [65,63,73,82,50,41,93,63,11,57],
+    ]);
+
+    attachStacked(0, {}, [
+        { val: 20000 },
+        { val: 30000 },
+        { val: 1120 },
+        { val: 20000 },
+        { val: 105000 }
+    ]);
+
+    attachStacked(1, {
+        name: "My Disk",
+    }, [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ]);
+
+    attachStacked(2, {
+        name: "My Disk",
+        capacity: 200000
+    }, [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ]);
+
+    attachStacked(3, {
+        name: "My Disk",
+        capacity: 200000,
+        threshold: 200000 * 0.8
+    }, [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ]);
 
 
-    /*
-    var barEl = document.createElement("div");
-    barEl.classList.add("content");
-    barEl.style.width = "600px";
-    contentEl.appendChild(barEl);
-
-    for(var i = 0; i < 3; i++){
-        var bars = new StackedBar({
-            name: "Some Exciting Bars",
-            capacity: 200
-        });
-        barEl.appendChild(bars.el);
-        bars.render([
-            { name: "series 1", val: rand(10, 40)},
-            { name: "your mom", val: rand(30, 80)},
-            { name: "my mom", val: rand(30, 80)},
-            { name: "another mom", val: rand(30, 80)},
-        ]);
-    }
-    */
 
 })();

@@ -1,7 +1,7 @@
 
 (function injectCSS(){
     var style = document.createElement("style");
-    style.innerHTML = ".vbox{display:flex;flex-direction:column}.hbox{display:flex;flex-direction:row} .stacked-bar *{display:flex}.stacked-bar{color:#555}.stacked-bar .stacked-title{align-items:flex-end;margin-bottom:2px}.stacked-bar .stacked-title .name{font-size:1.3em}.stacked-bar .stacked-title .capacity{margin-left:auto;color:#999}.stacked-bar .bars{height:30px;position:relative;border:solid #999 1px;background-color:#EEE;min-width:0}.stacked-bar .bars .bar{align-items:center;background-color:#555;color:#EEE;font-weight:bold;font-size:0.9em;padding-left:3px;overflow:hidden;text-overflow:ellipsis}.stacked-bar .bars .bar.empty{background-color:#EEE} .sparkline{color:#555}.sparkline .metric{font-size:1.2em}.sparkline .spark-content{align-items:center}.sparkline .graph{flex:1 1 120px;margin-right:6px;height:2em}.sparkline .graph .sparkline-path{stroke:#555;stroke-width:1;fill:transparent}.sparkline .graph .sparkline-path.shaded{stroke:transparent;fill:#CCC}.sparkline .graph .sparkline-bar{stroke:transparent;fill:#AAA}.sparkline .graph .sparkline-bar.bad{fill:#9C1200}.sparkline .graph .sparkline-scatter,.sparkline .graph .sparkline-last-point{fill:#AAA}.sparkline .graph .sparkline-scatter.bad,.sparkline .graph .sparkline-last-point.bad{fill:#9C1200}.sparkline .graph .sparkline-threshold{stroke:#AAA;stroke-width:2;stroke-dasharray:2, 2;fill:transparent}.sparkline .last{font-size:2em;display:flex;align-items:baseline;line-height:0.7em;letter-spacing:-1px}.sparkline .last-val{margin-right:2px}.sparkline .units{font-size:0.8em;color:#AAA}.sparkline .annotation{font-size:0.9em;color:#AAA;margin-left:2px}.sparkline .indicator:after{display:flex;font-size:1.5em;margin:-5px 5px 0 5px;color:transparent;content:'●'}.sparkline .indicator.on:after{color:#9C1200}.sparkline.compact .graph{flex:1 1 50px;margin-right:6px;height:1.5em}.sparkline.compact .last{letter-spacing:0;font-size:1.5em}.sparkline.compact .indicator{height:1.4em}.sparkline.row{display:table-row}.sparkline.row .metric{display:table-cell;font-size:0.8em}.sparkline.row .graph-row{display:table-cell}.sparkline.row .graph{width:100%;height:1em}.sparkline.row .last{display:table-cell;letter-spacing:0;font-size:1em;text-align:right;white-space:nowrap}.sparkline.row .last-val{font-weight:bold}.sparkline.row .units{font-size:1em;color:#555}.sparkline.row .indicator{display:table-cell;height:1.3em} .sparkline-grid .sparklines{width:100%;table-layout:auto}";
+    style.innerHTML = ".vbox{display:flex;flex-direction:column}.hbox{display:flex;flex-direction:row} .sparkline{color:#555}.sparkline .metric{font-size:1.2em}.sparkline .spark-content{align-items:center}.sparkline .graph{flex:1 1 120px;margin-right:6px;height:2em}.sparkline .graph .sparkline-path{stroke:#555;stroke-width:1;fill:transparent}.sparkline .graph .sparkline-path.shaded{stroke:transparent;fill:#CCC}.sparkline .graph .sparkline-bar{stroke:transparent;fill:#AAA}.sparkline .graph .sparkline-bar.bad{fill:#9C1200}.sparkline .graph .sparkline-scatter,.sparkline .graph .sparkline-last-point{fill:#AAA}.sparkline .graph .sparkline-scatter.bad,.sparkline .graph .sparkline-last-point.bad{fill:#9C1200}.sparkline .graph .sparkline-threshold{stroke:#AAA;stroke-width:2;stroke-dasharray:2, 2;fill:transparent}.sparkline .last{font-size:2em;display:flex;align-items:baseline;line-height:0.7em;letter-spacing:-1px}.sparkline .last-val{margin-right:2px}.sparkline .units{font-size:0.8em;color:#AAA}.sparkline .annotation{font-size:0.9em;color:#AAA;margin-left:2px}.sparkline .indicator:after{display:flex;font-size:1.5em;margin:-5px 5px 0 5px;color:transparent;content:'●'}.sparkline .indicator.on:after{color:#9C1200} .sparkline-grid .sparklines{display:table;width:100%;table-layout:auto}.sparkline-grid .sparkline{display:table-row}.sparkline-grid .sparkline .metric{display:table-cell;font-size:0.8em}.sparkline-grid .sparkline .graph-row{display:table-cell;padding-right:4px}.sparkline-grid .sparkline .graph{width:100%;height:1em;margin:0}.sparkline-grid .sparkline .last{display:table-cell;letter-spacing:0;font-size:1em;text-align:right;white-space:nowrap}.sparkline-grid .sparkline .last-val{font-weight:bold}.sparkline-grid .sparkline .units{font-size:1em;color:#555}.sparkline-grid .sparkline .indicator{display:table-cell;height:1.3em} .stacked-bar{position:relative}.stacked-bar .stacked-wrapper{display:flex;flex-direction:column;color:#555;margin-right:25px}.stacked-bar .name{font-size:1.3em;margin-bottom:2px}.stacked-bar .bars{display:flex;height:30px;position:relative;border:solid #999 1px;background-color:#EEE}.stacked-bar .bars .bar-color-none{background-color:transparent !important}.stacked-bar .bars .bar-color-0{background-color:#6A95A9 !important}.stacked-bar .bars .bar-color-1{background-color:#314F5C !important}.stacked-bar .bars .bar-color-2{background-color:#8F8B3E !important}.stacked-bar .bars .bar-color-3{background-color:#A8A551 !important}.stacked-bar .bars .bar-color-4{background-color:#3A583B !important}.stacked-bar .bars .bar-color-5{background-color:#5CA45E !important}.stacked-bar .bars .bar-color-6{background-color:#8B6A4E !important}.stacked-bar .bars .bar-color-7{background-color:#A48164 !important}.stacked-bar .bars .bar-color-8{background-color:#A44C73 !important}.stacked-bar .bars .bar-color-9{background-color:#572038 !important}.stacked-bar .bars .bar{background-color:#555;color:#EEE;font-weight:bold;font-size:0.9em;cursor:default;overflow:hidden;line-height:30px}.stacked-bar .bar .bar-label{margin:0 4px}.stacked-bar .bars .threshold{position:absolute;left:0;top:-6px;height:40px;background-color:white;border-left:dashed #555 2px}.stacked-bar .stacked-footer{font-size:0.8em;display:flex;padding-top:2px}.stacked-bar .stacked-footer .used,.stacked-bar .stacked-footer .free{margin-right:10px}.stacked-bar .stacked-footer .total{margin-left:auto}.stacked-bar .indicator{font-size:1.8em;position:absolute;bottom:30px;right:0}.stacked-bar .indicator:after{display:flex;color:transparent;content:'●'}.stacked-bar .indicator.on:after{color:#9C1200}";
     document.body.appendChild(style);
     // force layout/paint
     document.querySelector("body").clientWidth;
@@ -256,7 +256,7 @@ var quickvis = (function () {
   // index 1 describes the magnitude of the
   // value. long floating point values are
   // shortened
-  function getFormattedNumber(val) {
+  function _getFormattedNumber(val) {
       var result = void 0;
 
       // if this number is a float, attempt
@@ -274,23 +274,9 @@ var quickvis = (function () {
   // that can be put into the DOM. there should be as little logic in
   // here as possible. Prefer to create viewmodel methods to handle
   // logic.
-  function fullTemplate(vm) {
+  function template(vm) {
       return "\n        <div class=\"metric\">" + vm.metric + "</div>\n        <div class=\"hbox spark-content\">\n            <svg class=\"graph\"></svg>\n            <div style=\"display: flex; flex-flow: column nowrap\">\n                <div class=\"last\">\n                    <div class=\"last-val\">" + vm.getFriendly(vm.last) + "</div>\n                    <div class=\"units\">" + (vm.getMagnitude(vm.last) + vm.unit) + "</div>\n                </div>\n                <div class=\"annotation\">" + vm.getAnnotation() + "</div>\n            </div>\n            <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n        </div>\n    ";
   }
-
-  function compactTemplate(vm) {
-      return "\n        <div class=\"metric\">" + vm.metric + "</div>\n        <div class=\"hbox spark-content\">\n            <svg class=\"graph\"></svg>\n            <div class=\"last\">\n                <span class=\"last-val\">" + vm.getFriendly(vm.last) + "</span>\n                <span class=\"units\">" + (vm.getMagnitude(vm.last) + vm.unit) + "</span>\n            </div>\n            <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n        </div>\n    ";
-  }
-
-  function rowTemplate(vm) {
-      return "\n        <div class=\"metric\">" + vm.metric + "</div>\n        <div class=\"graph-row\"><svg class=\"graph\"></svg></div>\n        <div class=\"last\">\n            <!-- NOTE: the html comment after this span is to prevent\n                extra whitespace being added between the 2 elements -->\n            <span class=\"last-val\">" + vm.getFriendly(vm.last) + "</span><!--\n            --><span class=\"units\">" + (vm.getMagnitude(vm.last) + vm.unit) + "</span>\n        </div>\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
-  }
-
-  var templates = {
-      full: fullTemplate,
-      compact: compactTemplate,
-      row: rowTemplate
-  };
 
   var SPARKLINE_PADDING = 4;
   var SPARKLINE_DATA_PADDING = 1;
@@ -299,8 +285,7 @@ var quickvis = (function () {
       metric: "",
       style: "line",
       threshold: Infinity,
-      layout: "full",
-      template: fullTemplate,
+      template: template,
       unit: "B"
   };
 
@@ -313,15 +298,9 @@ var quickvis = (function () {
 
           config = Object.assign({}, defaultConfig, config);
 
-          config.template = templates[config.layout];
-          if (!config.template) {
-              throw new Error("Invalid sparkline layout '" + config.layout + "'");
-          }
-
           var _this = possibleConstructorReturn(this, Object.getPrototypeOf(Sparkline).call(this, config));
 
           _this.el.classList.add("sparkline");
-          _this.el.classList.add(config.layout);
           _this.metric = config.metric;
           _this.threshold = config.threshold;
           _this.forceThreshold = config.forceThreshold;
@@ -567,12 +546,12 @@ var quickvis = (function () {
       }, {
           key: "getFriendly",
           value: function getFriendly(val) {
-              return getFormattedNumber(val)[0];
+              return _getFormattedNumber(val)[0];
           }
       }, {
           key: "getMagnitude",
           value: function getMagnitude(val) {
-              return getFormattedNumber(val)[1];
+              return _getFormattedNumber(val)[1];
           }
       }, {
           key: "lastExceedsThreshold",
@@ -593,18 +572,31 @@ var quickvis = (function () {
       return Sparkline;
   }(QuickVis);
 
+  var COLOR_PALETTE_LENGTH = 10;
+
   function stackedBarTemplate(vm) {
-      return "\n        <div class=\"hbox stacked-title\">\n            <div class=\"name\">" + vm.name + "</div>\n            <div class=\"capacity\">" + vm.capacity + "TB</div>\n        </div>\n        <div class=\"bars\">\n            " + vm.data.map(function (bar) {
+      return "\n        <div class=\"stacked-wrapper\">\n            <div class=\"name\">" + vm.name + "</div>\n            <div class=\"bars\">\n                " + vm.data.map(function (bar) {
           return barTemplate(vm, bar);
-      }).join("") + "\n            <!-- empty bar for free space -->\n            " + barTemplate(vm, { name: "free", val: vm.capacity - vm.getTotal() }) + "\n        </div>\n    ";
+      }).join("") + "\n\n                <!-- empty bar for free space -->\n                " + (vm.free ? barTemplate(vm, { name: "Free", val: vm.free }) : "") + "\n\n                " + (vm.threshold ? "<div class=\"threshold\" style=\"left: " + vm.getThresholdPosition() + "%;\"></div>" : "") + "\n\n            </div>\n            <div class=\"stacked-footer\">\n                " + (vm.originalCapacity ? "\n                    <div class=\"used\">Used: <strong>" + vm.getFormattedNumber(vm.used) + vm.unit + "</strong></div>\n                    <div class=\"free\">Free: <strong>" + vm.getFormattedNumber(vm.free) + vm.unit + "</strong></div>" : "") + "\n                <div class=\"total\">Total: <strong>" + vm.getFormattedNumber(vm.capacity) + vm.unit + "</strong></div>\n            </div>\n        </div>\n\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
   }
 
   function barTemplate(vm, bar) {
-      return "\n        <div class=\"bar\" style=\"flex: " + vm.getRatio(bar.val) + " 0 0; background-color: " + vm.getColor(bar) + ";\"\n        title=\"" + (bar.name + ": " + bar.val) + "\">\n            " + bar.name.replace(" ", "&nbsp;") + "\n        </div>\n    ";
+      var name = bar.name;
+      var val = bar.val;
+
+      if (!name) {
+          name = "";
+      }
+
+      return "\n        <div class=\"bar " + vm.getColorClass(bar) + "\"\n                style=\"flex: " + val + " 0 0;\"\n                title=\"" + (name ? name + ": " + vm.getFormattedNumber(val) + vm.unit : vm.getFormattedNumber(val) + vm.unit) + "\">\n            <div class=\"bar-label\">\n                <!-- this is a hack to cause labels that are\n                    too long to not appear at all. text-overflow\n                    ellipsis is not sufficient here -->\n                &#8203; " + name.replace(" ", "&nbsp;") + "\n            </div>\n        </div>\n    ";
   }
 
-  // TODO - better palette
-  var colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
+  var defaultConfig$1 = {
+      template: stackedBarTemplate,
+      name: "",
+      unit: "B",
+      threshold: 0
+  };
 
   var StackedBar = function (_QuickVis) {
       inherits(StackedBar, _QuickVis);
@@ -612,46 +604,74 @@ var quickvis = (function () {
       function StackedBar(config) {
           classCallCheck(this, StackedBar);
 
-          config.template = stackedBarTemplate;
+          config = Object.assign({}, defaultConfig$1, config);
 
           var _this = possibleConstructorReturn(this, Object.getPrototypeOf(StackedBar).call(this, config));
 
           _this.el.classList.add("stacked-bar");
           _this.name = config.name;
-          _this.capacity = config.capacity;
+          _this.unit = config.unit;
+          _this.originalCapacity = config.capacity;
+          _this.originalThreshold = config.threshold;
           return _this;
       }
 
       createClass(StackedBar, [{
-          key: "_render",
-          value: function _render() {
-              get(Object.getPrototypeOf(StackedBar.prototype), "_render", this).call(this);
-              this.barsEl = this.el.querySelector(".bars");
-          }
-      }, {
-          key: "getTotal",
-          value: function getTotal() {
-              return this.data.reduce(function (acc, d) {
-                  return acc + d.val;
+          key: "_update",
+          value: function _update(data) {
+              if (!data || !data.length) {
+                  throw new Error("cannot create stacked bar from empty data");
+              }
+
+              this.data = data;
+              this.used = this.data.reduce(function (acc, d) {
+                  return d.val + acc;
               }, 0);
-          }
 
-          // returns fraction of capacity that val occupies
+              // set capacity and threshold to
+              // original user requested values
+              this.capacity = this.originalCapacity;
+              this.threshold = this.originalThreshold;
 
-      }, {
-          key: "getRatio",
-          value: function getRatio(val) {
-              return this.capacity / val;
+              this.validateCapacity();
+              this.validateThreshold();
+
+              var free = this.capacity - this.used;
+              this.free = free >= 0 ? free : 0;
           }
       }, {
-          key: "getColor",
-          value: function getColor(bar) {
+          key: "validateCapacity",
+          value: function validateCapacity() {
+              // if no capacity was set, set it
+              if (!this.capacity) {
+                  this.capacity = this.used;
+              }
+
+              // if the total used value exceeds capacity, set
+              // the capacity to the total used value.
+              // aka: raise the roof
+              if (this.used > this.capacity) {
+                  console.warn("StackedBar used (" + _getFormattedNumber(this.used).join("") + ") " + "exceeds specified capacity (" + _getFormattedNumber(this.capacity).join("") + ") " + "by " + _getFormattedNumber(this.used - this.capacity).join(""));
+                  this.capacity = this.used;
+              }
+          }
+      }, {
+          key: "validateThreshold",
+          value: function validateThreshold() {
+              if (this.threshold > this.capacity) {
+                  console.warn("StackedBar threshold (" + _getFormattedNumber(this.threshold).join("") + ") " + "exceeds specified capacity (" + _getFormattedNumber(this.capacity).join("") + ") " + "so it is being ignored");
+                  this.threshold = 0;
+              }
+          }
+      }, {
+          key: "getColorClass",
+          value: function getColorClass(bar) {
               // empty bar for free space
-              if (bar.name === "free") {
-                  return "transparent";
+              if (bar.name === "Free") {
+                  return "bar-color-none";
               } else {
-                  // TODO - choose colors
-                  return colors[this.getIndexOf(bar)];
+                  // TODO - other color palettes?
+                  return "bar-color-" + this.getIndexOf(bar) % COLOR_PALETTE_LENGTH;
               }
           }
       }, {
@@ -659,12 +679,45 @@ var quickvis = (function () {
           value: function getIndexOf(bar) {
               return this.data.indexOf(bar);
           }
+      }, {
+          key: "getFormattedNumber",
+          value: function getFormattedNumber(val) {
+              return _getFormattedNumber(val).join("");
+          }
+
+          // if a threshold is set and the used exceeds
+          // it, return true
+
+      }, {
+          key: "exceedsThreshold",
+          value: function exceedsThreshold() {
+              return !!(this.threshold && this.used > this.threshold);
+          }
+      }, {
+          key: "getIndicatorStatus",
+          value: function getIndicatorStatus() {
+              return this.exceedsThreshold() ? "on" : "off";
+          }
+
+          // get percent position of threshold indicator
+          // NOTE - assumes threshold and capacity
+
+      }, {
+          key: "getThresholdPosition",
+          value: function getThresholdPosition() {
+              return this.threshold / this.capacity * 100;
+          }
       }]);
       return StackedBar;
   }(QuickVis);
 
-  function template(vm) {
-      return "\n        <table class=\"sparklines\"></table>\n    ";
+  function template$1(vm) {
+      return "\n        <div class=\"sparklines\"></div>\n    ";
+  }
+
+  // row based template for sparkline
+  function rowTemplate(vm) {
+      return "\n        <div class=\"metric\">" + vm.metric + "</div>\n        <div class=\"graph-row\"><svg class=\"graph\"></svg></div>\n        <div class=\"last\">\n            <!-- NOTE: the html comment after this span is to prevent\n                extra whitespace being added between the 2 elements -->\n            <span class=\"last-val\">" + vm.getFriendly(vm.last) + "</span><!--\n            --><span class=\"units\">" + (vm.getMagnitude(vm.last) + vm.unit) + "</span>\n        </div>\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
   }
 
   var SparklineGrid = function (_QuickVis) {
@@ -675,16 +728,14 @@ var quickvis = (function () {
 
           var _this = possibleConstructorReturn(this, Object.getPrototypeOf(SparklineGrid).call(this, config));
 
-          _this.template = template;
+          _this.template = template$1;
 
           _this.el.classList.add("sparkline-grid");
           _this.sparklines = config.sparklines.map(function (c) {
-              // TODO - reevaluate config object
-              c.config.layout = "row";
-              var sparky = new Sparkline(c.config);
+              c.template = rowTemplate;
+              var sparky = new Sparkline(c);
               return {
-                  config: c.config,
-                  vals: c.vals,
+                  config: c,
                   sparkline: sparky
               };
           });
@@ -694,12 +745,14 @@ var quickvis = (function () {
       createClass(SparklineGrid, [{
           key: "_render",
           value: function _render() {
+              var _this2 = this;
+
               get(Object.getPrototypeOf(SparklineGrid.prototype), "_render", this).call(this);
               var sparklinesEl = this.el.querySelector(".sparklines");
               // TODO - detach sparklinesEl first?
-              this.sparklines.forEach(function (s) {
+              this.sparklines.forEach(function (s, i) {
                   sparklinesEl.appendChild(s.sparkline.el);
-                  s.sparkline.render(s.vals);
+                  s.sparkline.render(_this2.data[i]);
               });
           }
       }]);
@@ -716,4 +769,4 @@ var quickvis = (function () {
 
 }());
 
-//# sourceMappingURL=quickvis-0.1.1-dev.js.map
+//# sourceMappingURL=quickvis-0.1.1.js.map
