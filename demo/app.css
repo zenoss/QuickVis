@@ -1,0 +1,205 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: arial, sans-serif;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: #222;
+    color: #444;
+    line-height: 1.4em;
+}
+
+p, h1, h2 {
+    margin-bottom: 5px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: mediumorchid;
+}
+
+
+h3 {
+    margin-bottom: 5px;
+    font-weight: normal;
+}
+
+a {
+    font-weight: bold;
+}
+
+.content-wrap,
+.header,
+.footer {
+    width: 800px;
+    margin: auto;
+}
+
+.content-wrap {
+    display: flex;
+    flex-flow: column wrap;
+    padding: 40px;
+    background-color: white;
+}
+
+.header {
+    padding: 40px 0;
+    margin: 20px auto 0;
+}
+
+.header h1 {
+    color: fuchsia;
+    font-size: 3em;
+    font-weight: normal;
+}
+
+.header p {
+    margin-bottom: 0;
+    color: white;
+}
+
+.footer {
+    background-color: darkorchid;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+    border-bottom: solid 2px white;
+}
+.footer a:hover {
+    color: thistle;
+    border-bottom: solid 2px thistle;
+}
+
+.night-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.code {
+    font-family: monospace;
+}
+
+.quickvis-example {
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 50px;
+}
+
+.quickvis-example .vis {
+    width: 40%;
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid #DDD 1px;
+}
+.quickvis-example .code {
+    width: 60%;
+    font-size: 0.9em;
+    color: white;
+    background-color: #444;
+    padding: 20px;
+}
+
+.quickvis-example .vis .sparky {
+    width: 225px;
+    margin-bottom: 10px;
+}
+
+.quickvis-example .vis .sparkline-grid {
+    width: 200px;
+}
+
+.quickvis-example .vis .stacked {
+    width: 100%;
+}
+
+
+body.night {
+    color: #DDD;
+}
+
+.night .content-wrap {
+    background-color: #111;
+}
+
+.night .quickvis-example .vis {
+    background-color: black;
+    border: solid black 1px;
+}
+
+.night .sparkline .metric {
+    color: #AAA;
+}
+
+.night .sparkline .graph .sparkline-path {
+    stroke: deeppink;
+    stroke-width: 2;
+}
+.night .sparkline .graph .sparkline-path.shaded {
+    fill: #33001C;
+}
+
+.night .sparkline .last .last-val {
+    color: white;
+}
+.night .sparkline .last .units {
+    color: #AAA;
+}
+.night .sparkline .annotation {
+    color: #AAA;
+}
+
+.night .sparkline .graph .sparkline-threshold {
+    stroke: #444;
+}
+
+.night .sparkline .indicator.on:after {
+    color: red;
+}
+
+.night .sparkline .graph .sparkline-bar.bad,
+.night .sparkline .graph .sparkline-scatter.bad {
+    fill: crimson;
+}
+
+.night .stacked-bar .name,
+.night .stacked-bar .stacked-footer {
+    color: #CCC;
+}
+.night .stacked-bar .bars {
+    border-color: #333;
+    background-color: #111;
+}
+.night .stacked-bar .bars .threshold {
+    border-left: dashed #AAA 2px;
+    background-color: #333;
+}
+.night .stacked-bar .indicator.on::after {
+    color: red;
+}

@@ -5,25 +5,6 @@ import Sparkline from "Sparkline";
 
 describe("Sparkline", () => {
 
-    it("calculates average value of provided data", () => {
-        let vals = [1,2,3,4],
-            avg = vals.reduce((acc, val) => acc+val, 0) / vals.length;
-
-        let sparky = new Sparkline({});
-        sparky.render(vals);
-        expect(sparky.avg).toEqual(avg);
-    });
-
-    it("calculates the delta between the last point and the average", () => {
-        let vals = [1,2,3,4],
-            avg = vals.reduce((acc, val) => acc+val, 0) / vals.length,
-            delta = vals[vals.length-1] - avg;
-
-        let sparky = new Sparkline({});
-        sparky.render(vals);
-        expect(sparky.delta).toEqual(delta);
-    });
-
     it("throws an error on empty data", () => {
         let sparky = new Sparkline({});
         expect(() => sparky.render([])).toThrow();
@@ -101,58 +82,6 @@ describe("Sparkline", () => {
         expect(sparky.getMagnitude(-1000000)).toEqual("M");
         // less than one will always return ""
         expect(sparky.getMagnitude(0.1)).toEqual("");
-    });
-
-    it("returns a friendly delta value with correct magnitude", () => {
-        let vals = [2,4000],
-            unit = "B",
-            friendlyDelta = "1.9KB";
-
-        let sparky = new Sparkline({unit: "B"});
-        document.body.appendChild(sparky.el);
-        sparky.render(vals);
-        expect(sparky.getFriendlyDelta()).toEqual(friendlyDelta);
-    });
-
-    it("returns a friendly delta that ain't too long", () => {
-        let vals = [0,0.01],
-            unit = "B",
-            friendlyDelta = "0B";
-
-        let sparky = new Sparkline({unit: "B"});
-        document.body.appendChild(sparky.el);
-        sparky.render(vals);
-        expect(sparky.getFriendlyDelta()).toEqual(friendlyDelta);
-    });
-
-    it("returns delta direction up arrow, up class", () => {
-        let vals = [0,1];
-
-        let sparky = new Sparkline({});
-        document.body.appendChild(sparky.el);
-        sparky.render(vals);
-        expect(sparky.getDeltaDirectionArrow()).toEqual("▴");
-        expect(sparky.getDeltaDirectionClass()).toEqual("up");
-    });
-
-    it("returns no delta direction arrow or class", () => {
-        let vals = [0,0];
-
-        let sparky = new Sparkline({});
-        document.body.appendChild(sparky.el);
-        sparky.render(vals);
-        expect(sparky.getDeltaDirectionArrow()).toEqual("");
-        expect(sparky.getDeltaDirectionClass()).toEqual("");
-    });
-
-    it("returns delta direction down arrow, down class", () => {
-        let vals = [1,0];
-
-        let sparky = new Sparkline({});
-        document.body.appendChild(sparky.el);
-        sparky.render(vals);
-        expect(sparky.getDeltaDirectionArrow()).toEqual("▾");
-        expect(sparky.getDeltaDirectionClass()).toEqual("down");
     });
 
     it("identifies if the last value exceeds the threshold", () => {
