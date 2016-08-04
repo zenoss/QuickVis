@@ -14,8 +14,8 @@ function stackedBarTemplate(vm){
                 ${vm.data.map(bar => barTemplate(vm, bar)).join("")}
 
                 <!-- empty bar for free space -->
-                ${ vm.getFree() ?
-                    barTemplate(vm, {name:"Free", val: vm.getFree()}) :
+                ${ vm.free ?
+                    barTemplate(vm, {name:"Free", val: vm.free}) :
                     ""}
 
                 ${ vm.threshold ? 
@@ -26,7 +26,7 @@ function stackedBarTemplate(vm){
             <div class="stacked-footer">
                 ${ vm.capacity != vm.used ? `
                     <div class="used">Used: <strong>${vm.getFormattedNumber(vm.used)}${vm.unit}</strong></div>
-                    <div class="free">Free: <strong>${vm.getFormattedNumber(vm.getFree())}${vm.unit}</strong></div>` :
+                    <div class="free">Free: <strong>${vm.getFormattedNumber(vm.free)}${vm.unit}</strong></div>` :
                     ""
                 }
                 <div class="total">Total: <strong>${vm.getFormattedNumber(vm.capacity)}${vm.unit}</strong></div>
@@ -74,16 +74,29 @@ export default class StackedBar extends QuickVis {
         super(config);
         this.el.classList.add("stacked-bar");
         this.name = config.name;
-        this.capacity = config.capacity;
         this.unit = config.unit;
-        this.threshold = config.threshold;
+        this.originalCapacity = config.capacity;
+        this.originalThreshold = config.threshold;
     }
 
-    _render(){
+    _update(data){
+        if(!data || !data.length){
+            throw new Error("cannot create stacked bar from empty data");
+        }
+
+        this.data = data;
         this.used = this.data.reduce((acc, d) => d.val + acc, 0);
+
+        // set capacity and threshold to
+        // original user requested values
+        this.capacity = this.originalCapacity;
+        this.threshold = this.originalThreshold;
+
         this.validateCapacity();
         this.validateThreshold();
-        super._render();
+
+        let free = this.capacity - this.used;
+        this.free = free >= 0 ? free : 0;
     }
 
     validateCapacity(){
@@ -126,11 +139,6 @@ export default class StackedBar extends QuickVis {
         return this.data.indexOf(bar);
     }
 
-    getFree(){
-        let free = this.capacity - this.used;
-        return free >= 0 ? free : 0;
-    }
-
     getFormattedNumber(val){
         return getFormattedNumber(val).join("");
     }
@@ -138,7 +146,7 @@ export default class StackedBar extends QuickVis {
     // if a threshold is set and the used exceeds
     // it, return true
     exceedsThreshold(){
-        return this.threshold && this.used > this.threshold;
+        return !!(this.threshold && (this.used > this.threshold));
     }
 
     getIndicatorStatus(){
