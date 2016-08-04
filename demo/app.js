@@ -31,12 +31,19 @@
     }
 
     // just like, make a sparkline and attach
-    // to dom el with specified id
+    // to dom el with specified index
     function attachSparky(index, config, vals){
         var sparkyEl = document.querySelectorAll(".sparky")[index];
         var sparky = new Sparkline(config);
         sparkyEl.appendChild(sparky.el);
         sparky.render(vals);
+    }
+
+    function attachStacked(index, config, vals){
+        var stackedEl = document.querySelectorAll(".stacked")[index];
+        var stacked = new StackedBar(config);
+        stackedEl.appendChild(stacked.el);
+        stacked.render(vals);
     }
 
     document.querySelector(".night-toggle").addEventListener("click", function(e){
@@ -125,27 +132,47 @@
         [65,63,73,82,50,41,93,63,11,57],
     ]);
 
-
-    var barEl = document.querySelectorAll(".stacked")[0];
-    var bar = new StackedBar({
-        name: "Horses of a different color",
-        capacity: 100000,
-        threshold: 100000 * 0.75
-    });
-    barEl.appendChild(bar.el);
-    bar.render([
-        { name: "Brown", val: rand(100,1000,true) },
-        { name: "Few-sha", val: rand(100,1000,true) },
-        { name: "Purple", val: rand(100,1000,true) },
-        { name: "Horse", val: rand(100,1000,true) },
-        { name: "Green", val: rand(100,100000,true) },
-        { name: "Other", val: rand(100,1000,true) },
-        { name: "Other", val: rand(100,1000,true) },
-        { name: "Other", val: rand(100,1000,true) },
-        { name: "Other", val: rand(100,1000,true) },
-        { name: "Other", val: rand(100,1000,true) },
-        { name: "Other", val: rand(100,100000,true) },
-        { name: "Other", val: rand(100,1000,true) }
+    attachStacked(0, {}, [
+        { val: 20000 },
+        { val: 30000 },
+        { val: 1120 },
+        { val: 20000 },
+        { val: 105000 }
     ]);
+
+    attachStacked(1, {
+        name: "My Disk",
+    }, [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ]);
+
+    attachStacked(2, {
+        name: "My Disk",
+        capacity: 200000
+    }, [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ]);
+
+    attachStacked(3, {
+        name: "My Disk",
+        capacity: 200000,
+        threshold: 200000 * 0.8
+    }, [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ]);
+
+
 
 })();

@@ -187,3 +187,19 @@ body.night {
 .night .sparkline .graph .sparkline-scatter.bad {
     fill: crimson;
 }
+
+.night .stacked-bar .name,
+.night .stacked-bar .stacked-footer {
+    color: #CCC;
+}
+.night .stacked-bar .bars {
+    border-color: #333;
+    background-color: #111;
+}
+.night .stacked-bar .bars .threshold {
+    border-left: dashed #AAA 2px;
+    background-color: #333;
+}
+.night .stacked-bar .indicator.on::after {
+    color: red;
+}

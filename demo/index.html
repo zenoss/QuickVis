@@ -148,13 +148,89 @@ grid.render([
             </div>
 
             <h1>Stacked Bars</h1>
-            <h2>Basics</h2>
-            <p>Oh hey there</p>
+            <h2>Minimum Configuration</h2>
+            <p>Put in some values, get a stacked bar graph. Mouseover a box for the value.</p>
             <div class="quickvis-example">
-                <div class="vis" style="width: 75%;">
+                <div class="vis" style="width: 50%;">
                     <div class="stacked"></div>
                 </div>
-                <pre class="code" style="width: 25%;">hi</pre>
+                <pre class="code" style="width: 50%;">
+let stacked = new StackedBar();
+document.body.appendChild(stacked.el);
+stacked.render([
+    { val: 20000 },
+    { val: 30000 },
+    { val: 1120 },
+    { val: 20000 },
+    { val: 105000 }
+]);
+                </pre>
+            </div>
+
+            <h2>Labels</h2>
+            <p>Labels are displayed when possible. Mouseover a box for the label and value</p>
+            <div class="quickvis-example">
+                <div class="vis" style="width: 50%;">
+                    <div class="stacked"></div>
+                </div>
+                <pre class="code" style="width: 50%;">
+let stacked = new StackedBar({
+    name: "My Disk",
+});
+document.body.appendChild(stacked.el);
+stacked.render([
+    { name: "Games", val: 20000 },
+    { name: "Jim", val: 30000 },
+    { name: "Autoexec.bat", val: 1120 },
+    { name: "Program Files", val: 20000 },
+    { name: "pagefile.sys", val: 105000 }
+]);
+                </pre>
+            </div>
+
+            <h2>Capacity</h2>
+            <p>Set a capacity for the bar graph, and the remaining space is calculated for you.</p>
+            <div class="quickvis-example">
+                <div class="vis" style="width: 50%;">
+                    <div class="stacked"></div>
+                </div>
+                <pre class="code" style="width: 50%;">
+let stacked = new StackedBar({
+    name: "My Disk",
+    capacity: 200000
+});
+document.body.appendChild(stacked.el);
+stacked.render([
+    { name: "Games", val: 20000 },
+    { name: "Jim", val: 30000 },
+    { name: "Autoexec.bat", val: 1120 },
+    { name: "Program Files", val: 20000 },
+    { name: "pagefile.sys", val: 105000 }
+]);
+                </pre>
+            </div>
+
+            <h2>Threshold</h2>
+            <p>If capacity is present, a threshold can be set to warn of overages.</p>
+            <div class="quickvis-example">
+                <div class="vis" style="width: 50%;">
+                    <div class="stacked"></div>
+                </div>
+                <pre class="code" style="width: 50%;">
+let stacked = new StackedBar({
+    name: "My Disk",
+    capacity: 200000,
+    threshold: 200000 * 0.8
+});
+document.body.appendChild(stacked.el);
+stacked.render([
+    { name: "Games", val: 20000 },
+    { name: "Jim", val: 30000 },
+    { name: "Autoexec.bat", val: 1120 },
+    { name: "Program Files", val: 20000 },
+    { name: "pagefile.sys", val: 105000 }
+]);
+                </pre>
             </div>
 
         </div>

@@ -1,3 +1,4 @@
+/*global console: true */
 "use strict";
 
 import QuickVis from "quickviscore";
@@ -8,20 +9,13 @@ const COLOR_PALETTE_LENGTH = 10;
 function stackedBarTemplate(vm){
     return `
         <div class="stacked-wrapper">
-            <div class="hbox stacked-title">
-                <div class="name">${vm.name}</div>
-                <div class="capacity">${vm.getFormattedNumber(vm.capacity)}${vm.unit}</div>
-            </div>
+            <div class="name">${vm.name}</div>
             <div class="bars">
                 ${vm.data.map(bar => barTemplate(vm, bar)).join("")}
 
                 <!-- empty bar for free space -->
                 ${ vm.getFree() ?
-                    barTemplate(vm, {name:"free", val: vm.getFree()}) :
-                    ""}
-
-                ${ vm.exceedsThreshold() ?
-                    `<div class="overage-shading" style="left: ${vm.getThresholdPosition()}%; width: ${100 - vm.getThresholdPosition()}%"></div>` :
+                    barTemplate(vm, {name:"Free", val: vm.getFree()}) :
                     ""}
 
                 ${ vm.threshold ? 
@@ -30,7 +24,12 @@ function stackedBarTemplate(vm){
 
             </div>
             <div class="stacked-footer">
-                <div class="free">Free: ${vm.getFormattedNumber(vm.getFree())}${vm.unit}</div> 
+                ${ vm.capacity != vm.used ? `
+                    <div class="used">Used: <strong>${vm.getFormattedNumber(vm.used)}${vm.unit}</strong></div>
+                    <div class="free">Free: <strong>${vm.getFormattedNumber(vm.getFree())}${vm.unit}</strong></div>` :
+                    ""
+                }
+                <div class="total">Total: <strong>${vm.getFormattedNumber(vm.capacity)}${vm.unit}</strong></div>
             </div>
         </div>
 
@@ -39,50 +38,83 @@ function stackedBarTemplate(vm){
 }
 
 function barTemplate(vm, bar){
+    let {name, val} = bar;
+    if(!name){
+        name = "";
+    }
+
     return `
         <div class="bar ${vm.getColorClass(bar)}"
-                style="flex: ${vm.getRatio(bar.val)} 0 0;"
-                title="${bar.name +": "+ vm.getFormattedNumber(bar.val) + vm.unit}">
+                style="flex: ${val} 0 0;"
+                title="${
+                    name ?
+                        name +": "+ vm.getFormattedNumber(val) + vm.unit : 
+                        vm.getFormattedNumber(val) + vm.unit
+                }">
             <div class="bar-label">
                 <!-- this is a hack to cause labels that are
                     too long to not appear at all. text-overflow
                     ellipsis is not sufficient here -->
-                &#8203; ${bar.name.replace(" ", "&nbsp;")}
+                &#8203; ${name.replace(" ", "&nbsp;")}
             </div>
         </div>
     `;
 }
 
+const defaultConfig = {
+    template: stackedBarTemplate,
+    name: "",
+    unit: "B",
+    threshold: 0,
+};
+
 export default class StackedBar extends QuickVis {
     constructor(config){
-        config.template = stackedBarTemplate;
+        config = Object.assign({}, defaultConfig, config);
         super(config);
         this.el.classList.add("stacked-bar");
         this.name = config.name;
         this.capacity = config.capacity;
-        this.unit = config.unit || "B";
-        this.threshold = config.threshold || 0;
+        this.unit = config.unit;
+        this.threshold = config.threshold;
     }
 
     _render(){
-        this.total = this.data.reduce((acc, d) => d.val + acc, 0);
-
-        if(this.total > this.capacity){
-            console.warn("StackedBar total (" + getFormattedNumber(this.total).join("") + ") " +
-                "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " +
-                "by " + getFormattedNumber(this.total-this.capacity).join(""));
-        }
+        this.used = this.data.reduce((acc, d) => d.val + acc, 0);
+        this.validateCapacity();
+        this.validateThreshold();
         super._render();
     }
 
-    // returns fraction of total that val occupies
-    getRatio(val){
-        return Math.floor(val / this.total * 100);
+    validateCapacity(){
+        // if no capacity was set, set it
+        if(!this.capacity){
+            this.capacity = this.used;
+        }
+
+        // if the total used value exceeds capacity, set
+        // the capacity to the total used value.
+        // aka: raise the roof
+        if(this.used > this.capacity){
+            console.warn("StackedBar used (" + getFormattedNumber(this.used).join("") + ") " +
+                "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " +
+                "by " + getFormattedNumber(this.used-this.capacity).join(""));
+            this.capacity = this.used;
+        }
+    }
+
+    validateThreshold(){
+        if(this.threshold > this.capacity){
+            console.warn("StackedBar threshold (" + getFormattedNumber(this.threshold).join("") + ") " +
+                "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " +
+                "so it is being ignored");
+            this.threshold = 0;
+        }
     }
 
     getColorClass(bar){
         // empty bar for free space
-        if(bar.name === "free"){
+        if(bar.name === "Free"){
             return "bar-color-none";
         } else {
             // TODO - other color palettes?
@@ -95,7 +127,7 @@ export default class StackedBar extends QuickVis {
     }
 
     getFree(){
-        let free = this.capacity - this.total;
+        let free = this.capacity - this.used;
         return free >= 0 ? free : 0;
     }
 
@@ -103,10 +135,10 @@ export default class StackedBar extends QuickVis {
         return getFormattedNumber(val).join("");
     }
 
-    // if a threshold is set and the total exceeds
+    // if a threshold is set and the used exceeds
     // it, return true
     exceedsThreshold(){
-        return this.threshold && this.total > this.threshold;
+        return this.threshold && this.used > this.threshold;
     }
 
     getIndicatorStatus(){
@@ -114,6 +146,7 @@ export default class StackedBar extends QuickVis {
     }
 
     // get percent position of threshold indicator
+    // NOTE - assumes threshold and capacity
     getThresholdPosition(){
         return this.threshold / this.capacity * 100;
     }
