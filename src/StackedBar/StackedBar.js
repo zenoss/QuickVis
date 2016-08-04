@@ -24,7 +24,7 @@ function stackedBarTemplate(vm){
 
             </div>
             <div class="stacked-footer">
-                ${ vm.capacity != vm.used ? `
+                ${ vm.originalCapacity ? `
                     <div class="used">Used: <strong>${vm.getFormattedNumber(vm.used)}${vm.unit}</strong></div>
                     <div class="free">Free: <strong>${vm.getFormattedNumber(vm.free)}${vm.unit}</strong></div>` :
                     ""
