@@ -14,6 +14,7 @@ body {
     background-color: #222;
     color: #444;
     line-height: 1.4em;
+    margin-top: 30px;
 }
 
 p, h1, h2 {
@@ -68,6 +69,36 @@ a {
     color: white;
 }
 
+.top-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: white;
+    border-bottom: solid #222 1px;
+}
+
+.top-nav a {
+    display: block;
+    border-top: solid 4px transparent;
+    color: limegreen;
+    text-decoration: none;
+    padding: 0 10px 4px 10px;
+}
+
+.top-nav a:hover {
+    border-top: solid 4px limegreen;
+}
+
+.top-nav a:focus {
+    background-color: limegreen;
+    color: white;
+}
+
 .footer {
     background-color: darkorchid;
     padding: 20px;
@@ -87,10 +118,11 @@ a {
 
 .night-toggle {
     position: fixed;
-    top: 20px;
+    top: 45px;
     right: 20px;
     font-size: 2em;
     cursor: pointer;
+    color: #DDD;
 }
 
 .content {

@@ -145,7 +145,7 @@
     }, [
         { name: "Games", val: 20000 },
         { name: "Jim", val: 30000 },
-        { name: "Autoexec.bat", val: 1120 },
+        { name: "AUTOEXEC.BAT", val: 1120 },
         { name: "Program Files", val: 20000 },
         { name: "pagefile.sys", val: 105000 }
     ]);
@@ -156,7 +156,7 @@
     }, [
         { name: "Games", val: 20000 },
         { name: "Jim", val: 30000 },
-        { name: "Autoexec.bat", val: 1120 },
+        { name: "AUTOEXEC.BAT", val: 1120 },
         { name: "Program Files", val: 20000 },
         { name: "pagefile.sys", val: 105000 }
     ]);
@@ -168,7 +168,7 @@
     }, [
         { name: "Games", val: 20000 },
         { name: "Jim", val: 30000 },
-        { name: "Autoexec.bat", val: 1120 },
+        { name: "AUTOEXEC.BAT", val: 1120 },
         { name: "Program Files", val: 20000 },
         { name: "pagefile.sys", val: 105000 }
     ]);

@@ -6,6 +6,13 @@
         <link rel="stylesheet" type="text/css" href="app.css">
     </head>
     <body>
+
+        <div class="top-nav">
+            <a href="#setup">Setup</a>
+            <a href="#sparkline">Sparkline</a>
+            <a href="#stackedbar">StackedBar</a>
+        </div>
+
         <div class="night-toggle">☀</div>
         <div class="header">
             <h1>QuickVis</h1>
@@ -14,7 +21,9 @@
 
         <div class="content-wrap">
 
-            <h1>Sparklines</h1><br>
+            <h1 id="setup">Setup</h1>
+
+            <h1 id="sparkline">Sparklines</h1><br>
 
             <h2>Minimum Configuration</h2>
             <p>Pass in a metric name, attach to the DOM, then render with an array of values</p>
@@ -147,7 +156,7 @@ grid.render([
 ]);</pre>
             </div>
 
-            <h1>Stacked Bars</h1>
+            <h1 id="stackedbar">Stacked Bars</h1>
             <h2>Minimum Configuration</h2>
             <p>Put in some values, get a stacked bar graph. Mouseover a box for the value.</p>
             <div class="quickvis-example">
