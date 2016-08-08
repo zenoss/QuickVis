@@ -5,8 +5,7 @@ var gulp = require("gulp"),
     livereload = require("gulp-livereload"),
     sequence = require("gulp-sequence"),
     exec = require("child_process").exec,
-    rename = require("gulp-rename"),
-    https = require("https");
+    rename = require("gulp-rename");
 
 let {paths} = require("./config"),
     serv = require("./../serv");

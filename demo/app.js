@@ -66,7 +66,7 @@
         style: "area",
         unit: "❤",
         annotation: "out of 100"
-    }, [50, 10, 7, 18, 24, 98, 97, 90]);
+    }, [1, 4, 7, 18, 24, 98, 97, 90]);
 
     // large numbers
     attachSparky(2, {
