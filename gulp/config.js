@@ -9,6 +9,7 @@ let VERSION = "0.1.2-dev";
 let paths = {
     src: "src/",
     build: "build/",
+    dist: "dist/",
     www: "www/",
     webapp: "demo/",
     root: process.cwd(),

@@ -5,10 +5,15 @@ var gulp = require("gulp"),
     livereload = require("gulp-livereload"),
     sequence = require("gulp-sequence"),
     exec = require("child_process").exec,
-    rename = require("gulp-rename");
+    rename = require("gulp-rename"),
+    https = require("https");
 
 let {paths} = require("./config"),
     serv = require("./../serv");
+
+gulp.task("demo", function(callback){
+    sequence("build", "copyDemo", "copyDemoDist")(callback);
+});
 
 // gather all the files needed for the demo page
 gulp.task("copyDemo", function(){

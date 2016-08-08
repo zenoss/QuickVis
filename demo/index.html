@@ -27,7 +27,8 @@
             <p>You can get QuickVis in a few ways:</p>
 
             <ul>
-                <li>Download the latest stable release <a href="#">QuickVis 0.1.1</a></li>
+                <li>Download the latest stable release <a href="https://github.com/zenoss/QuickVis/tree/master/dist/quickvis.js">QuickVis Stable</a></li>
+                <li>Download the unstable development version <a href="https://github.com/zenoss/QuickVis/tree/develop/dist/quickvis.js">QuickVis Unstable</a></li>
                 <li>Clone the <a href="https://github.com/zenoss/QuickVis">QuickVis GitHub repo</a> and <a href="https://github.com/zenoss/QuickVis#development">build it yourself</a></li>
             </ul>
 
@@ -37,6 +38,7 @@
 
             <a class="anchor" id="sparkline"></a>
             <h1>Sparklines</h1>
+            <p>A sparkline is a small visualization that presents the general shape of variations in historical data. It provides a high-level view of the data without specific details. The lack of detail makes it easier for the user to focus on trends and identify possible anomalies. Sparklines can be grouped together, aiding a user in reviewing lots of information quickly and efficiently.</p><br>
 
             <h2>Minimum Configuration</h2>
             <p>Pass in a metric name, attach to the DOM, then render with an array of values</p>
@@ -171,6 +173,8 @@ grid.render([
 
             <a class="anchor" id="stacked"></a>
             <h1>Stacked Bars</h1>
+            <p>Stacked Bar graphs provide a quick estimation of how big a part of something is in relation to the other parts.</p><br>
+
             <h2>Minimum Configuration</h2>
             <p>Put in some values, get a stacked bar graph. Mouseover a box for the value.</p>
             <div class="quickvis-example">
