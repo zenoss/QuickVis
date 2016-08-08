@@ -46,12 +46,15 @@
         stacked.render(vals);
     }
 
+
+    // setup webpage
+    // night mode toggle
     document.querySelector(".night-toggle").addEventListener("click", function(e){
         document.body.classList.toggle("night"); 
     });
 
-    var contentEl = document.querySelector(".content-wrap");
 
+    // setup example quickvis's
     // basic sparkline
     attachSparky(0, {
         metric: "Horses",
@@ -63,7 +66,7 @@
         style: "area",
         unit: "❤",
         annotation: "out of 100"
-    }, [1, 4, 7, 18, 24, 98, 97, 90]);
+    }, [50, 10, 7, 18, 24, 98, 97, 90]);
 
     // large numbers
     attachSparky(2, {
