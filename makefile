@@ -46,4 +46,13 @@ npm-install:
 		$(TAG) \
 		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\"";
 
-.PHONY: default build test release npm-install
+# verify distributable js lib is up to date
+verify: npm-install
+	docker run --rm \
+		-v $(PWD):$(docker_working_DIR) \
+		-e UID_X=$(UID) \
+		-e GID_X=$(GID) \
+		$(TAG) \
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp verify\"";
+
+.PHONY: default build test release npm-install verify
