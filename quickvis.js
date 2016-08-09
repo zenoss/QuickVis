@@ -8,6 +8,7 @@
 })();
     
 
+/* QuickVis v0.1.3-dev */
 var quickvis = (function () {
   'use strict';
 
@@ -88,6 +89,7 @@ var quickvis = (function () {
 
   var QuickVis = function () {
       // creates a dom element for the vis to live in
+      // NOTE: don't manipulate the DOM from here
       function QuickVis(config) {
           classCallCheck(this, QuickVis);
 
@@ -101,6 +103,7 @@ var quickvis = (function () {
       // stores the data then calls render
       // NOTE: el must be attached to the DOM to get
       // predictable results here!
+      // NOTE: don't override this method. override _render
 
 
       createClass(QuickVis, [{
@@ -114,6 +117,8 @@ var quickvis = (function () {
           }
 
           // do some work with incoming data
+          // NOTE: override this as needed
+          // NOTE: don't manipulate the DOM from here
 
       }, {
           key: "_update",
@@ -124,6 +129,11 @@ var quickvis = (function () {
           // private implementation of render. applies
           // vm to template and replaces html inside of
           // vis's dom el
+          // NOTE: override this guy at will!
+          // NOTE: It's ok for _render to call out to 
+          // other methods to touch the DOM, but once 
+          // _render's done, DOM time is OVER!
+          // NOTE: don't touch the DOM outside of this.el
 
       }, {
           key: "_render",
@@ -336,6 +346,7 @@ var quickvis = (function () {
           key: "_render",
           value: function _render() {
               get(Object.getPrototypeOf(Sparkline.prototype), "_render", this).call(this);
+
               this.svg = this.el.querySelector(".graph");
               var bb = this.svg.getBoundingClientRect();
               this.setScales(bb.width, bb.height);
@@ -769,4 +780,4 @@ var quickvis = (function () {
 
 }());
 
-//# sourceMappingURL=quickvis-0.1.1.js.map
+//# sourceMappingURL=quickvis-0.1.3-dev.js.map
