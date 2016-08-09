@@ -19,8 +19,8 @@ npm install
 Now you can use `gulp` to do things
 
 ```
-# generate the distributable js lib
-gulp dist
+# build the js lib
+gulp build
 
 # bring up the demo page with livereload for active development
 gulp watch
@@ -31,8 +31,7 @@ gulp test
 # continuously run unit tests for active development
 gulp tdd
 
-# generate the distributable js lib, run tests, zip lib and map,
-# [TODO] bump version. use this when `git-flow release`ing
+# build the js lib, run tests, zip lib and map,
 gulp release
 
 ```
@@ -40,7 +39,7 @@ gulp release
 If you don't have nodejs :( but you *do* have docker installed, you're in luck! You can do a few things via `make`
 
 ```
-# build the distributable js lib
+# build the js lib
 make build
 
 # run unit tests
