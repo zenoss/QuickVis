@@ -72,8 +72,8 @@ gulp.task("verify", function(cb){
             return;
         } else {
             if(!data.includes(expected)){
-                console.error(`dist/quickvis.js version does not match current version ${VERSION}`);
-                cb(new Error(`dist/quickvis.js version does not match current version ${VERSION}`));
+                console.error(`dist/quickvis.js version does not match current version ${VERSION}. Try running 'gulp dist'.`);
+                cb(new Error(`dist/quickvis.js version does not match current version ${VERSION}. Try running 'gulp dist'.`));
                 return;
             }
         }
