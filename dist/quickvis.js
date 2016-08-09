@@ -8,7 +8,7 @@
 })();
     
 
-/* QuickVis v0.1.2-dev */
+/* QuickVis v0.1.2 */
 var quickvis = (function () {
   'use strict';
 
@@ -780,4 +780,4 @@ var quickvis = (function () {
 
 }());
 
-//# sourceMappingURL=quickvis-0.1.2-dev.js.map
+//# sourceMappingURL=quickvis-0.1.2.js.map

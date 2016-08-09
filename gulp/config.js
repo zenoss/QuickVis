@@ -4,7 +4,7 @@
 let fs = require("fs"),
     path = require("path");
 
-let VERSION = "0.1.2-dev";
+let VERSION = "0.1.2";
 
 let paths = {
     src: "src/",
