@@ -30,8 +30,9 @@ gulp.task("test", ["testJS"], function(cb){
         browsers: [headlessChromiumPath]
     }, function(e){
         cb(e);
-        // HACK because karma refuses to exit
-        // after run completes :/
+        // HACK: karma doesnt exit after run complete,
+        // so manually kill all the things
+        // https://github.com/karma-runner/karma/issues/1788
         process.exit(0);
     }).start();
 });
@@ -45,8 +46,9 @@ gulp.task("tdd", ["testJS"], function (cb) {
         reporters: ["dots"]
     }, function(e){
         cb(e);
-        // HACK because karma refuses to exit
-        // after run completes :/
+        // HACK: karma doesnt exit after run complete,
+        // so manually kill all the things
+        // https://github.com/karma-runner/karma/issues/1788
         process.exit(0);
     }).start();
 });

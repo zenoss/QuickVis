@@ -17,7 +17,7 @@ build: npm-install
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp dist\"";
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp build\"";
 
 # test the quickvis lib
 test: npm-install

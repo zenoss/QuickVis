@@ -46,12 +46,15 @@
         stacked.render(vals);
     }
 
+
+    // setup webpage
+    // night mode toggle
     document.querySelector(".night-toggle").addEventListener("click", function(e){
         document.body.classList.toggle("night"); 
     });
 
-    var contentEl = document.querySelector(".content-wrap");
 
+    // setup example quickvis's
     // basic sparkline
     attachSparky(0, {
         metric: "Horses",
@@ -145,7 +148,7 @@
     }, [
         { name: "Games", val: 20000 },
         { name: "Jim", val: 30000 },
-        { name: "Autoexec.bat", val: 1120 },
+        { name: "AUTOEXEC.BAT", val: 1120 },
         { name: "Program Files", val: 20000 },
         { name: "pagefile.sys", val: 105000 }
     ]);
@@ -156,7 +159,7 @@
     }, [
         { name: "Games", val: 20000 },
         { name: "Jim", val: 30000 },
-        { name: "Autoexec.bat", val: 1120 },
+        { name: "AUTOEXEC.BAT", val: 1120 },
         { name: "Program Files", val: 20000 },
         { name: "pagefile.sys", val: 105000 }
     ]);
@@ -168,7 +171,7 @@
     }, [
         { name: "Games", val: 20000 },
         { name: "Jim", val: 30000 },
-        { name: "Autoexec.bat", val: 1120 },
+        { name: "AUTOEXEC.BAT", val: 1120 },
         { name: "Program Files", val: 20000 },
         { name: "pagefile.sys", val: 105000 }
     ]);

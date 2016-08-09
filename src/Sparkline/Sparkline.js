@@ -69,6 +69,7 @@ export default class Sparkline extends QuickVis {
      */
     _render(){
         super._render();
+
         this.svg = this.el.querySelector(".graph");
         let bb = this.svg.getBoundingClientRect();
         this.setScales(bb.width, bb.height);

@@ -10,15 +10,16 @@ let gulp = require("gulp"),
     buffer = require("vinyl-buffer"),
     rename = require("gulp-rename");
 
-let {paths, srcSubdirectories} = require("./config.js");
+let {VERSION, paths, srcSubdirectories} = require("./config.js");
 
 // build the javascript lib by bundling all visualizations
-gulp.task("buildJS", function(){
+gulp.task("compileJS", function(){
     return rollup({
         entry: paths.src + "quickvis.js",
         sourceMap: true,
         moduleName: "quickvis",
         format: "iife",
+        banner: `/* QuickVis v${VERSION} */`,
         plugins: [
             // hacky workaround for make sure rollup
             // knows where to look for deps

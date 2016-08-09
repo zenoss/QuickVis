@@ -4,11 +4,12 @@
 let fs = require("fs"),
     path = require("path");
 
-let VERSION = "0.1.1";
+let VERSION = "0.1.2";
 
 let paths = {
     src: "src/",
     build: "build/",
+    dist: "dist/",
     www: "www/",
     webapp: "demo/",
     root: process.cwd(),
