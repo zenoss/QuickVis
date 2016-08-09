@@ -74,20 +74,21 @@ The version convention is for the `develop` branch to have the next release vers
   `<release_name>` will be the new version in `master`, i.e. `1.1.1`.
   *  `git flow release start <release_name>`
 
-4. Update the `VERSION` variable in the make file. e.g set it to `1.1.1`
+4. Update the `VERSION` variable in `gulp/config.js`. e.g set it to `1.1.1`
 
-5. run `make` to make sure everything builds properly.
+5. run `gulp release` to make sure everything builds properly and to update the built lib to the latest version
 
 6. Commit and tag everything, don't push.
   * `git commit....`
   * `git flow release finish <release_name>`
   * `git push origin --tags`
 
-7. You will be on the `develop` branch again. While on `develop` branch, edit the the `VERSION` variable in the makefile to
+7. You will be on the `develop` branch again. While on `develop` branch, edit the the `VERSION` variable in `gulp/config.js` to
 be the next development version. For example, if you just released version 1.1.1, then change the `VERSION` variable to
 `1.1.2-dev`.
 
 8. Check in `develop` version bump and push.
+  * `gulp release` to bump the library version
   * `git commit...`
   * `git push`
 
