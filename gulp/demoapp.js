@@ -10,6 +10,10 @@ var gulp = require("gulp"),
 let {paths} = require("./config"),
     serv = require("./../serv");
 
+gulp.task("demo", function(callback){
+    sequence("build", "copyDemo", "copyDemoDist")(callback);
+});
+
 // gather all the files needed for the demo page
 gulp.task("copyDemo", function(){
     return gulp.src([
