@@ -8,7 +8,7 @@ IMAGENAME = build-tools
 # NOTE - this is the build-tools version, NOT
 # the quickvis lib version. You want
 # gulp/config.js for that
-VERSION = 0.0.2
+VERSION = 0.0.5
 TAG = zenoss/$(IMAGENAME):$(VERSION)
 
 default: build
