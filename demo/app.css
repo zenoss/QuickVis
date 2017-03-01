@@ -200,6 +200,10 @@ ul {
     width: 200px;
 }
 
+.vis .sparkline .graph .sparkline-focus {
+    stroke: mediumorchid;
+}
+
 .quickvis-example .vis .stacked {
     width: 100%;
 }
@@ -242,6 +246,9 @@ body.night {
 
 .night .sparkline .graph .sparkline-threshold {
     stroke: #444;
+}
+.night .sparkline .graph .sparkline-focus {
+    stroke: white;
 }
 
 .night .sparkline .indicator.on:after {

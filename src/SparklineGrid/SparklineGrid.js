@@ -43,6 +43,14 @@ export default class SparklineGrid extends QuickVis {
         });
     }
 
+    focus(val){
+        this.sparklines.forEach(s => s.sparkline.focus(val));
+    }
+
+    blur(){
+        this.sparklines.forEach(s => s.sparkline.blur());
+    }
+
     _render(){
         super._render();
         let sparklinesEl = this.el.querySelector(".sparklines");

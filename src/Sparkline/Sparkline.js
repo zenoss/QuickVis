@@ -50,6 +50,19 @@ export default class Sparkline extends QuickVis {
         this.annotation = config.annotation;
     }
 
+    // move focus line using provided val. val should be
+    // normalized to 0 - 1
+    focus(val){
+        let pxVal = this.xScale(this.xDomain[1] * val);
+        this.focusLine.style.stroke = null;
+        this.focusLine.setAttribute("x1", pxVal);
+        this.focusLine.setAttribute("x2", pxVal);
+    }
+
+    blur(){
+        this.focusLine.style.stroke = "transparent";
+    }
+
     // update the model data and generate new data as
     // needed from the model data. Do not modify the model,
     // and if new data is needed, be sure its actual data
@@ -94,6 +107,8 @@ export default class Sparkline extends QuickVis {
                     .drawThreshold();
                 break;
         }
+
+        this.drawFocusLine();
     }
 
     // sets up x and y scales, with consideration to including
@@ -219,6 +234,22 @@ export default class Sparkline extends QuickVis {
             y2: yScale(this.threshold),
             class: "sparkline-threshold"
         }));
+        return this;
+    }
+
+    drawFocusLine(){
+        let {svg, xScale, yScale} = this,
+            {x1, y1, x2, y2} = this.drawableArea;
+        let focusLineEl = createSVGNode("line", {
+            x1: 0,
+            y1: y1 - SPARKLINE_PADDING,
+            x2: 0,
+            y2: y2 + SPARKLINE_PADDING,
+            class: "sparkline-focus"
+        });
+        svg.appendChild(focusLineEl);
+        this.focusLine = focusLineEl;
+        this.blur();
         return this;
     }
 

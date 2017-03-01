@@ -30,11 +30,23 @@
         return vals;
     }
 
+    let sparks = [];
+
+    document.querySelector(".content-wrap").addEventListener("mousemove", e => {
+        let x = e.pageX - e.currentTarget.offsetLeft,
+            val = x / e.currentTarget.clientWidth;
+        sparks.forEach(s => s.focus(val));
+    });
+    document.querySelector(".content-wrap").addEventListener("mouseleave", e => {
+        sparks.forEach(s => s.blur());
+    });
+
     // just like, make a sparkline and attach
     // to dom el with specified index
     function attachSparky(index, config, vals){
         var sparkyEl = document.querySelectorAll(".sparky")[index];
         var sparky = new Sparkline(config);
+        sparks.push(sparky);
         sparkyEl.appendChild(sparky.el);
         sparky.render(vals);
     }
@@ -52,7 +64,6 @@
     document.querySelector(".night-toggle").addEventListener("click", function(e){
         document.body.classList.toggle("night"); 
     });
-
 
     // setup example quickvis's
     // basic sparkline
@@ -134,6 +145,7 @@
         [65,63,73,82,50,41,93,63,11,57],
         [65,63,73,82,50,41,93,63,11,57],
     ]);
+    sparks.push(grid);
 
     attachStacked(0, {}, [
         { val: 20000 },
