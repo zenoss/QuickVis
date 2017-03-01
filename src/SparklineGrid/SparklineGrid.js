@@ -59,5 +59,10 @@ export default class SparklineGrid extends QuickVis {
             sparklinesEl.appendChild(s.sparkline.el);
             s.sparkline.render(this.data[i]);
         });
+        // HACK - render twice because rendering each row may affect
+        // the size of the table columns
+        this.sparklines.forEach((s, i) => {
+            s.sparkline.render(this.data[i]);
+        });
     }
 }
