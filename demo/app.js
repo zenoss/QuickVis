@@ -32,9 +32,12 @@
 
     let sparks = [];
 
+    // demo the focus line across all sparklines
     document.querySelector(".content-wrap").addEventListener("mousemove", e => {
         let x = e.pageX - e.currentTarget.offsetLeft,
             val = x / e.currentTarget.clientWidth;
+        // NOTE - this calculation assumes all sparklines are showing the same
+        // "range" of data. It is up to the caller to pass in the right value
         sparks.forEach(s => s.focus(val));
     });
     document.querySelector(".content-wrap").addEventListener("mouseleave", e => {

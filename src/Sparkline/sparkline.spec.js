@@ -117,4 +117,18 @@ describe("Sparkline", () => {
         expect(sparky.lastExceedsThreshold()).toBe(false);
     });
 
+    it("hides the focus line on creation", () => {
+        let sparky = new Sparkline({});
+        document.body.appendChild(sparky.el);
+        sparky.render([1,2,3,Number.MAX_VALUE]);
+        expect(sparky.focusLine.style.stroke).toBe("transparent");
+    });
+
+    it("shows the focus line on focus", () => {
+        let sparky = new Sparkline({});
+        document.body.appendChild(sparky.el);
+        sparky.render([1,2,3,Number.MAX_VALUE]);
+        sparky.focus(0.5);
+        expect(sparky.focusLine.style.stroke).toBe("");
+    });
 });
