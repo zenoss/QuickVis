@@ -283,7 +283,16 @@ export default class Sparkline extends QuickVis {
     }
 
     getIndicatorStatus(){
-        return this.lastExceedsThreshold() ? "on" : "off";
+        if(this.threshold === Infinity){
+            // if no threshold is set
+            return "off";
+        } else if(this.lastExceedsThreshold()){
+            // if threshold is breached
+            return "on";
+        } else {
+            // if threshold is safe
+            return "safe";
+        }
     }
 
     getAnnotation(){

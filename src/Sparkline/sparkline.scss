@@ -90,9 +90,13 @@ $full-last-font-size: 2em;
     display: flex;
     font-size: 1.5em;
     margin: -5px 5px 0 5px;
-    color: transparent;
-    content: "●";
+    content: "○";
+    color: #CCC;
+}
+.sparkline .indicator.off:after {
+    display: none;
 }
 .sparkline .indicator.on:after {
     color: $bad-color;
+    content: "●";
 }
