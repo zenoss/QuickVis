@@ -2,7 +2,6 @@
 
 $row-last-font-size: 1em;
 
-
 .sparkline-grid {
 
     .sparklines {
@@ -20,6 +19,8 @@ $row-last-font-size: 1em;
         .metric {
             display: table-cell;
             font-size: 0.8em;
+            text-align: right;
+            padding-right: 4px;
         }
 
         .graph-row {

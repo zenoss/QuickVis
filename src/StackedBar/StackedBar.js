@@ -18,7 +18,7 @@ function stackedBarTemplate(vm){
                     barTemplate(vm, {name:"Free", val: vm.free}) :
                     ""}
 
-                ${ vm.threshold ? 
+                ${ vm.threshold !== Infinity ? 
                     `<div class="threshold" style="left: ${vm.getThresholdPosition()}%;"></div>` :
                     ""}
 
@@ -37,7 +37,7 @@ function stackedBarTemplate(vm){
     `;
 }
 
-function barTemplate(vm, bar){
+export function barTemplate(vm, bar){
     let {name, val} = bar;
     if(!name){
         name = "";
@@ -46,11 +46,7 @@ function barTemplate(vm, bar){
     return `
         <div class="bar ${vm.getColorClass(bar)}"
                 style="flex: ${val} 0 0;"
-                title="${
-                    name ?
-                        name +": "+ vm.getFormattedNumber(val) + vm.unit : 
-                        vm.getFormattedNumber(val) + vm.unit
-                }">
+                title="${vm.getTitle()}">
             <div class="bar-label">
                 <!-- this is a hack to cause labels that are
                     too long to not appear at all. text-overflow
@@ -65,7 +61,7 @@ const defaultConfig = {
     template: stackedBarTemplate,
     name: "",
     unit: "B",
-    threshold: 0,
+    threshold: Infinity
 };
 
 export default class StackedBar extends QuickVis {
@@ -117,6 +113,10 @@ export default class StackedBar extends QuickVis {
     }
 
     validateThreshold(){
+        if(this.threshold === Infinity){
+            // no threshold was set
+            return;
+        }
         if(this.threshold > this.capacity){
             console.warn("StackedBar threshold (" + getFormattedNumber(this.threshold).join("") + ") " +
                 "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " +
@@ -150,12 +150,33 @@ export default class StackedBar extends QuickVis {
     }
 
     getIndicatorStatus(){
-        return this.exceedsThreshold() ? "on" : "off";
+        if(this.threshold === Infinity){
+            // if no threshold is set
+            return "off";
+        } else if(this.exceedsThreshold()){
+            // if threshold is breached
+            return "on";
+        } else {
+            // if threshold is safe
+            return "safe";
+        }
     }
 
     // get percent position of threshold indicator
     // NOTE - assumes threshold and capacity
     getThresholdPosition(){
         return this.threshold / this.capacity * 100;
+    }
+
+    getTitle(){
+        let val = this.getFormattedNumber(val) + this.unit;
+        if(isNaN(val)){
+            val = "";
+        }
+        if(name){
+            return name +": "+ val;
+        } else {
+            return val;
+        }
     }
 }

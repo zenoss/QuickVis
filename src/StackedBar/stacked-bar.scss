@@ -87,8 +87,13 @@ $threshold-height: $bar-height + $threshold-overhang;
 .stacked-bar .indicator:after {
     display: flex;
     color: transparent;
-    content: "●";
+    content: "○";
+    color: #CCC;
+}
+.stacked-bar .indicator.off:after {
+    display: none;
 }
 .stacked-bar .indicator.on:after {
     color: $bad-color;
+    content: "●";
 }

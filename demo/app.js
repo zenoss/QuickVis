@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var {StackedBar, Sparkline, SparklineGrid} = quickvis;
+    var {StackedBar, Sparkline, SparklineGrid, BarGrid} = quickvis;
 
     function rand(min, max, floor){
         var val = (Math.random() * (max - min)) + min;
@@ -192,6 +192,29 @@
         { name: "pagefile.sys", val: 105000 }
     ]);
 
+    // bar grids
+    var barGridEl = document.querySelector(".bar-grid");
+    var grid = new BarGrid({
+        hideLast: true,
+        bars: [
+            { name: "Deepcrows", unit: "", capacity: 100 },
+            { name: "Hippogryphs", unit: "", capacity: 100 },
+            { name: "Wraiths", unit: "", threshold: 55, capacity: 100 },
+            { 
+                name: "Donkeys",
+                unit: "",
+                threshold: 50,
+                capacity: 100
+            }
+        ]
+    });
+    barGridEl.appendChild(grid.el);
+    grid.render([
+        [{val: 10}],
+        [{val: 20}],
+        [{val: 10}],
+        [{val: 90}]
+    ]);
 
 
 })();
