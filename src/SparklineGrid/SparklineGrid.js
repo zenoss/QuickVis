@@ -15,7 +15,7 @@ function rowTemplate(vm){
     return `
         <div class="metric">${vm.metric}</div>
         <div class="graph-row"><svg class="graph"></svg></div>
-        <div class="last">
+        <div class="last" style="${vm.hideLast ? "display:none;" : ""}">
             <!-- NOTE: the html comment after this span is to prevent
                 extra whitespace being added between the 2 elements -->
             <span class="last-val">${vm.getFriendly(vm.last)}</span><!--
@@ -31,10 +31,11 @@ export default class SparklineGrid extends QuickVis {
     constructor(config){
         super(config);
         this.template = template;
-
         this.el.classList.add("sparkline-grid");
         this.sparklines = config.sparklines.map(c => {
             c.template = rowTemplate;
+            // hide all last values if set
+            c.hideLast = config.hideLast;
             let sparky = new Sparkline(c);
             return {
                 config: c,

@@ -14,7 +14,7 @@ function template(vm){
             <svg class="graph"></svg>
             <div style="display: flex; flex-flow: column nowrap">
                 <div class="last">
-                    <div class="last-val">${vm.getFriendly(vm.last)}</div>
+                    <div class="last-val" style="${vm.hideLast ? "display:none;" : ""}">${vm.getFriendly(vm.last)}</div>
                     <div class="units">${vm.getMagnitude(vm.last) + vm.unit}</div>
                 </div>
                 <div class="annotation">${vm.getAnnotation()}</div>
@@ -48,6 +48,7 @@ export default class Sparkline extends QuickVis {
         this.style = config.style;
         this.unit = config.unit;
         this.annotation = config.annotation;
+        this.hideLast = config.hideLast;
     }
 
     // move focus line using provided val. val should be

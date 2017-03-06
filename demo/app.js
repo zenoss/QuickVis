@@ -114,6 +114,7 @@
     // sparkline grids
     var sparklineGridEl = document.querySelector(".sparkline-grid");
     var grid = new SparklineGrid({
+        hideLast: true,
         sparklines: [
             { metric: "Unicorns", unit: "" },
             { metric: "Pegasii", unit: "" },
