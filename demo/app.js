@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var {StackedBar, Sparkline, SparklineGrid, BarGrid} = quickvis;
+    var {StackedBar, Sparkline, SparklineGrid, BarGrid, WinLoss} = quickvis;
 
     function rand(min, max, floor){
         var val = (Math.random() * (max - min)) + min;
@@ -193,7 +193,7 @@
     ]);
 
     // bar grids
-    var barGridEl = document.querySelector(".bar-grid");
+    var barGridEl = document.querySelector(".bar-grid-wrap");
     var grid = new BarGrid({
         hideLast: true,
         bars: [
@@ -216,5 +216,24 @@
         [{val: 90}]
     ]);
 
-
+    var winLossEl = document.querySelector(".win-loss-wrap");
+    ["something", "something else", "another thing", "hugs"].forEach(name => {
+        var wl = new WinLoss({
+            name: name,
+            hideWinPercent: true,
+            tableLayout: true
+        });
+        winLossEl.appendChild(wl.el);
+        var data = [];
+        for(let j = 0; j < 20; j++){
+            let val = 1;
+            if(Math.random() > 0.9){
+                val = null;
+            } else if(Math.random() > 0.5){
+                val = 0;
+            }
+            data.push(val);
+        }
+        wl.render(data);
+    });
 })();
