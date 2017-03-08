@@ -44,7 +44,7 @@ export function barTemplate(vm, bar){
     }
 
     return `
-        <div class="bar ${vm.getColorClass(bar)}"
+        <div class="bar ${vm.getColorClass(bar)} ${ name === "Free" ? "free" : ""}"
                 style="flex: ${val} 0 0;"
                 title="${vm.getTitle()}">
             <div class="bar-label">

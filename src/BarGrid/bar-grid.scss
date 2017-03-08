@@ -36,6 +36,9 @@ $threshold-height: 16px;
         .bar {
             line-height: $bar-height !important;
         }
+        .bar.free .bar-label{
+            visibility: hidden;
+        }
         .threshold {
             height: $threshold-height !important;
             top: -3px !important;
