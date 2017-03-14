@@ -58,17 +58,14 @@ export default class BarGrid extends QuickVis {
     }
 
     _render(){
-        super._render();
-        let barsEl = this.el.querySelector(".bars");
-        // TODO - detach barsEl first?
-        this.bars.forEach((s, i) => {
-            barsEl.appendChild(s.bar.el);
-            s.bar.render(this.data[i]);
-        });
-        // HACK - render twice because rendering each row may affect
-        // the size of the table columns
-        this.bars.forEach((s, i) => {
-            s.bar.render(this.data[i]);
+        let p = super._render();
+        p.then(() => {
+            let barsEl = this.el.querySelector(".bars");
+            // TODO - detach barsEl first?
+            this.bars.forEach((s, i) => {
+                barsEl.appendChild(s.bar.el);
+                s.bar.render(this.data[i]);
+            });
         });
     }
 }

@@ -1,6 +1,97 @@
 /* globals console: true */
 "use strict";
 
+// donify provides a way to export a promises resolve
+// and reject callbacks. to reject the promise, call
+// the callback with a non-null value for the first argument.
+// To resolve the promise, call the callback with `null` for
+// the first argument and optionally a resolve value for the
+// second argument
+function donify(resolve, reject){
+    return function(err, data) {
+        if(err !== null){
+            reject(err);
+        } else {
+            resolve(data);
+        }
+    };
+}
+
+class DOMBatcher {
+    constructor(frequency){
+        this.frequency = frequency;
+        this.inserts = [];
+        this.insertTimer = null;
+
+        this.bboxs = [];
+        this.bboxTimer = null;
+    }
+
+    insert(el, str){
+        let done;
+        let p = new Promise((resolve, reject) => {
+            done = donify(resolve, reject);
+        });
+
+        this.inserts.push([el, str, done]);
+        if(!this.insertTimer){
+            this.insertTimer = setTimeout(this._insertForReal.bind(this), this.frequency);
+        }
+
+        return p;
+    }
+
+    _insertForReal(){
+        console.log(`performing ${this.inserts.length} inserts`);
+        this.inserts.forEach(([el, str, done]) => {
+            try {
+                el.innerHTML = str;
+                done(null);
+            } catch(e){
+                console.warn("couldnt insert html string", e);
+                done("couldnt insert html string" + e);
+            }
+        });
+        this.inserts = [];
+        this.insertTimer = null;
+    }
+
+    getBBox(el){
+        let done;
+        let p = new Promise((resolve, reject) => {
+            done = donify(resolve, reject);
+        });
+
+        this.bboxs.push([el, done]);
+        if(!this.bboxTimer){
+            this.bboxTimer = setTimeout(this._getBBoxForReal.bind(this), this.frequency);
+        }
+
+        return p;
+    }
+
+    _getBBoxForReal(){
+        console.log(`getting ${this.bboxs.length} bboxes`);
+        this.bboxs.forEach(([el, done]) => {
+            try {
+                let bb =el.getBoundingClientRect();
+                done(null, bb);
+            } catch(e){
+                console.warn("couldnt get bbox", e);
+                done("couldnt get bbox" + e);
+            }
+        });
+        this.bboxs = [];
+        this.bboxTimer = null;
+
+    }
+
+    
+}
+const INSERT_FREQUENCY = 50;
+let dom = new DOMBatcher(INSERT_FREQUENCY);
+
+
 // a quick n purty visualization
 export default class QuickVis {
     // creates a dom element for the vis to live in
@@ -23,7 +114,7 @@ export default class QuickVis {
             console.warn("Element is not attached to the DOM. This may produce unexpected issues with element layout");
         }
         this._update(data);
-        this._render();
+        return this._render();
     }
 
     // do some work with incoming data
@@ -46,6 +137,11 @@ export default class QuickVis {
         // NOTE - make sure any event listeners
         // or references to DOM elements have
         // been cleared or this will leak!
-        this.el.innerHTML = htmlStr;
+        //this.el.innerHTML = htmlStr;
+        return dom.insert(this.el, htmlStr);
+    }
+
+    getBBox(el){
+        return dom.getBBox(el);
     }
 }

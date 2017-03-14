@@ -51,7 +51,7 @@ export default class WinLoss extends QuickVis {
 
     _update(data){
         if(!data || !data.length){
-            throw new Error("cannot create stacked bar from empty data");
+            throw new Error("cannot create graph bar from empty data");
         }
 
         this.data = data;

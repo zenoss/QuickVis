@@ -82,34 +82,36 @@ export default class Sparkline extends QuickVis {
      * that it is ok to touch the dom!
      */
     _render(){
-        super._render();
+        let p = super._render();
+        p.then(() => {
+            this.svg = this.el.querySelector(".graph");
+            return this.getBBox(this.svg);
+        }).then(bb => {
+            this.setScales(bb.width, bb.height);
+            this.setDrawableArea(bb.width, bb.height);
 
-        this.svg = this.el.querySelector(".graph");
-        let bb = this.svg.getBoundingClientRect();
-        this.setScales(bb.width, bb.height);
-        this.setDrawableArea(bb.width, bb.height);
+            switch(this.style){
+                case "area":
+                    this.fillSparkline()
+                        .drawSparkline()
+                        .drawThreshold();
+                    break;
+                case "line":
+                    this.drawSparkline()
+                        .drawThreshold();
+                    break;
+                case "bar":
+                    this.drawBars()
+                        .drawThreshold();
+                    break;
+                case "scatter":
+                    this.drawScatter()
+                        .drawThreshold();
+                    break;
+            }
 
-        switch(this.style){
-            case "area":
-                this.fillSparkline()
-                    .drawSparkline()
-                    .drawThreshold();
-                break;
-            case "line":
-                this.drawSparkline()
-                    .drawThreshold();
-                break;
-            case "bar":
-                this.drawBars()
-                    .drawThreshold();
-                break;
-            case "scatter":
-                this.drawScatter()
-                    .drawThreshold();
-                break;
-        }
-
-        this.drawFocusLine();
+            this.drawFocusLine();
+        });
     }
 
     // sets up x and y scales, with consideration to including
