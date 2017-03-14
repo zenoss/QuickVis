@@ -83,14 +83,38 @@ class DOMBatcher {
         });
         this.bboxs = [];
         this.bboxTimer = null;
-
     }
 
-    
+    // does its best to guess if dom batching
+    // stuff is done doing things
+    working(){
+        let done;
+        let p = new Promise((resolve, reject) => {
+            done = donify(resolve, reject);
+        });
+        let count = 0,
+            maxRetries = 10;
+        let self = this;
+        (function recur(){
+            if(count >= maxRetries){
+                console.warn("gave up waiting for quickvis to finis");
+                done("gave up waiting for quickvis to finish");
+            } else if(self.inserts.length + self.bboxs.length === 0){
+                done(null);
+            } else {
+                count++;
+                setTimeout(recur, 200);
+            }
+        })();
+        return p;
+    }
 }
 const INSERT_FREQUENCY = 50;
 let dom = new DOMBatcher(INSERT_FREQUENCY);
 
+export function working(){
+    return dom.working();
+}
 
 // a quick n purty visualization
 export default class QuickVis {

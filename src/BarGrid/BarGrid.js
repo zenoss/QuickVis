@@ -6,7 +6,7 @@ import {linearScale, createSVGNode, getFormattedNumber} from "utils";
 
 function template(vm){
     return `
-        <div class="bars"></div>
+        <div class="bar-grid-bars"></div>
     `;
 }
 
@@ -60,7 +60,7 @@ export default class BarGrid extends QuickVis {
     _render(){
         let p = super._render();
         p.then(() => {
-            let barsEl = this.el.querySelector(".bars");
+            let barsEl = this.el.querySelector(".bar-grid-bars");
             // TODO - detach barsEl first?
             this.bars.forEach((s, i) => {
                 barsEl.appendChild(s.bar.el);
