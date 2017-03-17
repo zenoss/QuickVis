@@ -46,7 +46,7 @@ export function barTemplate(vm, bar){
     return `
         <div class="bar ${vm.getColorClass(bar)} ${ name === "Free" ? "free" : ""}"
                 style="flex: ${val} 0 0;"
-                title="${vm.getTitle()}">
+                title="${vm.getTitle(name, val)}">
             <div class="bar-label">
                 <!-- this is a hack to cause labels that are
                     too long to not appear at all. text-overflow
@@ -168,15 +168,12 @@ export default class StackedBar extends QuickVis {
         return this.threshold / this.capacity * 100;
     }
 
-    getTitle(){
-        let val = this.getFormattedNumber(val) + this.unit;
-        if(isNaN(val)){
-            val = "";
-        }
+    getTitle(name, val){
+        let formatted = this.getFormattedNumber(val) + this.unit;
         if(name){
-            return name +": "+ val;
+            return name +": "+ formatted;
         } else {
-            return val;
+            return formatted;
         }
     }
 }

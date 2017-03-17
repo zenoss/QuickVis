@@ -49,6 +49,7 @@ export default class Sparkline extends QuickVis {
         this.unit = config.unit;
         this.annotation = config.annotation;
         this.hideLast = config.hideLast;
+        this.showLastPoint = config.showLastPoint;
     }
 
     // move focus line using provided val. val should be
@@ -95,10 +96,16 @@ export default class Sparkline extends QuickVis {
                     this.fillSparkline()
                         .drawSparkline()
                         .drawThreshold();
+                    if(this.showLastPoint){
+                        this.drawLastPoint();
+                    }
                     break;
                 case "line":
                     this.drawSparkline()
                         .drawThreshold();
+                    if(this.showLastPoint){
+                        this.drawLastPoint();
+                    }
                     break;
                 case "bar":
                     this.drawBars()
