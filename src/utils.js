@@ -126,8 +126,56 @@ function getFormattedNumber(val){
     return result;
 }
 
+// given an array of values, attempts to create an array of length
+// maxLength by applying downsampleFunction to each slice
+// of values
+function downsampleData(data, maxLength, downsampleFn){
+    let length = data.length;
+    let max = Math.min(length, maxLength);
+    let count = Math.ceil(length / max);
+
+    let downsampled = [];
+    for(let i = 0; i < max; i++){
+        let start = i * count;
+        let end = (i + 1) * count;
+        if(end > length){
+            end = length;
+        }
+        let slice = data.slice(start, end);
+        let val = downsampleFn(slice);
+        /*
+        let val = slice.reduce((agg, v) => {
+            if(agg === null && v === null){
+                return null;
+            } else if (agg === null){
+                return v;
+            } else {
+                return Math.max(agg, v);
+            }
+        }, null);
+        */
+        downsampled.push(val);
+    }
+
+    return downsampled;
+}
+// returns either the largest number, or null
+// if all values in the array are null
+downsampleData.MAX = function(slice){
+    return slice.reduce((agg, v) => {
+        if(agg === null && v === null){
+            return null;
+        } else if (agg === null){
+            return v;
+        } else {
+            return Math.max(agg, v);
+        }
+    }, null);
+};
+
 export {
     linearScale,
     createSVGNode,
-    getFormattedNumber
+    getFormattedNumber,
+    downsampleData
 };

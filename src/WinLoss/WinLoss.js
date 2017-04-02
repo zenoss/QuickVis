@@ -2,7 +2,7 @@
 "use strict";
 
 import QuickVis from "quickviscore";
-import {createSVGNode, getFormattedNumber} from "utils";
+import {createSVGNode, getFormattedNumber, downsampleData} from "utils";
 
 const COLOR_PALETTE_LENGTH = 10;
 
@@ -34,7 +34,9 @@ const defaultConfig = {
     template: winLossTemplate,
     name: "",
     hideWinPercent: false,
-    tableLayout: false
+    tableLayout: false,
+    tickCount: 0,
+    downsampleFn: downsampleData.MAX
 };
 
 export default class WinLoss extends QuickVis {
@@ -47,6 +49,8 @@ export default class WinLoss extends QuickVis {
         }
         this.name = config.name;
         this.hideWinPercent = config.hideWinPercent;
+        this.tickCount = config.tickCount;
+        this.downsampleFn = config.downsampleFn;
     }
 
     _update(data){
@@ -54,7 +58,7 @@ export default class WinLoss extends QuickVis {
             throw new Error("cannot create graph bar from empty data");
         }
 
-        this.data = data;
+        this.data = downsampleData(data, this.tickCount, this.downsampleFn);
         let [total, win, loss] = this.data.reduce((acc, dp) => {
             let wld = this.winLoseOrDraw(dp);
             // if its a draw, dont increment nothin'

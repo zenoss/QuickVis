@@ -109,7 +109,7 @@ class DOMBatcher {
         return p;
     }
 }
-const INSERT_FREQUENCY = 50;
+const INSERT_FREQUENCY = 100;
 let dom = new DOMBatcher(INSERT_FREQUENCY);
 
 export function working(){
@@ -126,6 +126,7 @@ export default class QuickVis {
         this.template = config.template || function(vm){
             return `<strong>hi</strong>`;
         };
+        this.rendered = false;
 
     }
 
@@ -138,6 +139,8 @@ export default class QuickVis {
             console.warn("Element is not attached to the DOM. This may produce unexpected issues with element layout");
         }
         this._update(data);
+        // TODO - wait till after dom insert completes?
+        this.rendered = true;
         return this._render();
     }
 

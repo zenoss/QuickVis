@@ -38,31 +38,61 @@ const defaultConfig = {
 export default class Sparkline extends QuickVis {
     // setup configuration related thingies
     constructor(config){
+        // dont let undefined value override default
+        if(config.threshold === undefined){
+            delete config.threshold;
+        }
+
         config = Object.assign({}, defaultConfig, config);
 
         super(config);
         this.el.classList.add("sparkline");
         this.metric = config.metric;
-        this.threshold = config.threshold;
         this.forceThreshold = config.forceThreshold;
         this.style = config.style;
         this.unit = config.unit;
         this.annotation = config.annotation;
         this.hideLast = config.hideLast;
         this.showLastPoint = config.showLastPoint;
+
+        this.focusLines = [];
+
+        if(config.threshold !== undefined){
+            this.threshold = config.threshold;
+        }
     }
 
-    // move focus line using provided val. val should be
-    // normalized to 0 - 1
-    focus(val){
-        let pxVal = this.xScale(this.xDomain[1] * val);
-        this.focusLine.style.stroke = null;
-        this.focusLine.setAttribute("x1", pxVal);
-        this.focusLine.setAttribute("x2", pxVal);
+    // draw a focus line for each value. values should be
+    // 0 - 1 (effectivly 0% - 100%)
+    focus(vals){
+        if(!this.rendered){
+            return;
+        }
+
+        // add focus lines to the pool as needed
+        while(this.focusLines.length < vals.length){
+            this.drawFocusLine();
+        }
+
+        // TODO - decrease pool?
+        // TODO - batch dom insertions
+
+        vals.forEach((val, i) => {
+            let focusLine = this.focusLines[i];
+            let pxVal = this.xScale(this.xDomain[1] * val);
+            focusLine.style.visibility = "visible";
+            focusLine.setAttribute("x1", pxVal);
+            focusLine.setAttribute("x2", pxVal);
+        });
     }
 
     blur(){
-        this.focusLine.style.stroke = "transparent";
+        if(!this.rendered){
+            return;
+        }
+        this.focusLines.forEach(focusLine => {
+            focusLine.style.visibility = "hidden";
+        });
     }
 
     // update the model data and generate new data as
@@ -91,6 +121,8 @@ export default class Sparkline extends QuickVis {
             this.setScales(bb.width, bb.height);
             this.setDrawableArea(bb.width, bb.height);
 
+            this.focusLines = [];
+
             switch(this.style){
                 case "area":
                     this.fillSparkline()
@@ -116,8 +148,6 @@ export default class Sparkline extends QuickVis {
                         .drawThreshold();
                     break;
             }
-
-            this.drawFocusLine();
         });
     }
 
@@ -257,9 +287,9 @@ export default class Sparkline extends QuickVis {
             y2: y2 + SPARKLINE_PADDING,
             class: "sparkline-focus"
         });
+        focusLineEl.style.visibility = "hidden";
         svg.appendChild(focusLineEl);
-        this.focusLine = focusLineEl;
-        this.blur();
+        this.focusLines.push(focusLineEl);
         return this;
     }
 
@@ -281,10 +311,16 @@ export default class Sparkline extends QuickVis {
      * the view can use to make data useful to the user
      */
     getFriendly(val){
+        if(val === null){
+            return "";
+        }
         return getFormattedNumber(val)[0];
     }
 
     getMagnitude(val){
+        if(val === null){
+            return "";
+        }
         return getFormattedNumber(val)[1];
     }
 

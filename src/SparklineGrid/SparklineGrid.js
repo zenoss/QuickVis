@@ -44,8 +44,8 @@ export default class SparklineGrid extends QuickVis {
         });
     }
 
-    focus(val){
-        this.sparklines.forEach(s => s.sparkline.focus(val));
+    focus(vals){
+        this.sparklines.forEach(s => s.sparkline.focus(vals));
     }
 
     blur(){
@@ -59,7 +59,9 @@ export default class SparklineGrid extends QuickVis {
             // TODO - detach sparklinesEl first?
             this.sparklines.forEach((s, i) => {
                 sparklinesEl.appendChild(s.sparkline.el);
-                s.sparkline.render(this.data[i]);
+                if(this.data[i].length){
+                    s.sparkline.render(this.data[i]);
+                }
             });
         });
     }

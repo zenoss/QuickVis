@@ -76,7 +76,7 @@ export default class StackedBar extends QuickVis {
     }
 
     _update(data){
-        if(!data || !data.length){
+        if(!data){
             throw new Error("cannot create stacked bar from empty data");
         }
 
@@ -140,6 +140,9 @@ export default class StackedBar extends QuickVis {
     }
 
     getFormattedNumber(val){
+        if(val === null){
+            return "";
+        }
         return getFormattedNumber(val).join("");
     }
 
