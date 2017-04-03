@@ -46,6 +46,7 @@
         flex: 1;
         margin-right: 1px;
     }
+
     .topsies, .bottomsies {
         display: flex;
     }
@@ -80,5 +81,14 @@
         content: "●";
     }
 
+}
+
+.win-loss.focused {
+    .winloss-block {
+        opacity: 0.4;
+    }
+    .winloss-block.focused {
+        opacity: 1;
+    }
 }
 

@@ -104,4 +104,23 @@ export default class WinLoss extends QuickVis {
     getWinPercent(){
         return `${Math.floor(this.winPercent)}%`;
     }
+
+    focus(vals){
+        if(this.data){
+            vals.forEach(val => {
+                let pos = Math.floor(this.data.length * val);
+                this.blur();
+                this.el.classList.add("focused");
+                this.el.querySelector(`.topsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
+                this.el.querySelector(`.bottomsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
+            });
+        }
+    }
+
+    blur(){
+        let nodes = this.el.querySelectorAll(`.winloss-block.focused`);
+        let els = Array.prototype.slice.apply(nodes);
+        els.forEach(el => el.classList.remove("focused"));
+        this.el.classList.remove("focused");
+    }
 }
