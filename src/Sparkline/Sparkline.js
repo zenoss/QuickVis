@@ -84,6 +84,13 @@ export default class Sparkline extends QuickVis {
             focusLine.setAttribute("x1", pxVal);
             focusLine.setAttribute("x2", pxVal);
         });
+
+        // draw the value of the last focus point
+        let lastValEl = this.el.querySelector(".last-val");
+        let index = Math.floor(this.data.length * vals.slice(-1)[0]);
+        lastValEl.innerHTML = this.getFriendly(this.data[index]);
+
+        // TODO - reevaluate threshold light
     }
 
     blur(){
@@ -93,6 +100,10 @@ export default class Sparkline extends QuickVis {
         this.focusLines.forEach(focusLine => {
             focusLine.style.visibility = "hidden";
         });
+
+        // draw the value of the last focus point
+        let lastValEl = this.el.querySelector(".last-val");
+        lastValEl.innerHTML = this.getFriendly(this.last);
     }
 
     // update the model data and generate new data as

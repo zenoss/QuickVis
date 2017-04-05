@@ -121,7 +121,8 @@ export default class StackedBar extends QuickVis {
             console.warn("StackedBar threshold (" + getFormattedNumber(this.threshold).join("") + ") " +
                 "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " +
                 "so it is being ignored");
-            this.threshold = 0;
+            this.threshold = Infinity;
+            return;
         }
     }
 
