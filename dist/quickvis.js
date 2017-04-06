@@ -1,7 +1,7 @@
 
 (function injectCSS(){
     var style = document.createElement("style");
-    style.innerHTML = ".vbox{display:flex;flex-direction:column}.hbox{display:flex;flex-direction:row} .bar-grid .bar-grid-bars{display:table;width:100%;table-layout:auto}.bar-grid .stacked-bar{display:table-row}.bar-grid .stacked-bar .name{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.bar-grid .stacked-bar .bars-wrap{display:table-cell}.bar-grid .stacked-bar .bars{height:10px;border:none}.bar-grid .stacked-bar .bar{line-height:10px !important}.bar-grid .stacked-bar .bar.free .bar-label{visibility:hidden}.bar-grid .stacked-bar .threshold{height:16px !important;top:-3px !important;border-left:dotted #555 2px !important}.bar-grid .stacked-bar .indicator{display:table-cell;height:1.3em;position:relative;top:0;right:0;font-size:1.1em;padding-left:4px} .sparkline{color:#555}.sparkline .metric{font-size:1.2em}.sparkline .spark-content{align-items:center}.sparkline .graph{flex:1 1 120px;margin-right:6px;height:2em}.sparkline .graph .sparkline-path{stroke:#555;stroke-width:1;fill:transparent}.sparkline .graph .sparkline-path.shaded{stroke:transparent;fill:#CCC}.sparkline .graph .sparkline-bar{stroke:transparent;fill:#AAA}.sparkline .graph .sparkline-bar.bad{fill:#9C1200}.sparkline .graph .sparkline-scatter,.sparkline .graph .sparkline-last-point{fill:#AAA}.sparkline .graph .sparkline-scatter.bad,.sparkline .graph .sparkline-last-point.bad{fill:#9C1200}.sparkline .graph .sparkline-threshold{stroke:#AAA;stroke-width:2;stroke-dasharray:2, 2;fill:transparent}.sparkline .graph .sparkline-focus{stroke:black;stroke-width:2;fill:transparent}.sparkline .last{font-size:2em;display:flex;align-items:baseline;line-height:0.7em;letter-spacing:-1px}.sparkline .last-val{margin-right:2px}.sparkline .units{font-size:0.8em;color:#AAA}.sparkline .annotation{font-size:0.9em;color:#AAA;margin-left:2px}.sparkline .indicator:after{display:flex;font-size:1.5em;margin:-5px 5px 0 5px;content:'○';color:#CCC}.sparkline .indicator.off:after{display:none}.sparkline .indicator.on:after{color:#9C1200;content:'●'} .sparkline-grid .sparklines{display:table;width:100%;table-layout:auto}.sparkline-grid .sparkline{display:table-row}.sparkline-grid .sparkline .metric{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.sparkline-grid .sparkline .graph-row{display:table-cell;padding-right:4px}.sparkline-grid .sparkline .graph{width:100%;height:1em;margin:0}.sparkline-grid .sparkline .last{display:table-cell;letter-spacing:0;font-size:1em;text-align:right;white-space:nowrap}.sparkline-grid .sparkline .last-val{font-weight:bold}.sparkline-grid .sparkline .units{font-size:1em;color:#555}.sparkline-grid .sparkline .indicator{display:table-cell;height:1.3em} .stacked-bar{position:relative}.stacked-bar .stacked-wrapper{display:flex;flex-direction:column;color:#555;margin-right:25px}.stacked-bar .name{font-size:1.3em;margin-bottom:2px}.stacked-bar .bars{display:flex;height:30px;position:relative;border:solid #999 1px;background-color:#EEE}.stacked-bar .bars .bar-color-none{background-color:transparent !important}.stacked-bar .bars .bar-color-0{background-color:#6A95A9 !important}.stacked-bar .bars .bar-color-1{background-color:#314F5C !important}.stacked-bar .bars .bar-color-2{background-color:#8F8B3E !important}.stacked-bar .bars .bar-color-3{background-color:#A8A551 !important}.stacked-bar .bars .bar-color-4{background-color:#3A583B !important}.stacked-bar .bars .bar-color-5{background-color:#5CA45E !important}.stacked-bar .bars .bar-color-6{background-color:#8B6A4E !important}.stacked-bar .bars .bar-color-7{background-color:#A48164 !important}.stacked-bar .bars .bar-color-8{background-color:#A44C73 !important}.stacked-bar .bars .bar-color-9{background-color:#572038 !important}.stacked-bar .bars .bar{background-color:#555;color:#EEE;font-weight:bold;font-size:0.9em;cursor:default;overflow:hidden;line-height:30px}.stacked-bar .bar .bar-label{margin:0 4px}.stacked-bar .bars .threshold{position:absolute;left:0;top:-6px;height:40px;background-color:white;border-left:dashed #555 2px}.stacked-bar .stacked-footer{font-size:0.8em;display:flex;padding-top:2px}.stacked-bar .stacked-footer .used,.stacked-bar .stacked-footer .free{margin-right:10px}.stacked-bar .stacked-footer .total{margin-left:auto}.stacked-bar .indicator{font-size:1.8em;position:absolute;bottom:30px;right:0}.stacked-bar .indicator:after{display:flex;color:transparent;content:'○';color:#CCC}.stacked-bar .indicator.off:after{display:none}.stacked-bar .indicator.on:after{color:#9C1200;content:'●'} .win-loss{display:flex}.win-loss.table-layout{display:table-row}.win-loss.table-layout .name,.win-loss.table-layout .winlosses,.win-loss.table-layout .win-percent,.win-loss.table-layout .indicator{display:table-cell;vertical-align:middle}.win-loss.table-layout .name{font-size:0.8em;text-align:right;padding-right:8px}.win-loss .name{color:#555;margin-right:8px}.win-loss .winloss-wrap{display:flex;flex:1}.win-loss .winlosses{flex:1;padding-right:4px}.win-loss .winloss{display:flex;flex-direction:column;flex:1}.win-loss .winloss-block{min-width:6px;height:6px;flex:1;margin-right:1px}.win-loss .topsies,.win-loss .bottomsies{display:flex}.win-loss .topsies{border-bottom:solid #888 1px}.win-loss .topsies .marked{background-color:#999}.win-loss .bottomsies .marked{background-color:#333}.win-loss .win-percent{padding-right:4px}.win-loss .indicator:after{display:flex;font-size:1.5em;content:'○';color:transparent;position:relative;top:-1px}.win-loss .indicator.bad:after{color:#9C1200;content:'●'}.win-loss.focused .winloss-block{opacity:0.4}.win-loss.focused .winloss-block.focused{opacity:1}";
+    style.innerHTML = ".vbox{display:flex;flex-direction:column}.hbox{display:flex;flex-direction:row} .sparkline{color:#555}.sparkline .metric{font-size:1.2em}.sparkline .spark-content{align-items:center}.sparkline .graph{flex:1 1 120px;margin-right:6px;height:2em}.sparkline .graph .sparkline-path{stroke:#555;stroke-width:1;fill:transparent}.sparkline .graph .sparkline-path.shaded{stroke:transparent;fill:#CCC}.sparkline .graph .sparkline-bar{stroke:transparent;fill:#AAA}.sparkline .graph .sparkline-bar.bad{fill:#9C1200}.sparkline .graph .sparkline-scatter,.sparkline .graph .sparkline-last-point{fill:#AAA}.sparkline .graph .sparkline-scatter.bad,.sparkline .graph .sparkline-last-point.bad{fill:#9C1200}.sparkline .graph .sparkline-threshold{stroke:#AAA;stroke-width:2;stroke-dasharray:2, 2;fill:transparent}.sparkline .graph .sparkline-focus{stroke:black;stroke-width:2;fill:transparent}.sparkline .last{font-size:2em;display:flex;align-items:baseline;line-height:0.7em;letter-spacing:-1px}.sparkline .last-val{margin-right:2px}.sparkline .units{font-size:0.8em;color:#AAA}.sparkline .annotation{font-size:0.9em;color:#AAA;margin-left:2px}.sparkline .indicator:after{display:flex;font-size:1.5em;margin:-5px 5px 0 5px;content:'○';color:#CCC}.sparkline .indicator.off:after{display:none}.sparkline .indicator.on:after{color:#9C1200;content:'●'} .bar-grid .bar-grid-bars{display:table;width:100%;table-layout:auto}.bar-grid .stacked-bar{display:table-row}.bar-grid .stacked-bar .name{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.bar-grid .stacked-bar .bars-wrap{display:table-cell}.bar-grid .stacked-bar .bars{height:10px;border:none}.bar-grid .stacked-bar .bar{line-height:10px !important}.bar-grid .stacked-bar .bar.free .bar-label{visibility:hidden}.bar-grid .stacked-bar .threshold{height:16px !important;top:-3px !important;border-left:dotted #555 2px !important}.bar-grid .stacked-bar .indicator{display:table-cell;height:1.3em;position:relative;top:0;right:0;font-size:1.1em;padding-left:4px} .stacked-bar{position:relative}.stacked-bar .stacked-wrapper{display:flex;flex-direction:column;color:#555;margin-right:25px}.stacked-bar .name{font-size:1.3em;margin-bottom:2px}.stacked-bar .bars{display:flex;height:30px;position:relative;border:solid #999 1px;background-color:#EEE}.stacked-bar .bars .bar-color-none{background-color:transparent !important}.stacked-bar .bars .bar-color-0{background-color:#6A95A9 !important}.stacked-bar .bars .bar-color-1{background-color:#314F5C !important}.stacked-bar .bars .bar-color-2{background-color:#8F8B3E !important}.stacked-bar .bars .bar-color-3{background-color:#A8A551 !important}.stacked-bar .bars .bar-color-4{background-color:#3A583B !important}.stacked-bar .bars .bar-color-5{background-color:#5CA45E !important}.stacked-bar .bars .bar-color-6{background-color:#8B6A4E !important}.stacked-bar .bars .bar-color-7{background-color:#A48164 !important}.stacked-bar .bars .bar-color-8{background-color:#A44C73 !important}.stacked-bar .bars .bar-color-9{background-color:#572038 !important}.stacked-bar .bars .bar{background-color:#555;color:#EEE;font-weight:bold;font-size:0.9em;cursor:default;overflow:hidden;line-height:30px}.stacked-bar .bar .bar-label{margin:0 4px}.stacked-bar .bars .threshold{position:absolute;left:0;top:-6px;height:40px;background-color:white;border-left:dashed #555 2px}.stacked-bar .stacked-footer{font-size:0.8em;display:flex;padding-top:2px}.stacked-bar .stacked-footer .used,.stacked-bar .stacked-footer .free{margin-right:10px}.stacked-bar .stacked-footer .total{margin-left:auto}.stacked-bar .indicator{font-size:1.8em;position:absolute;bottom:30px;right:0}.stacked-bar .indicator:after{display:flex;color:transparent;content:'○';color:#CCC}.stacked-bar .indicator.off:after{display:none}.stacked-bar .indicator.on:after{color:#9C1200;content:'●'} .sparkline-grid .sparklines{display:table;width:100%;table-layout:auto}.sparkline-grid .sparkline{display:table-row}.sparkline-grid .sparkline .metric{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.sparkline-grid .sparkline .graph-row{display:table-cell;padding-right:4px}.sparkline-grid .sparkline .graph{width:100%;height:1em;margin:0}.sparkline-grid .sparkline .last{display:table-cell;letter-spacing:0;font-size:1em;text-align:right;white-space:nowrap}.sparkline-grid .sparkline .last-val{font-weight:bold}.sparkline-grid .sparkline .units{font-size:1em;color:#555}.sparkline-grid .sparkline .indicator{display:table-cell;height:1.3em} .win-loss{display:flex}.win-loss.table-layout{display:table-row}.win-loss.table-layout .name,.win-loss.table-layout .winlosses,.win-loss.table-layout .win-percent,.win-loss.table-layout .indicator{display:table-cell;vertical-align:middle}.win-loss.table-layout .name{font-size:0.8em;text-align:right;padding-right:8px}.win-loss .name{color:#555;margin-right:8px}.win-loss .winloss-wrap{display:flex;flex:1}.win-loss .winlosses{flex:1;padding-right:4px}.win-loss .winloss{display:flex;flex-direction:column;flex:1}.win-loss .winloss-block{min-width:6px;height:6px;flex:1;margin-right:1px}.win-loss .topsies,.win-loss .bottomsies{display:flex}.win-loss .topsies{border-bottom:solid #888 1px}.win-loss .topsies .marked{background-color:#999}.win-loss .bottomsies .marked{background-color:#333}.win-loss .win-percent{padding-right:4px}.win-loss .indicator:after{display:flex;font-size:1.5em;content:'○';color:transparent;position:relative;top:-1px}.win-loss .indicator.bad:after{color:#9C1200;content:'●'}.win-loss.focused .winloss-block{opacity:0.4}.win-loss.focused .winloss-block.focused{opacity:1}";
     document.body.appendChild(style);
     // force layout/paint
     document.querySelector("body").clientWidth;
@@ -613,8 +613,10 @@ var Sparkline = function (_QuickVis) {
 
             // draw the value of the last focus point
             var lastValEl = this.el.querySelector(".last-val");
+            var unitsEl = this.el.querySelector(".units");
             var index = Math.floor(this.data.length * vals.slice(-1)[0]);
             lastValEl.innerHTML = this.getFriendly(this.data[index]);
+            unitsEl.innerHTML = this.getMagnitude(this.data[index]) + this.unit;
 
             // TODO - reevaluate threshold light
             if (this.showLastPoint) {
@@ -649,7 +651,9 @@ var Sparkline = function (_QuickVis) {
 
             // draw the value of the last focus point
             var lastValEl = this.el.querySelector(".last-val");
+            var unitsEl = this.el.querySelector(".units");
             lastValEl.innerHTML = this.getFriendly(this.last);
+            unitsEl.innerHTML = this.getMagnitude(this.last) + this.unit;
 
             if (this.showLastPoint) {
                 var lastPointEl = this.el.querySelector(".sparkline-last-point");
@@ -684,7 +688,7 @@ var Sparkline = function (_QuickVis) {
                 throw new Error("cannot create sparkline from empty data");
             }
 
-            this.data = data;
+            this.data = data || [];
             this.last = data[data.length - 1];
         }
 
@@ -1380,7 +1384,10 @@ var WinLoss = function (_QuickVis) {
     }, {
         key: "getLast",
         value: function getLast() {
-            return this.data.slice(-1)[0];
+            if (this.data) {
+                return this.data.slice(-1)[0];
+            }
+            return null;
         }
     }, {
         key: "lastIsBad",
@@ -1421,18 +1428,18 @@ var WinLoss = function (_QuickVis) {
                     _this3.el.querySelector(".topsies .winloss-block:nth-child(" + (pos + 1) + ")").classList.add("focused");
                     _this3.el.querySelector(".bottomsies .winloss-block:nth-child(" + (pos + 1) + ")").classList.add("focused");
                 });
-            }
 
-            var indicatorEl = this.el.querySelector(".indicator");
-            // LOOK im just trying to get this demo out. this code can all
-            // burn in hell after this
-            var last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
-            var status = "";
-            // HACK - this is copy pasta
-            if (!last && last !== null) {
-                status = "bad";
+                var indicatorEl = this.el.querySelector(".indicator");
+                // LOOK im just trying to get this demo out. this code can all
+                // burn in hell after this
+                var last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
+                var status = "";
+                // HACK - this is copy pasta
+                if (!last && last !== null) {
+                    status = "bad";
+                }
+                indicatorEl.setAttribute("class", "indicator " + status);
             }
-            indicatorEl.setAttribute("class", "indicator " + status);
         }
     }, {
         key: "blur",
@@ -1445,8 +1452,10 @@ var WinLoss = function (_QuickVis) {
             this.el.classList.remove("focused");
 
             var indicatorEl = this.el.querySelector(".indicator");
-            var status = this.lastIsBad() ? "bad" : "";
-            indicatorEl.setAttribute("class", "indicator " + status);
+            if (indicatorEl) {
+                var status = this.lastIsBad() ? "bad" : "";
+                indicatorEl.setAttribute("class", "indicator " + status);
+            }
         }
     }]);
     return WinLoss;

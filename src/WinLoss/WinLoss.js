@@ -88,7 +88,10 @@ export default class WinLoss extends QuickVis {
     }
 
     getLast(){
-        return this.data.slice(-1)[0];
+        if(this.data){
+            return this.data.slice(-1)[0];
+        }
+        return null
     }
 
     lastIsBad(){
@@ -123,18 +126,19 @@ export default class WinLoss extends QuickVis {
                 this.el.querySelector(`.topsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
                 this.el.querySelector(`.bottomsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
             });
+
+            let indicatorEl = this.el.querySelector(".indicator");
+            // LOOK im just trying to get this demo out. this code can all
+            // burn in hell after this
+            let last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
+            let status = "";
+            // HACK - this is copy pasta
+            if(!last && last !== null){
+                status = "bad";
+            }
+            indicatorEl.setAttribute("class", `indicator ${status}`);
         }
 
-        let indicatorEl = this.el.querySelector(".indicator");
-        // LOOK im just trying to get this demo out. this code can all
-        // burn in hell after this
-        let last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
-        let status = "";
-        // HACK - this is copy pasta
-        if(!last && last !== null){
-            status = "bad";
-        }
-        indicatorEl.setAttribute("class", `indicator ${status}`);
     }
 
     blur(){
@@ -144,7 +148,9 @@ export default class WinLoss extends QuickVis {
         this.el.classList.remove("focused");
 
         let indicatorEl = this.el.querySelector(".indicator");
-        let status = this.lastIsBad() ? "bad" : "";
-        indicatorEl.setAttribute("class", `indicator ${status}`);
+        if(indicatorEl){
+            let status = this.lastIsBad() ? "bad" : "";
+            indicatorEl.setAttribute("class", `indicator ${status}`);
+        }
     }
 }

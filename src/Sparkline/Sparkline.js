@@ -90,7 +90,7 @@ export default class Sparkline extends QuickVis {
         let unitsEl = this.el.querySelector(".units");
         let index = Math.floor(this.data.length * vals.slice(-1)[0]);
         lastValEl.innerHTML = this.getFriendly(this.data[index]);
-        unitsEl.innerHTML = this.getMagnitude(this.data[index]) + vm.unit
+        unitsEl.innerHTML = this.getMagnitude(this.data[index]) + this.unit
 
         // TODO - reevaluate threshold light
         if(this.showLastPoint){
@@ -126,7 +126,7 @@ export default class Sparkline extends QuickVis {
         let lastValEl = this.el.querySelector(".last-val");
         let unitsEl = this.el.querySelector(".units");
         lastValEl.innerHTML = this.getFriendly(this.last);
-        unitsEl.innerHTML = this.getMagnitude(this.last) + vm.unit
+        unitsEl.innerHTML = this.getMagnitude(this.last) + this.unit
 
         if(this.showLastPoint){
             let lastPointEl = this.el.querySelector(".sparkline-last-point");
@@ -158,7 +158,7 @@ export default class Sparkline extends QuickVis {
             throw new Error("cannot create sparkline from empty data");
         }
 
-        this.data = data;
+        this.data = data || [];
         this.last = data[data.length - 1];
     }
 
