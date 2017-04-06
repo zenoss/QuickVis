@@ -91,6 +91,25 @@ export default class Sparkline extends QuickVis {
         lastValEl.innerHTML = this.getFriendly(this.data[index]);
 
         // TODO - reevaluate threshold light
+        if(this.showLastPoint){
+            let lastPointEl = this.el.querySelector(".sparkline-last-point");
+            lastPointEl.style.visibility = "hidden";
+        }
+
+        let indicatorEl = this.el.querySelector(".indicator");
+        let status;
+        // HACK - this is copy pasta
+        if(this.threshold === Infinity){
+            // if no threshold is set
+            status = "off";
+        } else if(this.data[index] > this.threshold){
+            // if threshold is breached
+            status = "on";
+        } else {
+            // if threshold is safe
+            status = "safe";
+        }
+        indicatorEl.setAttribute("class", `indicator ${status}`);
     }
 
     blur(){
@@ -104,6 +123,26 @@ export default class Sparkline extends QuickVis {
         // draw the value of the last focus point
         let lastValEl = this.el.querySelector(".last-val");
         lastValEl.innerHTML = this.getFriendly(this.last);
+
+        if(this.showLastPoint){
+            let lastPointEl = this.el.querySelector(".sparkline-last-point");
+            lastPointEl.style.visibility = "visible";
+        }
+
+        let indicatorEl = this.el.querySelector(".indicator");
+        let status;
+        // HACK - this is copy pasta
+        if(this.threshold === Infinity){
+            // if no threshold is set
+            status = "off";
+        } else if(this.last > this.threshold){
+            // if threshold is breached
+            status = "on";
+        } else {
+            // if threshold is safe
+            status = "safe";
+        }
+        indicatorEl.setAttribute("class", `indicator ${status}`);
     }
 
     // update the model data and generate new data as

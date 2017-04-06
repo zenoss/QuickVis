@@ -1,7 +1,7 @@
 
 (function injectCSS(){
     var style = document.createElement("style");
-    style.innerHTML = ".vbox{display:flex;flex-direction:column}.hbox{display:flex;flex-direction:row} .sparkline{color:#555}.sparkline .metric{font-size:1.2em}.sparkline .spark-content{align-items:center}.sparkline .graph{flex:1 1 120px;margin-right:6px;height:2em}.sparkline .graph .sparkline-path{stroke:#555;stroke-width:1;fill:transparent}.sparkline .graph .sparkline-path.shaded{stroke:transparent;fill:#CCC}.sparkline .graph .sparkline-bar{stroke:transparent;fill:#AAA}.sparkline .graph .sparkline-bar.bad{fill:#9C1200}.sparkline .graph .sparkline-scatter,.sparkline .graph .sparkline-last-point{fill:#AAA}.sparkline .graph .sparkline-scatter.bad,.sparkline .graph .sparkline-last-point.bad{fill:#9C1200}.sparkline .graph .sparkline-threshold{stroke:#AAA;stroke-width:2;stroke-dasharray:2, 2;fill:transparent}.sparkline .graph .sparkline-focus{stroke:black;stroke-width:2;fill:transparent}.sparkline .last{font-size:2em;display:flex;align-items:baseline;line-height:0.7em;letter-spacing:-1px}.sparkline .last-val{margin-right:2px}.sparkline .units{font-size:0.8em;color:#AAA}.sparkline .annotation{font-size:0.9em;color:#AAA;margin-left:2px}.sparkline .indicator:after{display:flex;font-size:1.5em;margin:-5px 5px 0 5px;content:'○';color:#CCC}.sparkline .indicator.off:after{display:none}.sparkline .indicator.on:after{color:#9C1200;content:'●'} .stacked-bar{position:relative}.stacked-bar .stacked-wrapper{display:flex;flex-direction:column;color:#555;margin-right:25px}.stacked-bar .name{font-size:1.3em;margin-bottom:2px}.stacked-bar .bars{display:flex;height:30px;position:relative;border:solid #999 1px;background-color:#EEE}.stacked-bar .bars .bar-color-none{background-color:transparent !important}.stacked-bar .bars .bar-color-0{background-color:#6A95A9 !important}.stacked-bar .bars .bar-color-1{background-color:#314F5C !important}.stacked-bar .bars .bar-color-2{background-color:#8F8B3E !important}.stacked-bar .bars .bar-color-3{background-color:#A8A551 !important}.stacked-bar .bars .bar-color-4{background-color:#3A583B !important}.stacked-bar .bars .bar-color-5{background-color:#5CA45E !important}.stacked-bar .bars .bar-color-6{background-color:#8B6A4E !important}.stacked-bar .bars .bar-color-7{background-color:#A48164 !important}.stacked-bar .bars .bar-color-8{background-color:#A44C73 !important}.stacked-bar .bars .bar-color-9{background-color:#572038 !important}.stacked-bar .bars .bar{background-color:#555;color:#EEE;font-weight:bold;font-size:0.9em;cursor:default;overflow:hidden;line-height:30px}.stacked-bar .bar .bar-label{margin:0 4px}.stacked-bar .bars .threshold{position:absolute;left:0;top:-6px;height:40px;background-color:white;border-left:dashed #555 2px}.stacked-bar .stacked-footer{font-size:0.8em;display:flex;padding-top:2px}.stacked-bar .stacked-footer .used,.stacked-bar .stacked-footer .free{margin-right:10px}.stacked-bar .stacked-footer .total{margin-left:auto}.stacked-bar .indicator{font-size:1.8em;position:absolute;bottom:30px;right:0}.stacked-bar .indicator:after{display:flex;color:transparent;content:'○';color:#CCC}.stacked-bar .indicator.off:after{display:none}.stacked-bar .indicator.on:after{color:#9C1200;content:'●'} .sparkline-grid .sparklines{display:table;width:100%;table-layout:auto}.sparkline-grid .sparkline{display:table-row}.sparkline-grid .sparkline .metric{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.sparkline-grid .sparkline .graph-row{display:table-cell;padding-right:4px}.sparkline-grid .sparkline .graph{width:100%;height:1em;margin:0}.sparkline-grid .sparkline .last{display:table-cell;letter-spacing:0;font-size:1em;text-align:right;white-space:nowrap}.sparkline-grid .sparkline .last-val{font-weight:bold}.sparkline-grid .sparkline .units{font-size:1em;color:#555}.sparkline-grid .sparkline .indicator{display:table-cell;height:1.3em} .win-loss{display:flex}.win-loss.table-layout{display:table-row}.win-loss.table-layout .name,.win-loss.table-layout .winlosses,.win-loss.table-layout .win-percent,.win-loss.table-layout .indicator{display:table-cell;vertical-align:middle}.win-loss.table-layout .name{font-size:0.8em;text-align:right;padding-right:8px}.win-loss .name{color:#555;margin-right:8px}.win-loss .winloss-wrap{display:flex;flex:1}.win-loss .winlosses{flex:1;padding-right:4px}.win-loss .winloss{display:flex;flex-direction:column;flex:1}.win-loss .winloss-block{min-width:6px;height:6px;flex:1;margin-right:1px}.win-loss .topsies,.win-loss .bottomsies{display:flex}.win-loss .topsies{border-bottom:solid #888 1px}.win-loss .topsies .marked{background-color:#999}.win-loss .bottomsies .marked{background-color:#333}.win-loss .win-percent{padding-right:4px}.win-loss .indicator:after{display:flex;font-size:1.5em;content:'○';color:transparent;position:relative;top:-1px}.win-loss .indicator.bad:after{color:#9C1200;content:'●'} .bar-grid .bar-grid-bars{display:table;width:100%;table-layout:auto}.bar-grid .stacked-bar{display:table-row}.bar-grid .stacked-bar .name{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.bar-grid .stacked-bar .bars-wrap{display:table-cell}.bar-grid .stacked-bar .bars{height:10px;border:none}.bar-grid .stacked-bar .bar{line-height:10px !important}.bar-grid .stacked-bar .bar.free .bar-label{visibility:hidden}.bar-grid .stacked-bar .threshold{height:16px !important;top:-3px !important;border-left:dotted #555 2px !important}.bar-grid .stacked-bar .indicator{display:table-cell;height:1.3em;position:relative;top:0;right:0;font-size:1.1em;padding-left:4px}";
+    style.innerHTML = ".vbox{display:flex;flex-direction:column}.hbox{display:flex;flex-direction:row} .bar-grid .bar-grid-bars{display:table;width:100%;table-layout:auto}.bar-grid .stacked-bar{display:table-row}.bar-grid .stacked-bar .name{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.bar-grid .stacked-bar .bars-wrap{display:table-cell}.bar-grid .stacked-bar .bars{height:10px;border:none}.bar-grid .stacked-bar .bar{line-height:10px !important}.bar-grid .stacked-bar .bar.free .bar-label{visibility:hidden}.bar-grid .stacked-bar .threshold{height:16px !important;top:-3px !important;border-left:dotted #555 2px !important}.bar-grid .stacked-bar .indicator{display:table-cell;height:1.3em;position:relative;top:0;right:0;font-size:1.1em;padding-left:4px} .sparkline{color:#555}.sparkline .metric{font-size:1.2em}.sparkline .spark-content{align-items:center}.sparkline .graph{flex:1 1 120px;margin-right:6px;height:2em}.sparkline .graph .sparkline-path{stroke:#555;stroke-width:1;fill:transparent}.sparkline .graph .sparkline-path.shaded{stroke:transparent;fill:#CCC}.sparkline .graph .sparkline-bar{stroke:transparent;fill:#AAA}.sparkline .graph .sparkline-bar.bad{fill:#9C1200}.sparkline .graph .sparkline-scatter,.sparkline .graph .sparkline-last-point{fill:#AAA}.sparkline .graph .sparkline-scatter.bad,.sparkline .graph .sparkline-last-point.bad{fill:#9C1200}.sparkline .graph .sparkline-threshold{stroke:#AAA;stroke-width:2;stroke-dasharray:2, 2;fill:transparent}.sparkline .graph .sparkline-focus{stroke:black;stroke-width:2;fill:transparent}.sparkline .last{font-size:2em;display:flex;align-items:baseline;line-height:0.7em;letter-spacing:-1px}.sparkline .last-val{margin-right:2px}.sparkline .units{font-size:0.8em;color:#AAA}.sparkline .annotation{font-size:0.9em;color:#AAA;margin-left:2px}.sparkline .indicator:after{display:flex;font-size:1.5em;margin:-5px 5px 0 5px;content:'○';color:#CCC}.sparkline .indicator.off:after{display:none}.sparkline .indicator.on:after{color:#9C1200;content:'●'} .sparkline-grid .sparklines{display:table;width:100%;table-layout:auto}.sparkline-grid .sparkline{display:table-row}.sparkline-grid .sparkline .metric{display:table-cell;font-size:0.8em;text-align:right;padding-right:4px}.sparkline-grid .sparkline .graph-row{display:table-cell;padding-right:4px}.sparkline-grid .sparkline .graph{width:100%;height:1em;margin:0}.sparkline-grid .sparkline .last{display:table-cell;letter-spacing:0;font-size:1em;text-align:right;white-space:nowrap}.sparkline-grid .sparkline .last-val{font-weight:bold}.sparkline-grid .sparkline .units{font-size:1em;color:#555}.sparkline-grid .sparkline .indicator{display:table-cell;height:1.3em} .stacked-bar{position:relative}.stacked-bar .stacked-wrapper{display:flex;flex-direction:column;color:#555;margin-right:25px}.stacked-bar .name{font-size:1.3em;margin-bottom:2px}.stacked-bar .bars{display:flex;height:30px;position:relative;border:solid #999 1px;background-color:#EEE}.stacked-bar .bars .bar-color-none{background-color:transparent !important}.stacked-bar .bars .bar-color-0{background-color:#6A95A9 !important}.stacked-bar .bars .bar-color-1{background-color:#314F5C !important}.stacked-bar .bars .bar-color-2{background-color:#8F8B3E !important}.stacked-bar .bars .bar-color-3{background-color:#A8A551 !important}.stacked-bar .bars .bar-color-4{background-color:#3A583B !important}.stacked-bar .bars .bar-color-5{background-color:#5CA45E !important}.stacked-bar .bars .bar-color-6{background-color:#8B6A4E !important}.stacked-bar .bars .bar-color-7{background-color:#A48164 !important}.stacked-bar .bars .bar-color-8{background-color:#A44C73 !important}.stacked-bar .bars .bar-color-9{background-color:#572038 !important}.stacked-bar .bars .bar{background-color:#555;color:#EEE;font-weight:bold;font-size:0.9em;cursor:default;overflow:hidden;line-height:30px}.stacked-bar .bar .bar-label{margin:0 4px}.stacked-bar .bars .threshold{position:absolute;left:0;top:-6px;height:40px;background-color:white;border-left:dashed #555 2px}.stacked-bar .stacked-footer{font-size:0.8em;display:flex;padding-top:2px}.stacked-bar .stacked-footer .used,.stacked-bar .stacked-footer .free{margin-right:10px}.stacked-bar .stacked-footer .total{margin-left:auto}.stacked-bar .indicator{font-size:1.8em;position:absolute;bottom:30px;right:0}.stacked-bar .indicator:after{display:flex;color:transparent;content:'○';color:#CCC}.stacked-bar .indicator.off:after{display:none}.stacked-bar .indicator.on:after{color:#9C1200;content:'●'} .win-loss{display:flex}.win-loss.table-layout{display:table-row}.win-loss.table-layout .name,.win-loss.table-layout .winlosses,.win-loss.table-layout .win-percent,.win-loss.table-layout .indicator{display:table-cell;vertical-align:middle}.win-loss.table-layout .name{font-size:0.8em;text-align:right;padding-right:8px}.win-loss .name{color:#555;margin-right:8px}.win-loss .winloss-wrap{display:flex;flex:1}.win-loss .winlosses{flex:1;padding-right:4px}.win-loss .winloss{display:flex;flex-direction:column;flex:1}.win-loss .winloss-block{min-width:6px;height:6px;flex:1;margin-right:1px}.win-loss .topsies,.win-loss .bottomsies{display:flex}.win-loss .topsies{border-bottom:solid #888 1px}.win-loss .topsies .marked{background-color:#999}.win-loss .bottomsies .marked{background-color:#333}.win-loss .win-percent{padding-right:4px}.win-loss .indicator:after{display:flex;font-size:1.5em;content:'○';color:transparent;position:relative;top:-1px}.win-loss .indicator.bad:after{color:#9C1200;content:'●'}.win-loss.focused .winloss-block{opacity:0.4}.win-loss.focused .winloss-block.focused{opacity:1}";
     document.body.appendChild(style);
     // force layout/paint
     document.querySelector("body").clientWidth;
@@ -9,9 +9,6 @@
     
 
 /* QuickVis v0.1.4-dev */
-var quickvis = (function () {
-'use strict';
-
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -275,7 +272,7 @@ var DOMBatcher = function () {
     return DOMBatcher;
 }();
 
-var INSERT_FREQUENCY = 50;
+var INSERT_FREQUENCY = 100;
 var dom = new DOMBatcher(INSERT_FREQUENCY);
 
 function working() {
@@ -295,6 +292,7 @@ var QuickVis = function () {
         this.template = config.template || function (vm) {
             return "<strong>hi</strong>";
         };
+        this.rendered = false;
     }
 
     // stores the data then calls render
@@ -310,6 +308,8 @@ var QuickVis = function () {
                 console.warn("Element is not attached to the DOM. This may produce unexpected issues with element layout");
             }
             this._update(data);
+            // TODO - wait till after dom insert completes?
+            this.rendered = true;
             return this._render();
         }
 
@@ -483,6 +483,53 @@ function getFormattedNumber(val) {
     return result;
 }
 
+// given an array of values, attempts to create an array of length
+// maxLength by applying downsampleFunction to each slice
+// of values
+function downsampleData(data, maxLength, downsampleFn) {
+    var length = data.length;
+    var max = Math.min(length, maxLength);
+    var count = Math.ceil(length / max);
+
+    var downsampled = [];
+    for (var i = 0; i < max; i++) {
+        var start = i * count;
+        var end = (i + 1) * count;
+        if (end > length) {
+            end = length;
+        }
+        var slice = data.slice(start, end);
+        var val = downsampleFn(slice);
+        /*
+        let val = slice.reduce((agg, v) => {
+            if(agg === null && v === null){
+                return null;
+            } else if (agg === null){
+                return v;
+            } else {
+                return Math.max(agg, v);
+            }
+        }, null);
+        */
+        downsampled.push(val);
+    }
+
+    return downsampled;
+}
+// returns either the largest number, or null
+// if all values in the array are null
+downsampleData.MAX = function (slice) {
+    return slice.reduce(function (agg, v) {
+        if (agg === null && v === null) {
+            return null;
+        } else if (agg === null) {
+            return v;
+        } else {
+            return Math.max(agg, v);
+        }
+    }, null);
+};
+
 // template functions should take a viewmodel and return a string
 // that can be put into the DOM. there should be as little logic in
 // here as possible. Prefer to create viewmodel methods to handle
@@ -509,38 +556,120 @@ var Sparkline = function (_QuickVis) {
     function Sparkline(config) {
         classCallCheck(this, Sparkline);
 
+        // dont let undefined value override default
+        if (config.threshold === undefined) {
+            delete config.threshold;
+        }
+
         config = Object.assign({}, defaultConfig, config);
 
         var _this = possibleConstructorReturn(this, (Sparkline.__proto__ || Object.getPrototypeOf(Sparkline)).call(this, config));
 
         _this.el.classList.add("sparkline");
         _this.metric = config.metric;
-        _this.threshold = config.threshold;
         _this.forceThreshold = config.forceThreshold;
         _this.style = config.style;
         _this.unit = config.unit;
         _this.annotation = config.annotation;
         _this.hideLast = config.hideLast;
         _this.showLastPoint = config.showLastPoint;
+
+        _this.focusLines = [];
+
+        if (config.threshold !== undefined) {
+            _this.threshold = config.threshold;
+        }
         return _this;
     }
 
-    // move focus line using provided val. val should be
-    // normalized to 0 - 1
+    // draw a focus line for each value. values should be
+    // 0 - 1 (effectivly 0% - 100%)
 
 
     createClass(Sparkline, [{
         key: "focus",
-        value: function focus(val) {
-            var pxVal = this.xScale(this.xDomain[1] * val);
-            this.focusLine.style.stroke = null;
-            this.focusLine.setAttribute("x1", pxVal);
-            this.focusLine.setAttribute("x2", pxVal);
+        value: function focus(vals) {
+            var _this2 = this;
+
+            if (!this.rendered) {
+                return;
+            }
+
+            // add focus lines to the pool as needed
+            while (this.focusLines.length < vals.length) {
+                this.drawFocusLine();
+            }
+
+            // TODO - decrease pool?
+            // TODO - batch dom insertions
+
+            vals.forEach(function (val, i) {
+                var focusLine = _this2.focusLines[i];
+                var pxVal = _this2.xScale(_this2.xDomain[1] * val);
+                focusLine.style.visibility = "visible";
+                focusLine.setAttribute("x1", pxVal);
+                focusLine.setAttribute("x2", pxVal);
+            });
+
+            // draw the value of the last focus point
+            var lastValEl = this.el.querySelector(".last-val");
+            var index = Math.floor(this.data.length * vals.slice(-1)[0]);
+            lastValEl.innerHTML = this.getFriendly(this.data[index]);
+
+            // TODO - reevaluate threshold light
+            if (this.showLastPoint) {
+                var lastPointEl = this.el.querySelector(".sparkline-last-point");
+                lastPointEl.style.visibility = "hidden";
+            }
+
+            var indicatorEl = this.el.querySelector(".indicator");
+            var status = void 0;
+            // HACK - this is copy pasta
+            if (this.threshold === Infinity) {
+                // if no threshold is set
+                status = "off";
+            } else if (this.data[index] > this.threshold) {
+                // if threshold is breached
+                status = "on";
+            } else {
+                // if threshold is safe
+                status = "safe";
+            }
+            indicatorEl.setAttribute("class", "indicator " + status);
         }
     }, {
         key: "blur",
         value: function blur() {
-            this.focusLine.style.stroke = "transparent";
+            if (!this.rendered) {
+                return;
+            }
+            this.focusLines.forEach(function (focusLine) {
+                focusLine.style.visibility = "hidden";
+            });
+
+            // draw the value of the last focus point
+            var lastValEl = this.el.querySelector(".last-val");
+            lastValEl.innerHTML = this.getFriendly(this.last);
+
+            if (this.showLastPoint) {
+                var lastPointEl = this.el.querySelector(".sparkline-last-point");
+                lastPointEl.style.visibility = "visible";
+            }
+
+            var indicatorEl = this.el.querySelector(".indicator");
+            var status = void 0;
+            // HACK - this is copy pasta
+            if (this.threshold === Infinity) {
+                // if no threshold is set
+                status = "off";
+            } else if (this.last > this.threshold) {
+                // if threshold is breached
+                status = "on";
+            } else {
+                // if threshold is safe
+                status = "safe";
+            }
+            indicatorEl.setAttribute("class", "indicator " + status);
         }
 
         // update the model data and generate new data as
@@ -567,38 +696,38 @@ var Sparkline = function (_QuickVis) {
     }, {
         key: "_render",
         value: function _render() {
-            var _this2 = this;
+            var _this3 = this;
 
             var p = get(Sparkline.prototype.__proto__ || Object.getPrototypeOf(Sparkline.prototype), "_render", this).call(this);
             p.then(function () {
-                _this2.svg = _this2.el.querySelector(".graph");
-                return _this2.getBBox(_this2.svg);
+                _this3.svg = _this3.el.querySelector(".graph");
+                return _this3.getBBox(_this3.svg);
             }).then(function (bb) {
-                _this2.setScales(bb.width, bb.height);
-                _this2.setDrawableArea(bb.width, bb.height);
+                _this3.setScales(bb.width, bb.height);
+                _this3.setDrawableArea(bb.width, bb.height);
 
-                switch (_this2.style) {
+                _this3.focusLines = [];
+
+                switch (_this3.style) {
                     case "area":
-                        _this2.fillSparkline().drawSparkline().drawThreshold();
-                        if (_this2.showLastPoint) {
-                            _this2.drawLastPoint();
+                        _this3.fillSparkline().drawSparkline().drawThreshold();
+                        if (_this3.showLastPoint) {
+                            _this3.drawLastPoint();
                         }
                         break;
                     case "line":
-                        _this2.drawSparkline().drawThreshold();
-                        if (_this2.showLastPoint) {
-                            _this2.drawLastPoint();
+                        _this3.drawSparkline().drawThreshold();
+                        if (_this3.showLastPoint) {
+                            _this3.drawLastPoint();
                         }
                         break;
                     case "bar":
-                        _this2.drawBars().drawThreshold();
+                        _this3.drawBars().drawThreshold();
                         break;
                     case "scatter":
-                        _this2.drawScatter().drawThreshold();
+                        _this3.drawScatter().drawThreshold();
                         break;
                 }
-
-                _this2.drawFocusLine();
             });
         }
 
@@ -691,7 +820,7 @@ var Sparkline = function (_QuickVis) {
     }, {
         key: "drawBars",
         value: function drawBars() {
-            var _this3 = this;
+            var _this4 = this;
 
             var BAR_PADDING = 2;
             var svg = this.svg,
@@ -706,7 +835,7 @@ var Sparkline = function (_QuickVis) {
 
 
             this.data.forEach(function (dp, i) {
-                var barDiff = _this3.yScale(dp),
+                var barDiff = _this4.yScale(dp),
                     barHeight = Math.ceil(y2 - barDiff) || 1;
                 svg.appendChild(createSVGNode("rect", {
                     // TODO - dont apply padding to last item
@@ -714,7 +843,7 @@ var Sparkline = function (_QuickVis) {
                     y: y2 - barHeight,
                     width: barWidth,
                     height: barHeight,
-                    class: "sparkline-bar" + (dp > _this3.threshold ? " bad" : "")
+                    class: "sparkline-bar" + (dp > _this4.threshold ? " bad" : "")
                 }));
             });
             return this;
@@ -722,7 +851,7 @@ var Sparkline = function (_QuickVis) {
     }, {
         key: "drawScatter",
         value: function drawScatter() {
-            var _this4 = this;
+            var _this5 = this;
 
             var svg = this.svg,
                 xScale = this.xScale,
@@ -735,10 +864,10 @@ var Sparkline = function (_QuickVis) {
 
             this.data.forEach(function (dp, i) {
                 svg.appendChild(createSVGNode("circle", {
-                    cx: _this4.xScale(i),
-                    cy: _this4.yScale(dp),
+                    cx: _this5.xScale(i),
+                    cy: _this5.yScale(dp),
                     r: 4,
-                    class: "sparkline-scatter" + (dp > _this4.threshold ? " bad" : "")
+                    class: "sparkline-scatter" + (dp > _this5.threshold ? " bad" : "")
                 }));
             });
             return this;
@@ -787,9 +916,9 @@ var Sparkline = function (_QuickVis) {
                 y2: y2 + SPARKLINE_PADDING,
                 class: "sparkline-focus"
             });
+            focusLineEl.style.visibility = "hidden";
             svg.appendChild(focusLineEl);
-            this.focusLine = focusLineEl;
-            this.blur();
+            this.focusLines.push(focusLineEl);
             return this;
         }
     }, {
@@ -818,11 +947,17 @@ var Sparkline = function (_QuickVis) {
     }, {
         key: "getFriendly",
         value: function getFriendly(val) {
+            if (val === null) {
+                return "";
+            }
             return getFormattedNumber(val)[0];
         }
     }, {
         key: "getMagnitude",
         value: function getMagnitude(val) {
+            if (val === null) {
+                return "";
+            }
             return getFormattedNumber(val)[1];
         }
     }, {
@@ -870,7 +1005,7 @@ function barTemplate(vm, bar) {
         name = "";
     }
 
-    return "\n        <div class=\"bar " + vm.getColorClass(bar) + " " + (name === "Free" ? "free" : "") + "\"\n                style=\"flex: " + val + " 0 0;\"\n                title=\"" + vm.getTitle(val) + "\">\n            <div class=\"bar-label\">\n                <!-- this is a hack to cause labels that are\n                    too long to not appear at all. text-overflow\n                    ellipsis is not sufficient here -->\n                &#8203; " + name.replace(" ", "&nbsp;") + "\n            </div>\n        </div>\n    ";
+    return "\n        <div class=\"bar " + vm.getColorClass(bar) + " " + (name === "Free" ? "free" : "") + "\"\n                style=\"flex: " + val + " 0 0;\"\n                title=\"" + vm.getTitle(name, val) + "\">\n            <div class=\"bar-label\">\n                <!-- this is a hack to cause labels that are\n                    too long to not appear at all. text-overflow\n                    ellipsis is not sufficient here -->\n                &#8203; " + name.replace(" ", "&nbsp;") + "\n            </div>\n        </div>\n    ";
 }
 
 var defaultConfig$1 = {
@@ -901,7 +1036,7 @@ var StackedBar = function (_QuickVis) {
     createClass(StackedBar, [{
         key: "_update",
         value: function _update(data) {
-            if (!data || !data.length) {
+            if (!data) {
                 throw new Error("cannot create stacked bar from empty data");
             }
 
@@ -946,7 +1081,8 @@ var StackedBar = function (_QuickVis) {
             }
             if (this.threshold > this.capacity) {
                 console.warn("StackedBar threshold (" + getFormattedNumber(this.threshold).join("") + ") " + "exceeds specified capacity (" + getFormattedNumber(this.capacity).join("") + ") " + "so it is being ignored");
-                this.threshold = 0;
+                this.threshold = Infinity;
+                return;
             }
         }
     }, {
@@ -968,6 +1104,9 @@ var StackedBar = function (_QuickVis) {
     }, {
         key: "getFormattedNumber",
         value: function getFormattedNumber$$1(val) {
+            if (val === null) {
+                return "";
+            }
             return getFormattedNumber(val).join("");
         }
 
@@ -1004,15 +1143,12 @@ var StackedBar = function (_QuickVis) {
         }
     }, {
         key: "getTitle",
-        value: function getTitle(val) {
-            val = this.getFormattedNumber(val) + this.unit;
-            if (isNaN(val)) {
-                val = "";
-            }
-            if (this.name) {
-                return this.name + ": " + val;
+        value: function getTitle(name, val) {
+            var formatted = this.getFormattedNumber(val) + this.unit;
+            if (name) {
+                return name + ": " + formatted;
             } else {
-                return val;
+                return formatted;
             }
         }
     }]);
@@ -1053,9 +1189,9 @@ var SparklineGrid = function (_QuickVis) {
 
     createClass(SparklineGrid, [{
         key: "focus",
-        value: function focus(val) {
+        value: function focus(vals) {
             this.sparklines.forEach(function (s) {
-                return s.sparkline.focus(val);
+                return s.sparkline.focus(vals);
             });
         }
     }, {
@@ -1076,7 +1212,9 @@ var SparklineGrid = function (_QuickVis) {
                 // TODO - detach sparklinesEl first?
                 _this2.sparklines.forEach(function (s, i) {
                     sparklinesEl.appendChild(s.sparkline.el);
-                    s.sparkline.render(_this2.data[i]);
+                    if (_this2.data[i].length) {
+                        s.sparkline.render(_this2.data[i]);
+                    }
                 });
             });
         }
@@ -1163,14 +1301,16 @@ function winLossTemplate(vm) {
         return wld === -1 ? true : false;
     }).map(function (marked) {
         return "<div class=\"winloss-block " + (marked ? "marked" : "") + "\"></div>";
-    }).join("") + "\n            </div>\n        </div>\n        <div class=\"win-percent\" " + (vm.hideWinPercent ? 'style="display:none;"' : "") + ">" + vm.getWinPercent() + "</div>\n        <div class=\"indicator " + (!vm.getLast() ? "bad" : "") + "\"></div>\n    ";
+    }).join("") + "\n            </div>\n        </div>\n        <div class=\"win-percent\" " + (vm.hideWinPercent ? 'style="display:none;"' : "") + ">" + vm.getWinPercent() + "</div>\n        <div class=\"indicator " + (vm.lastIsBad() ? "bad" : "") + "\"></div>\n    ";
 }
 
 var defaultConfig$2 = {
     template: winLossTemplate,
     name: "",
     hideWinPercent: false,
-    tableLayout: false
+    tableLayout: false,
+    tickCount: 0,
+    downsampleFn: downsampleData.MAX
 };
 
 var WinLoss = function (_QuickVis) {
@@ -1189,6 +1329,8 @@ var WinLoss = function (_QuickVis) {
         }
         _this.name = config.name;
         _this.hideWinPercent = config.hideWinPercent;
+        _this.tickCount = config.tickCount;
+        _this.downsampleFn = config.downsampleFn;
         return _this;
     }
 
@@ -1201,7 +1343,7 @@ var WinLoss = function (_QuickVis) {
                 throw new Error("cannot create graph bar from empty data");
             }
 
-            this.data = data;
+            this.data = downsampleData(data, this.tickCount, this.downsampleFn);
 
             var _data$reduce = this.data.reduce(function (acc, dp) {
                 var wld = _this2.winLoseOrDraw(dp);
@@ -1241,6 +1383,16 @@ var WinLoss = function (_QuickVis) {
             return this.data.slice(-1)[0];
         }
     }, {
+        key: "lastIsBad",
+        value: function lastIsBad() {
+            var last = this.getLast();
+            if (last || last === null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }, {
         key: "winLoseOrDraw",
         value: function winLoseOrDraw(val) {
             if (val === undefined || val === null) {
@@ -1256,6 +1408,46 @@ var WinLoss = function (_QuickVis) {
         value: function getWinPercent() {
             return Math.floor(this.winPercent) + "%";
         }
+    }, {
+        key: "focus",
+        value: function focus(vals) {
+            var _this3 = this;
+
+            if (this.data) {
+                vals.forEach(function (val) {
+                    var pos = Math.floor(_this3.data.length * val);
+                    _this3.blur();
+                    _this3.el.classList.add("focused");
+                    _this3.el.querySelector(".topsies .winloss-block:nth-child(" + (pos + 1) + ")").classList.add("focused");
+                    _this3.el.querySelector(".bottomsies .winloss-block:nth-child(" + (pos + 1) + ")").classList.add("focused");
+                });
+            }
+
+            var indicatorEl = this.el.querySelector(".indicator");
+            // LOOK im just trying to get this demo out. this code can all
+            // burn in hell after this
+            var last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
+            var status = "";
+            // HACK - this is copy pasta
+            if (!last && last !== null) {
+                status = "bad";
+            }
+            indicatorEl.setAttribute("class", "indicator " + status);
+        }
+    }, {
+        key: "blur",
+        value: function blur() {
+            var nodes = this.el.querySelectorAll(".winloss-block.focused");
+            var els = Array.prototype.slice.apply(nodes);
+            els.forEach(function (el) {
+                return el.classList.remove("focused");
+            });
+            this.el.classList.remove("focused");
+
+            var indicatorEl = this.el.querySelector(".indicator");
+            var status = this.lastIsBad() ? "bad" : "";
+            indicatorEl.setAttribute("class", "indicator " + status);
+        }
     }]);
     return WinLoss;
 }(QuickVis);
@@ -1268,10 +1460,6 @@ var quickvis = {
     WinLoss: WinLoss,
     working: working
 };
-
-return quickvis;
-
-}());
 
 export default quickvis;
 

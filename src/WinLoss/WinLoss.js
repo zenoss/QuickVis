@@ -26,7 +26,7 @@ function winLossTemplate(vm){
             </div>
         </div>
         <div class="win-percent" ${vm.hideWinPercent ? 'style="display:none;"' : ""}>${vm.getWinPercent()}</div>
-        <div class="indicator ${!vm.getLast() ? "bad" : ""}"></div>
+        <div class="indicator ${vm.lastIsBad() ? "bad" : ""}"></div>
     `;
 }
 
@@ -91,6 +91,15 @@ export default class WinLoss extends QuickVis {
         return this.data.slice(-1)[0];
     }
 
+    lastIsBad(){
+        let last = this.getLast()
+        if(last || last === null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     winLoseOrDraw(val){
         if(val === undefined || val === null){
             return 0;
@@ -115,6 +124,17 @@ export default class WinLoss extends QuickVis {
                 this.el.querySelector(`.bottomsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
             });
         }
+
+        let indicatorEl = this.el.querySelector(".indicator");
+        // LOOK im just trying to get this demo out. this code can all
+        // burn in hell after this
+        let last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
+        let status = "";
+        // HACK - this is copy pasta
+        if(!last && last !== null){
+            status = "bad";
+        }
+        indicatorEl.setAttribute("class", `indicator ${status}`);
     }
 
     blur(){
@@ -122,5 +142,9 @@ export default class WinLoss extends QuickVis {
         let els = Array.prototype.slice.apply(nodes);
         els.forEach(el => el.classList.remove("focused"));
         this.el.classList.remove("focused");
+
+        let indicatorEl = this.el.querySelector(".indicator");
+        let status = this.lastIsBad() ? "bad" : "";
+        indicatorEl.setAttribute("class", `indicator ${status}`);
     }
 }

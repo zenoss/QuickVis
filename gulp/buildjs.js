@@ -18,7 +18,7 @@ gulp.task("compileJS", function(){
         entry: paths.src + "quickvis.js",
         sourceMap: true,
         moduleName: "quickvis",
-        format: "iife",
+        format: "es",
         banner: `/* QuickVis v${VERSION} */`,
         plugins: [
             // hacky workaround for make sure rollup
