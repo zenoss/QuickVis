@@ -87,8 +87,10 @@ export default class Sparkline extends QuickVis {
 
         // draw the value of the last focus point
         let lastValEl = this.el.querySelector(".last-val");
+        let unitsEl = this.el.querySelector(".units");
         let index = Math.floor(this.data.length * vals.slice(-1)[0]);
         lastValEl.innerHTML = this.getFriendly(this.data[index]);
+        unitsEl.innerHTML = this.getMagnitude(this.data[index]) + vm.unit
 
         // TODO - reevaluate threshold light
         if(this.showLastPoint){
@@ -122,7 +124,9 @@ export default class Sparkline extends QuickVis {
 
         // draw the value of the last focus point
         let lastValEl = this.el.querySelector(".last-val");
+        let unitsEl = this.el.querySelector(".units");
         lastValEl.innerHTML = this.getFriendly(this.last);
+        unitsEl.innerHTML = this.getMagnitude(this.last) + vm.unit
 
         if(this.showLastPoint){
             let lastPointEl = this.el.querySelector(".sparkline-last-point");
