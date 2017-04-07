@@ -117,20 +117,46 @@ export default class WinLoss extends QuickVis {
         return `${Math.floor(this.winPercent)}%`;
     }
 
-    focus(vals){
+    focus(val){
         if(this.data){
-            vals.forEach(val => {
-                let pos = Math.floor(this.data.length * val);
-                this.blur();
-                this.el.classList.add("focused");
-                this.el.querySelector(`.topsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
-                this.el.querySelector(`.bottomsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
-            });
+            let start = val
+            let end
+            // oooh a range
+            if(Array.isArray(val)){
+                start = val[0]
+                end = val[1]
+                // use last value for displaying stuff
+                val = end
+            }
+
+            let pos = Math.floor(this.data.length * val);
+            // TODO HACK FIX - i dunno, ya know?
+            pos = pos === this.data.length ? pos - 1 : pos;
+            this.blur();
+            this.el.classList.add("focused");
+
+
+
+            // this.el.querySelector(`.topsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
+            // this.el.querySelector(`.bottomsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
+            let topEls = Array.from(this.el.querySelectorAll(`.topsies .winloss-block`));
+            let bottomEls = Array.from(this.el.querySelectorAll(`.bottomsies .winloss-block`));
+            let focusEls = [topEls[pos], bottomEls[pos]];
+
+            // if this should affect a range
+            if(end){
+                let startPos = Math.floor(this.data.length * start);
+                // TODO HACK FIX - i dunno, ya know?
+                startPos = startPos === this.data.length ? startPos - 1 : startPos;
+                focusEls = [ ...topEls.slice(startPos, pos), ...bottomEls.slice(startPos, pos) ];
+            }
+
+            focusEls.forEach(el => el.classList.add("focused"));
 
             let indicatorEl = this.el.querySelector(".indicator");
             // LOOK im just trying to get this demo out. this code can all
             // burn in hell after this
-            let last = this.data[Math.floor(this.data.length * vals.slice(-1)[0])];
+            let last = this.data[Math.floor(this.data.length * val)];
             let status = "";
             // HACK - this is copy pasta
             if(!last && last !== null){
@@ -138,12 +164,11 @@ export default class WinLoss extends QuickVis {
             }
             indicatorEl.setAttribute("class", `indicator ${status}`);
         }
-
     }
 
     blur(){
         let nodes = this.el.querySelectorAll(`.winloss-block.focused`);
-        let els = Array.prototype.slice.apply(nodes);
+        let els = Array.from(nodes);
         els.forEach(el => el.classList.remove("focused"));
         this.el.classList.remove("focused");
 

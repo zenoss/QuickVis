@@ -26,6 +26,7 @@ function template(vm){
 
 const SPARKLINE_PADDING = 4;
 const SPARKLINE_DATA_PADDING = 1;
+const FOCUSLINE_WIDTH = 2;
 
 const defaultConfig = {
     metric: "",
@@ -55,40 +56,46 @@ export default class Sparkline extends QuickVis {
         this.hideLast = config.hideLast;
         this.showLastPoint = config.showLastPoint;
 
-        this.focusLines = [];
-
         if(config.threshold !== undefined){
             this.threshold = config.threshold;
         }
     }
 
-    // draw a focus line for each value. values should be
-    // 0 - 1 (effectivly 0% - 100%)
-    focus(vals){
+    // val should be 0-1 range. if val2 is present
+    // it will focus the range rather than the point
+    focus(val){
         if(!this.rendered){
             return;
         }
 
-        // add focus lines to the pool as needed
-        while(this.focusLines.length < vals.length){
-            this.drawFocusLine();
+        let start = val
+        let end
+        // oooh a range
+        if(Array.isArray(val)){
+            start = val[0]
+            end = val[1]
+            // use last value for displaying stuff
+            val = end
+            console.log(start, end)
         }
 
-        // TODO - decrease pool?
-        // TODO - batch dom insertions
-
-        vals.forEach((val, i) => {
-            let focusLine = this.focusLines[i];
-            let pxVal = this.xScale(this.xDomain[1] * val);
-            focusLine.style.visibility = "visible";
-            focusLine.setAttribute("x1", pxVal);
-            focusLine.setAttribute("x2", pxVal);
-        });
+        let pxVal = this.xScale(this.xDomain[1] * start);
+        let width = FOCUSLINE_WIDTH;
+        if(end !== undefined){
+            // map start and end values to start and end indices
+            width = this.xScale(Math.ceil(this.data.length * end) - Math.floor(this.data.length * start));
+            this.focusLine.classList.add("range");
+        }
+        this.focusLine.style.visibility = "visible";
+        this.focusLine.setAttribute("x", pxVal);
+        this.focusLine.setAttribute("width", width);
 
         // draw the value of the last focus point
         let lastValEl = this.el.querySelector(".last-val");
         let unitsEl = this.el.querySelector(".units");
-        let index = Math.floor(this.data.length * vals.slice(-1)[0]);
+        let index = Math.floor(this.data.length * val);
+        // TODO HACK FIX - i dunno, ya know?
+        index = index === this.data.length ? index - 1 : index;
         lastValEl.innerHTML = this.getFriendly(this.data[index]);
         unitsEl.innerHTML = this.getMagnitude(this.data[index]) + this.unit
 
@@ -118,9 +125,8 @@ export default class Sparkline extends QuickVis {
         if(!this.rendered){
             return;
         }
-        this.focusLines.forEach(focusLine => {
-            focusLine.style.visibility = "hidden";
-        });
+        this.focusLine.style.visibility = "hidden";
+        this.focusLine.classList.remove("range");
 
         // draw the value of the last focus point
         let lastValEl = this.el.querySelector(".last-val");
@@ -175,8 +181,6 @@ export default class Sparkline extends QuickVis {
             this.setScales(bb.width, bb.height);
             this.setDrawableArea(bb.width, bb.height);
 
-            this.focusLines = [];
-
             switch(this.style){
                 case "area":
                     this.fillSparkline()
@@ -202,6 +206,8 @@ export default class Sparkline extends QuickVis {
                         .drawThreshold();
                     break;
             }
+
+            this.drawFocusLine();
         });
     }
 
@@ -334,16 +340,16 @@ export default class Sparkline extends QuickVis {
     drawFocusLine(){
         let {svg, xScale, yScale} = this,
             {x1, y1, x2, y2} = this.drawableArea;
-        let focusLineEl = createSVGNode("line", {
-            x1: 0,
-            y1: y1 - SPARKLINE_PADDING,
-            x2: 0,
-            y2: y2 + SPARKLINE_PADDING,
+        let focusLineEl = createSVGNode("rect", {
+            x: y1 - SPARKLINE_PADDING,
+            y: y1 - SPARKLINE_PADDING + FOCUSLINE_WIDTH,
+            width: FOCUSLINE_WIDTH,
+            height: y2 + SPARKLINE_PADDING,
             class: "sparkline-focus"
         });
         focusLineEl.style.visibility = "hidden";
         svg.appendChild(focusLineEl);
-        this.focusLines.push(focusLineEl);
+        this.focusLine = focusLineEl;
         return this;
     }
 

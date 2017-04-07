@@ -58,9 +58,10 @@ $full-last-font-size: 2em;
 }
 
 .sparkline .graph .sparkline-focus {
-    stroke: black;
-    stroke-width: 2;
-    fill: transparent;
+    fill: black;
+}
+.sparkline .graph .sparkline-focus.range {
+    opacity: 0.3;
 }
 
 .sparkline .last {
