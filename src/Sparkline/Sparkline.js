@@ -76,7 +76,6 @@ export default class Sparkline extends QuickVis {
             end = val[1]
             // use last value for displaying stuff
             val = end
-            console.log(start, end)
         }
 
         let pxVal = this.xScale(this.xDomain[1] * start);
