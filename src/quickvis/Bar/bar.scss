@@ -39,5 +39,5 @@ $threshold-overhang: 10px;
     top: -($threshold-overhang * 0.5) - 1px;
     height: calc(#{$threshold-overhang} + #{$bar-height});
     background-color: white;
-    border-left: dashed #555 2px;
+    border-left: dotted #555 2px;
 }

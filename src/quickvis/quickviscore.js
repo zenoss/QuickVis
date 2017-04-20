@@ -77,6 +77,7 @@ export default class QuickVis {
     // NOTE: do all your DOM work here, but nowhere
     // else!
     _render(){
+        this.rendered = false;
         let htmlStr = this.template(this);
         // TODO - provide a cleanup function before
         // re-render blows away the old dom els

@@ -76,6 +76,10 @@ export default class Sparkline extends QuickVis {
      */
     async _render(){
         await super._render();
+
+        // we still go more renderin' to do
+        this.rendered = false;
+
         this.svg = this.el.querySelector(".graph");
         let bb = await this.measure(this.svg);
         this.setScales(bb.width, bb.height);
@@ -108,6 +112,8 @@ export default class Sparkline extends QuickVis {
         }
 
         this.drawFocusLine();
+
+        this.rendered = true;
     }
 
     // val should be 0-1 range. if val2 is present

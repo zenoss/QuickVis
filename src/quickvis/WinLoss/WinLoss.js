@@ -119,7 +119,7 @@ export default class WinLoss extends QuickVis {
     }
 
     focus(val){
-        if(this.data){
+        if(this.data && this.rendered){
             let start = val
             let end
             // oooh a range
@@ -136,12 +136,14 @@ export default class WinLoss extends QuickVis {
             this.blur();
             this.el.classList.add("focused");
 
-
-
             // this.el.querySelector(`.topsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
             // this.el.querySelector(`.bottomsies .winloss-block:nth-child(${pos+1})`).classList.add("focused");
             let topEls = Array.from(this.el.querySelectorAll(`.topsies .winloss-block`));
             let bottomEls = Array.from(this.el.querySelectorAll(`.bottomsies .winloss-block`));
+            if(!topEls || !bottomEls){
+                // things arent rendered, or no data or *something*
+                return;
+            }
             let focusEls = [topEls[pos], bottomEls[pos]];
 
             // if this should affect a range

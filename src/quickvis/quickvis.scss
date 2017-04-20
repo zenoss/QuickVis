@@ -1,3 +1,5 @@
+@import "shared";
+
 .vbox {
     display: flex;
     flex-direction: column;
@@ -12,7 +14,6 @@ $label: #888;
 $last-value-value: #555;
 $last-value-magnitude: #AAA;
 $last-value-unit: #AAA;
-$alarm-color: red;
 $row-height: 2em;
 
 .quickvis .label {
@@ -50,6 +51,6 @@ $row-height: 2em;
     display: none;
 }
 .quickvis .indicator.on:after {
-    color: $alarm-color;
+    color: $bad-color;
     content: "●";
 }

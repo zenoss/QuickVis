@@ -8,7 +8,7 @@
 }
 
 .sparkline .visualization {
-    width: 100%;
+    flex: 1;
 }
 
 .sparkline .graph {
@@ -72,6 +72,4 @@
 }
 
 .sparkline .indicator:after {
-    display: flex;
-    margin: -5px 5px 0 5px;
 }
