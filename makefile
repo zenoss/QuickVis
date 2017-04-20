@@ -1,61 +1,54 @@
-docker_working_DIR = /mnt
+BUILD = build
+TMP = tmp
+SRC = src
 
-UID = $(shell id -u)
-GID = $(shell id -g)
-PWD = $(shell pwd)
+NODE_MODULES = node_modules
+LIVERELOAD = $(NODE_MODULES)/livereload/bin/livereload.js
+HTTP = $(NODE_MODULES)/http-server/bin/http-server
 
-IMAGENAME = build-tools
-# NOTE - this is the build-tools version, NOT
-# the quickvis lib version. You want
-# gulp/config.js for that
-VERSION = 0.0.5
-TAG = zenoss/$(IMAGENAME):$(VERSION)
+SRC_FILES = $(find $(SRC)/quickvis)
+DEMO_SRC_FILES = $(find $(SRC)/demo)
 
-default: build
+# the make tasks you care about are:
+# default, watch, serve, clean, live-serve
 
-# build the quickvis lib
-build: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp build\"";
+default: all
 
-# test the quickvis lib
-test: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp test\"";
+# make all the things
+all: quickvis demo
 
-# build, zip, test quickvis lib
-release: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp release\"";
+quickvis: $(SRC_FILES)
+	cd $(SRC)/quickvis && make
 
-# install npm packages
-npm-install:
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\"";
+demo: $(DEMO_SRC_FILES)
+	cd $(SRC)/demo && make
 
-# verify distributable js lib is up to date
-verify: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp verify\"";
+# watch filesystem for changes and rebuild
+# various pieces as needed
+watch:
+	$(MAKE) all
+	$(MAKE) watch-all -j
 
-.PHONY: default build test release npm-install verify
+# NOTE - you dont want this one, you just want watch
+watch-all: watch-quickvis watch-demo livereload serve
+
+watch-demo:
+	cd $(SRC)/demo && make watch
+
+watch-quickvis:
+	cd $(SRC)/quickvis && make watch
+
+serve:
+	$(HTTP) $(BUILD)
+
+livereload:
+	$(LIVERELOAD) $(BUILD) -w 500 -d
+
+live-serve:
+	$(MAKE) -j serve livereload
+
+clean:
+	rm -rf build/*
+	rm -rf tmp/*
+
+.PHONY: serve livereload watch watch-all watch-demo watch-quickvis watch-src clean

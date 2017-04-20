@@ -1,0 +1,63 @@
+@import "../shared";
+
+.quickvis.vis-grid {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.quickvis.vis-grid {
+    .sparkline,
+    .win-loss,
+    .simple-bar {
+        flex-wrap: nowrap;
+        display: table-row;
+    }
+
+    .sparkline > *,
+    .win-loss > *,
+    .simple-bar > * {
+        display: table-cell;
+        overflow: hidden;
+        height: 20px;
+        vertical-align: middle;
+    }
+
+    .sparkline,
+    .win-loss,
+    .simple-bar {
+        .label {
+            font-size: 0.9em;
+            flex-basis: initial;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 60px;
+            padding-right: 5px;
+        }
+        .visualization {
+            width: 140px;
+        }
+        .last-value {
+            font-size: 1.2em;
+            width: 50px;
+            padding-left: 5px;
+        }
+        .last-value > * {
+            float: left;
+        }
+        .indicator {
+            width: 24px;
+            padding-left: 4px;
+        }
+    }
+
+    .simple-bar {
+        .bars {
+            height: 10px;
+        }
+        .bars .threshold {
+            top: -3px;
+            height: 15px;
+        }
+    }
+}

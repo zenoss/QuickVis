@@ -1,0 +1,43 @@
+@import "../shared";
+
+$bar-height: 2em;
+
+.simple-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.simple-bar .visualization {
+    flex: 1;
+    margin-right: 6px;
+}
+
+.simple-bar .bars {
+    display: flex;
+    width: 100%;
+    position: relative;
+    border: solid #999 1px;
+    background-color: #EEE;
+    height: $bar-height;
+}
+
+.simple-bar .bars .bar {
+    background-color: #555;
+    height: 100%;
+}
+.simple-bar .bars .bar-free {
+    background-color: transparent !important;
+}
+
+$threshold-overhang: 10px;
+
+.simple-bar .bars .threshold {
+    position: absolute;
+    left: 0;
+    top: -($threshold-overhang * 0.5) - 1px;
+    height: calc(#{$threshold-overhang} + #{$bar-height});
+    background-color: white;
+    border-left: dashed #555 2px;
+}

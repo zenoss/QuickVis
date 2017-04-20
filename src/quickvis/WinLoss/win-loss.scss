@@ -1,0 +1,68 @@
+@import "../shared";
+
+.win-loss{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.win-loss {
+    .label {
+        margin-bottom: 4px;
+    }
+    .winloss-wrap {
+        display: flex;
+        flex: 1;
+    }
+    .visualization {
+        flex: 1;
+        padding: 6px 0;
+    }
+    .winloss {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .winloss-block {
+        min-width: 6px;
+        height: 100%;
+        flex: 1;
+        margin-right: 1px;
+    }
+
+    .topsies, .bottomsies {
+        display: flex;
+        height: 50%;
+    }
+
+    .topsies {
+        border-bottom: solid #888 1px;
+    }
+
+    .topsies .marked {
+        background-color: #999;
+    }
+
+    .bottomsies .marked {
+        background-color: #333;
+    }
+
+    .last-value {
+        padding-right: 4px;
+    }
+    .indicator:after {
+        position: relative;
+        top: -1px;
+    }
+}
+
+.win-loss.focused {
+    .winloss-block {
+        opacity: 0.4;
+    }
+    .winloss-block.focused {
+        opacity: 1;
+    }
+}
+
