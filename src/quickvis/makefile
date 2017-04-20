@@ -17,15 +17,18 @@ VERSION = $(shell cat $(ROOT)/VERSION)
 DIST = $(ROOT)/dist
 QUICKVIS_RELEASED = $(DIST)/quickvis-$(VERSION).js
 
+# whether or not to transpile js
+TRANSPILE=
+
 default: dev
 
 dev: build-js build-css
 
+release: TRANSPILE=true
 release: build-js build-css $(QUICKVIS_RELEASED)
 
 $(QUICKVIS_RELEASED):
 	mkdir -p $(@D)
-	# NOTE - combines js and css
 	cat $(CSS) $(QUICKVIS) > $@
 
 build-js: $(QUICKVIS)
@@ -33,7 +36,7 @@ build-css: $(CSS)
 
 $(QUICKVIS): $(QUICKVIS_SRC)
 	mkdir -p $(@D)
-	ENTRY=quickvis.js DEST=$(QUICKVIS) $(ROLLUP) -c rollup.config.js
+	ENTRY=quickvis.js DEST=$(QUICKVIS) TRANSPILE=$(TRANSPILE) $(ROLLUP) -c rollup.config.js
 
 css-preprocess: $(SASS_SRC)
 	mkdir -p $(@D)

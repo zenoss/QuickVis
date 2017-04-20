@@ -34,8 +34,9 @@ make tdd
 # TODO - tests
 # TODO - zip
 make release
-
 ```
+
+Note, while `make release` will create a transpiled lib which supports IE11 and up, you will need a browser with support for some ES6 and ES7 features to develop this.
 
 ## Releasing
 Use git flow to release a version to the `master` branch. A jenkins job can be triggered manually to build and publish the
