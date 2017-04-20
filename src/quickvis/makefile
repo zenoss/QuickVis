@@ -12,10 +12,12 @@ SASS_SRC = $(shell find . -name "*.scss")
 SASS = $(NODE_MODULES)/node-sass/bin/node-sass
 CHOKIDAR = $(NODE_MODULES)/chokidar-cli/index.js
 ROLLUP = $(NODE_MODULES)/rollup/bin/rollup
+ZIP = $(NODE_MODULES)/cross-zip-cli/zip.js
 
 VERSION = $(shell cat $(ROOT)/VERSION)
+QUICKVIS_VERSION_NAME = quickvis-$(VERSION)
 DIST = $(ROOT)/dist
-QUICKVIS_RELEASED = $(DIST)/quickvis-$(VERSION).js
+QUICKVIS_RELEASED = $(DIST)/$(QUICKVIS_VERSION_NAME).js
 
 # whether or not to transpile js
 TRANSPILE=
@@ -25,11 +27,17 @@ default: dev
 dev: build-js build-css
 
 release: TRANSPILE=true
-release: build-js build-css $(QUICKVIS_RELEASED)
+release: package
 
-$(QUICKVIS_RELEASED):
+$(QUICKVIS_RELEASED): build-js build-css
 	mkdir -p $(@D)
 	cat $(CSS) $(QUICKVIS) > $@
+
+package: $(QUICKVIS_RELEASED)
+	mkdir -p $(DIST)/$(QUICKVIS_VERSION_NAME)
+	cp $(QUICKVIS_RELEASED) $(DIST)/$(QUICKVIS_VERSION_NAME)
+	$(ZIP) $(DIST)/$(QUICKVIS_VERSION_NAME) $(QUICKVIS_VERSION_NAME).zip
+	rm -rf $(DIST)/$(QUICKVIS_VERSION_NAME)
 
 build-js: $(QUICKVIS)
 build-css: $(CSS)
