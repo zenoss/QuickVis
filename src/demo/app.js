@@ -167,9 +167,9 @@
     var gridEl = document.querySelector(".grid-wrap");
     var vis = [
         new Sparkline([98,72,6,18,18,123,95,38,1023,11], {label: "horses", threshold: 500}),
-        new WinLoss([1,1,1,1,0,0,null,null,0,0,1,1,1,0,1,1], {label: "horses2cat", tickCount: 15}),
         new Sparkline([30,32,33,56,22,46,56,43,24,94], {label: "cats"}),
-        new WinLoss([1,1,0,0,1,1,0,0,0,0,1,1,1,0,1,1], {label: "horses2owl", tickCount: 15}),
+        new Sparkline([30,32,33,56,22,0,0,0,0,94], {label: "cat arms", style: "bar", unit: ""}),
+        new WinLoss([1,1,1,1,0,0,null,null,0,0,1,1,1,0,1,1], {label: "horses2cat", tickCount: 15}),
         new WinLoss([1,1,0,0,1,0,1,1,1,1,0,1,1,0,1,1], {label: "humans", tickCount: 15}),
         new Bar([65,63,73,82,50,41,93,63,11,57], {
             label: "bear bar",
