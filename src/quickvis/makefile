@@ -37,7 +37,7 @@ $(QUICKVIS): $(QUICKVIS_SRC)
 
 css-preprocess: $(SASS_SRC)
 	mkdir -p $(@D)
-	$(SASS) -o $(TMP) .
+	$(SASS) --output-style compressed -o $(TMP) .
 
 $(CSS): css-preprocess
 	mkdir -p $(@D)

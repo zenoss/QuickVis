@@ -1,4 +1,8 @@
 /* jshint node: true */
+import resolve from "rollup-plugin-node-resolve";
+import commonjs from "rollup-plugin-commonjs";
+import babel from "rollup-plugin-babel";
+
 const {ENTRY, DEST} = process.env;
 
 if(!ENTRY || !DEST){
@@ -9,9 +13,10 @@ if(!ENTRY || !DEST){
 let config = {
     entry: ENTRY,
     dest: DEST,
-    moduleName: 'app',
+    moduleName: 'quickvis',
     format: 'iife',
-    sourceMap: true
+    sourceMap: true,
+    plugins: [ resolve(), commonjs(), babel() ]
 };
 
 export default config;

@@ -1,5 +1,8 @@
 "use strict";
 
+// polyfill es7 things
+import "babel-polyfill";
+
 import Sparkline from "./Sparkline/Sparkline";
 import StackedBar from "./StackedBar/StackedBar";
 import Bar from "./Bar/Bar";

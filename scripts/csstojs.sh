@@ -17,15 +17,15 @@ echo "combining $# css files"
 
 CSS=""
 for f in $CSS_FILES; do
-    css=""
-    printf -v css "\n/*\n * %s \n */\n%s\n" "$(basename $f)" "$(cat $f)"
-    CSS+="$css"
+    # css=""
+    # printf -v css "\n/*\n * %s \n */\n%s\n" "$(basename $f)" "$(cat $f)"
+    CSS+="$(cat $f)"
 done
 cat > $OUT_FILE << EOM
 (function(){
     var styleEl = document.createElement("style");
     styleEl.type = "text/css";
-    styleEl.appendChild(document.createTextNode(\`$CSS\`));
+    styleEl.appendChild(document.createTextNode('$CSS'));
     document.head.appendChild(styleEl);
 })();
 EOM
