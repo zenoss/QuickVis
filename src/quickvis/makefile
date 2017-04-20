@@ -2,7 +2,6 @@ ROOT = ../..
 BUILD = $(ROOT)/build
 SCRIPTS = $(ROOT)/scripts
 TMP = $(ROOT)/tmp
-BUILD_LIBS = $(BUILD)/libs
 NODE_MODULES=$(ROOT)/node_modules
 
 QUICKVIS = $(BUILD)/quickvis.js
@@ -14,18 +13,23 @@ SASS = $(NODE_MODULES)/node-sass/bin/node-sass
 CHOKIDAR = $(NODE_MODULES)/chokidar-cli/index.js
 ROLLUP = $(NODE_MODULES)/rollup/bin/rollup
 
+VERSION = $(shell cat $(ROOT)/VERSION)
+DIST = $(ROOT)/dist
+QUICKVIS_RELEASED = $(DIST)/quickvis-$(VERSION).js
+
 default: dev
 
-# build quickvis, but exclude 3rd party libs, and instead
-# copy those libs to the build dir
 dev: build-js build-css
 
-# TODO - bundled distributable with all deps
+release: build-js build-css $(QUICKVIS_RELEASED)
+
+$(QUICKVIS_RELEASED):
+	mkdir -p $(@D)
+	# NOTE - combines js and css
+	cat $(CSS) $(QUICKVIS) > $@
 
 build-js: $(QUICKVIS)
 build-css: $(CSS)
-
-#d3: $(BUILD_LIBS)/d3.js
 
 $(QUICKVIS): $(QUICKVIS_SRC)
 	mkdir -p $(@D)
@@ -38,16 +42,6 @@ css-preprocess: $(SASS_SRC)
 $(CSS): css-preprocess
 	mkdir -p $(@D)
 	$(SCRIPTS)/csstojs.sh $(CSS) $(shell find $(TMP) -name "*.css")
-
-# fontawesome deps
-$(BUILD_LIBS)/font-awesome/%:
-	mkdir -p $(@D)
-	cp -r $(NODE_MODULES)/font-awesome/$* $@
-
-# d3
-#$(BUILD_LIBS)/d3.js:
-#	mkdir -p $(@D)
-#   cp $(NODE_MODULES)/d3/build/d3.js $@
 
 # watch filesystem for changes and rebuild
 # various pieces as needed

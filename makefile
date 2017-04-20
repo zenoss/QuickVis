@@ -17,6 +17,9 @@ default: all
 # make all the things
 all: quickvis demo
 
+release:
+	cd $(SRC)/quickvis && make release
+
 quickvis: $(SRC_FILES)
 	cd $(SRC)/quickvis && make
 
@@ -50,5 +53,6 @@ live-serve:
 clean:
 	rm -rf build/*
 	rm -rf tmp/*
+	rm -rf dist/*
 
 .PHONY: serve livereload watch watch-all watch-demo watch-quickvis watch-src clean
