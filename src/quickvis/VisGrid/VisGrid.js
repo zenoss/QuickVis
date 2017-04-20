@@ -15,6 +15,22 @@ export default class VisGrid {
                 this.el.appendChild(v.el);
                 v._render();
             });
+
+            fastdom.measure(() => {
+                /*
+                let max = [0,0,0,0];
+                const selectors = [".label", ".visualization", ".last-value", ".indicator"];
+                this.vis.forEach(v => {
+                    selectors.forEach((selector, i) => {
+                        let w = v.el.querySelector(selector).getBoundingClientRect().width;
+                        max[i] = Math.max(w, max[i]);
+                    });
+                });
+                console.log(max);
+                */
+
+                let w = this.el.getBoundingClientRect().width;
+            });
         });
     }
 

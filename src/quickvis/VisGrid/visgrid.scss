@@ -2,7 +2,6 @@
 
 .quickvis.vis-grid {
     display: table;
-    table-layout: fixed;
     width: 100%;
 }
 .quickvis.vis-grid {
@@ -31,22 +30,19 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            width: 60px;
             padding-right: 5px;
         }
         .visualization {
-            width: 140px;
         }
         .last-value {
             font-size: 1.2em;
-            width: 50px;
             padding-left: 5px;
+            white-space: nowrap;
         }
         .last-value > * {
-            float: left;
+            display: inline-block;
         }
         .indicator {
-            width: 24px;
             padding-left: 4px;
         }
     }

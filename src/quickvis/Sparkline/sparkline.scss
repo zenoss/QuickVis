@@ -8,51 +8,56 @@
 }
 
 .sparkline .visualization {
-    flex: 1 1 120px;
-    margin-right: 6px;
+    width: 100%;
 }
 
-.sparkline .visualization .sparkline-path {
+.sparkline .graph {
+    margin-right: 6px;
+    height: 100%;
+    width: 100%;
+}
+
+.sparkline .graph .sparkline-path {
     stroke: #555;
     stroke-width: 1;
     fill: transparent;
 }
 
-.sparkline .visualization .sparkline-path.shaded {
+.sparkline .graph .sparkline-path.shaded {
     stroke: transparent;
     fill: #CCC;
 }
 
-.sparkline .visualization .sparkline-bar {
+.sparkline .graph .sparkline-bar {
     stroke: transparent;
     fill: #AAA;
 }
 
-.sparkline .visualization .sparkline-bar.bad {
+.sparkline .graph .sparkline-bar.bad {
     fill: $bad-color;
 }
 
-.sparkline .visualization .sparkline-scatter,
-.sparkline .visualization .sparkline-last-point {
+.sparkline .graph .sparkline-scatter,
+.sparkline .graph .sparkline-last-point {
     fill: #AAA;
 }
 
-.sparkline .visualization .sparkline-scatter.bad,
-.sparkline .visualization .sparkline-last-point.bad {
+.sparkline .graph .sparkline-scatter.bad,
+.sparkline .graph .sparkline-last-point.bad {
     fill: $bad-color;
 }
 
-.sparkline .visualization .sparkline-threshold {
+.sparkline .graph .sparkline-threshold {
     stroke: #AAA;
     stroke-width: 2;
     stroke-dasharray: 2, 2;
     fill: transparent;
 }
 
-.sparkline .visualization .sparkline-focus {
+.sparkline .graph .sparkline-focus {
     fill: black;
 }
-.sparkline .visualization .sparkline-focus.range {
+.sparkline .graph .sparkline-focus.range {
     opacity: 0.3;
 }
 

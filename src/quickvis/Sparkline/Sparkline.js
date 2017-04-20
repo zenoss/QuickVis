@@ -10,7 +10,9 @@ import {linearScale, createSVGNode, getFormattedNumber} from "../utils";
 function template(vm){
     return `
         <div class="label">${vm.label}</div>
-        <svg class="visualization"></svg>
+        <div class="visualization">
+            <svg class="graph"></svg>
+        </div>
         <div class="last-value">
             <div class="value" style="${vm.hideLast ? "display:none;" : ""}">${vm.getFriendly(vm.last)}</div>
             <div class="magnitude">${vm.getMagnitude(vm.last)}</div>
@@ -74,7 +76,7 @@ export default class Sparkline extends QuickVis {
      */
     async _render(){
         await super._render();
-        this.svg = this.el.querySelector(".visualization");
+        this.svg = this.el.querySelector(".graph");
         let bb = await this.measure(this.svg);
         this.setScales(bb.width, bb.height);
         this.setDrawableArea(bb.width, bb.height);
