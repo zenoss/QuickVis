@@ -1,0 +1,75 @@
+@import "../shared";
+
+.sparkline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.sparkline .visualization {
+    flex: 1;
+}
+
+.sparkline .graph {
+    margin-right: 6px;
+    height: 100%;
+    width: 100%;
+}
+
+.sparkline .graph .sparkline-path {
+    stroke: #555;
+    stroke-width: 1;
+    fill: transparent;
+}
+
+.sparkline .graph .sparkline-path.shaded {
+    stroke: transparent;
+    fill: #CCC;
+}
+
+.sparkline .graph .sparkline-bar {
+    stroke: transparent;
+    fill: #AAA;
+}
+
+.sparkline .graph .sparkline-bar.bad {
+    fill: $bad-color;
+}
+
+.sparkline .graph .sparkline-scatter,
+.sparkline .graph .sparkline-last-point {
+    fill: #AAA;
+}
+
+.sparkline .graph .sparkline-scatter.bad,
+.sparkline .graph .sparkline-last-point.bad {
+    fill: $bad-color;
+}
+
+.sparkline .graph .sparkline-threshold {
+    stroke: #AAA;
+    stroke-width: 2;
+    stroke-dasharray: 2, 2;
+    fill: transparent;
+}
+
+.sparkline .graph .sparkline-focus {
+    fill: black;
+}
+.sparkline .graph .sparkline-focus.range {
+    opacity: 0.3;
+}
+
+.sparkline .last-value {
+    align-items: baseline;
+    line-height: 0.7em;
+    letter-spacing: -1px;
+}
+
+.sparkline .value {
+    margin-right: 2px;
+}
+
+.sparkline .indicator:after {
+}

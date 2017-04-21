@@ -1,0 +1,56 @@
+@import "shared";
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.hbox {
+    display: flex;
+    flex-direction: row;
+}
+
+$label: #888;
+$last-value-value: #555;
+$last-value-magnitude: #AAA;
+$last-value-unit: #AAA;
+$row-height: 2em;
+
+.quickvis .label {
+    color: $label;
+    font-size: 1.2rem;
+    flex-basis: 100%;
+}
+.quickvis .visualization {
+    height: $row-height;
+}
+.quickvis .last-value {
+    font-size: $row-height;
+    display: flex;
+    flex-direction: row;
+}
+.quickvis .last-value .value {
+    font-size: 1em;
+    color: $last-value-value
+}
+.quickvis .last-value .unit {
+    font-size: 0.9em;
+    color: $last-value-unit;
+}
+.quickvis .last-value .magnitude {
+    font-size: 0.9em;
+    color: $last-value-magnitude;
+}
+
+.quickvis .indicator:after {
+    font-size: 2rem;
+    content: "○";
+    color: #CCC;
+}
+.quickvis .indicator.off:after {
+    display: none;
+}
+.quickvis .indicator.on:after {
+    color: $bad-color;
+    content: "●";
+}

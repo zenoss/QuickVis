@@ -1,3 +1,66 @@
+BUILD = build
+TMP = tmp
+SRC = src
+
+NODE_MODULES = node_modules
+LIVERELOAD = $(NODE_MODULES)/livereload/bin/livereload.js
+HTTP = $(NODE_MODULES)/http-server/bin/http-server
+
+SRC_FILES = $(find $(SRC)/quickvis)
+DEMO_SRC_FILES = $(find $(SRC)/demo)
+
+default: all
+
+# make all the things
+all: quickvis demo
+
+ifeq ($(USE_DOCKER),true)
+release:
+	$(MAKE) docker-release
+else
+release:
+	cd $(SRC)/quickvis && make release
+endif
+
+quickvis: $(SRC_FILES)
+	cd $(SRC)/quickvis && make
+
+demo: $(DEMO_SRC_FILES)
+	cd $(SRC)/demo && make
+
+# watch filesystem for changes and rebuild
+# various pieces as needed
+watch:
+	$(MAKE) all
+	$(MAKE) watch-all -j
+
+# NOTE - you dont want this one, you just want watch
+watch-all: watch-quickvis watch-demo livereload serve
+
+watch-demo:
+	cd $(SRC)/demo && make watch
+
+watch-quickvis:
+	cd $(SRC)/quickvis && make watch
+
+serve:
+	$(HTTP) $(BUILD)
+
+livereload:
+	$(LIVERELOAD) $(BUILD) -w 500 -d
+
+live-serve:
+	$(MAKE) -j serve livereload
+
+clean:
+	rm -rf build/*
+	rm -rf tmp/*
+	rm -rf dist/*
+
+######################################################
+# DOCKER BUILD STUFF
+# for yall crusty folks dont want nodejs on your system
+######################################################
 docker_working_DIR = /mnt
 
 UID = $(shell id -u)
@@ -5,57 +68,25 @@ GID = $(shell id -g)
 PWD = $(shell pwd)
 
 IMAGENAME = build-tools
-# NOTE - this is the build-tools version, NOT
-# the quickvis lib version. You want
-# gulp/config.js for that
-VERSION = 0.0.2
-TAG = zenoss/$(IMAGENAME):$(VERSION)
+# NOTE - this is not the quickvis lib version!
+BUILD_TOOLS_VERSION = 0.0.9-dev
+TAG = zenoss/$(IMAGENAME):$(BUILD_TOOLS_VERSION)
 
-default: build
-
-# build the quickvis lib
-build: npm-install
+docker-release: yarn-install
 	docker run --rm \
 		-v $(PWD):$(docker_working_DIR) \
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp build\"";
-
-# test the quickvis lib
-test: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp test\"";
-
-# build, zip, test quickvis lib
-release: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp release\"";
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && cd $(SRC)/quickvis && make release\"";
 
 # install npm packages
-npm-install:
+yarn-install:
 	docker run --rm \
 		-v $(PWD):$(docker_working_DIR) \
 		-e UID_X=$(UID) \
 		-e GID_X=$(GID) \
 		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && npm install\"";
+		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && yarn install\"";
 
-# verify distributable js lib is up to date
-verify: npm-install
-	docker run --rm \
-		-v $(PWD):$(docker_working_DIR) \
-		-e UID_X=$(UID) \
-		-e GID_X=$(GID) \
-		$(TAG) \
-		/bin/bash -c "source /root/userdo.sh \"cd $(docker_working_DIR) && gulp verify\"";
-
-.PHONY: default build test release npm-install verify
+.PHONY: serve livereload watch watch-all watch-demo watch-quickvis watch-src clean

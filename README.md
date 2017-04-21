@@ -6,52 +6,41 @@ Take a look at [the live demos](https://zenoss.github.io/QuickVis/)
 ![some quickvis vis's](quickvis1.png)
 
 ## Development
-To develop this project you will need `node` (v6 or greater) and `npm` installed. Once that's all squared away, install some npm packages
+To develop this project you will need `node` (v6 or greater) `yarn`, and good ol' make.
 
 ```
-# global packages
-npm install -g gulp
-
-#local dependencies
-npm install
+# install dependencies
+yarn install
 ```
 
-Now you can use `gulp` to do things
+Now you can use `make` to do things
 
 ```
 # build the js lib
-gulp build
+make
 
 # bring up the demo page with livereload for active development
-gulp watch
+make watch
 
 # run unit tests
-gulp test
-
-# continuously run unit tests for active development
-gulp tdd
-
-# build the js lib, run tests, zip lib and map,
-gulp release
-
-```
-
-If you don't have nodejs :( but you *do* have docker installed, you're in luck! You can do a few things via `make`
-
-```
-# build the js lib
-make build
-
-# run unit tests
+# TODO - reimplement this
 make test
 
-# build, test, zip
+# continuously run unit tests for active development
+# TODO - reimplement this
+make tdd
+
+# build the js lib, run tests, zip lib and map,
+# TODO - tests
+# TODO - zip
 make release
 ```
 
+Note, while `make release` will create a transpiled lib which supports IE11 and up, you will need a browser with support for some ES6 and ES7 features to develop this.
+
 ## Releasing
 Use git flow to release a version to the `master` branch. A jenkins job can be triggered manually to build and publish the
-artifact to zenpip.  During the git flow release process, update the version in the makefile by removing the `dev`
+artifact to zenpip.  During the git flow release process, update the version in the `VERSION` file by removing the `dev`
 suffix and then increment the version number in the `develop` branch.
 
 ### Versioning
@@ -68,26 +57,26 @@ The version convention is for the `develop` branch to have the next release vers
   * `git checkout develop`
   * `git pull origin develop`
 
-3. Start release of next version. The version is usually the version in the makefile minus the `-dev` suffix.  e.g., if the version
+3. Start release of next version. The version is usually the version in the `VERSION` file minus the `-dev` suffix.  e.g., if the version
   in `develop` is `1.1.1-dev` and in `master` `1.1.0`, then the
   `<release_name>` will be the new version in `master`, i.e. `1.1.1`.
   *  `git flow release start <release_name>`
 
-4. Update the `VERSION` variable in `gulp/config.js`. e.g set it to `1.1.1`
+4. Update the `VERSION` file. e.g set it to `1.1.1`
 
-5. run `gulp release` to make sure everything builds properly and to update the built lib to the latest version
+5. run `make release` to make sure everything builds properly and to update the built lib to the latest version
 
 6. Commit and tag everything, don't push.
   * `git commit....`
   * `git flow release finish <release_name>`
   * `git push origin --tags`
 
-7. You will be on the `develop` branch again. While on `develop` branch, edit the the `VERSION` variable in `gulp/config.js` to
-be the next development version. For example, if you just released version 1.1.1, then change the `VERSION` variable to
+7. You will be on the `develop` branch again. While on `develop` branch, edit the the `VERSION` file to
+be the next development version. For example, if you just released version 1.1.1, then change `VERSION` to
 `1.1.2-dev`.
 
 8. Check in `develop` version bump and push.
-  * `gulp release` to bump the library version
+  * `make release` to bump the library version
   * `git commit...`
   * `git push`
 
@@ -95,17 +84,17 @@ be the next development version. For example, if you just released version 1.1.1
   * `git checkout master`
   * `git push`
 
-10. Have someone manually kick off the jenkins job to build master which will publish the images to Docker hub.
+10. Have someone manually kick off the jenkins job to build master which will publish the images to Docker hub. TODO - Jenkins should build automatically
 
 ## Updating Demo Page
-The demo page for this project is at [zenoss.github.io/QuickVis](https://zenoss.github.io/QuickVis), and should be updated when anything is changed. After the changes are released to master, you can build the demo page with `gulp demo`. Copy the `www` directory somewhere safe, then checkout the github pages branch with `git checkout gh-pages`. Finally, copy the contents of the `www` directory into the current working tree, commit, and push.
+The demo page for this project is at [zenoss.github.io/QuickVis](https://zenoss.github.io/QuickVis), and should be updated when anything is changed. After the changes are released to master, you can build the demo page with `make demo`. Copy the `www` directory somewhere safe, then checkout the github pages branch with `git checkout gh-pages`. Finally, copy the contents of the `www` directory into the current working tree, commit, and push.
 
 ## Development Best Practices
 The pieces at play here are the usual supects: **Model**, **View**, and **ViewModel**. **Model** is whatever data is passed by the user into the `update()` function, and should be treated as immutable. **View** is the HTML template that is eventually passed into the DOM. The **ViewModel** is the instance of the visualization (eg: Sparkline or StackedBar), and contains the model as well as template helper methods for getting human-readable info from the model. In this way, the ViewModel binds the View together with the Model.
 
 In order to keep things as reasonable as one can expect in the wild west of webdev, there are some best practices that should be followed when creating new visualizations or modifying existing ones. Take a look at `src/Sparkline.js` for lots of comments about the module's structure.
 
-* Only touch the DOM in the `_render()` method or draw helper methods, but no where else! The DOM is dangerous and scary and should be hidden far far away. However, to keep `_render()` from getting to unwieldy, you can create draw helpers to do specific things like `drawLine()`. It's ok to access the DOM inside helpers as well, but treat the DOM like some sort of terrifying mystical creature that you don't really understand because it basically is.
+* Only touch the DOM in the `_render()` method or draw helper methods, but no where else! The DOM is dangerous and scary and should be hidden far far away. However, to keep `_render()` from getting too unwieldy, you can create draw helpers to do specific things like `drawLine()`. It's ok to access the DOM inside helpers as well, but treat the DOM like some sort of terrifying mystical creature that you don't really understand because it basically is (and that's why libs like react exist!).
 
 [TODO - sample code]
 
@@ -119,4 +108,3 @@ In order to keep things as reasonable as one can expect in the wild west of webd
 
 ## Some Other Notes
 * QuickVis visualizations will try to fill the entire available space. It is up to the containing DOM element to control size
-* Visualizations should be attached to the DOM *before* `render()` is called.

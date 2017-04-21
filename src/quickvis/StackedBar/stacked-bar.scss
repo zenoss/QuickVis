@@ -1,0 +1,99 @@
+@import "../shared";
+
+$bar-height: 30px;
+
+.stacked-bar {
+    position: relative;
+}
+
+.stacked-bar .stacked-wrapper {
+    display: flex;
+    flex-direction: column;
+    color: #555;
+    margin-right: 25px;
+}
+
+.stacked-bar .name {
+    font-size: 1.3em;
+    margin-bottom: 2px;
+}
+
+.stacked-bar .bars {
+    display: flex;
+    height: $bar-height;
+    position: relative;
+    border: solid #999 1px;
+    background-color: #EEE;
+}
+
+.stacked-bar .bars .bar-color-none { background-color: transparent !important; }
+.stacked-bar .bars .bar-color-0 { background-color: #6A95A9 !important; }
+.stacked-bar .bars .bar-color-1 { background-color: #314F5C !important; }
+.stacked-bar .bars .bar-color-2 { background-color: #8F8B3E !important; }
+.stacked-bar .bars .bar-color-3 { background-color: #A8A551 !important; }
+.stacked-bar .bars .bar-color-4 { background-color: #3A583B !important; }
+.stacked-bar .bars .bar-color-5 { background-color: #5CA45E !important; }
+.stacked-bar .bars .bar-color-6 { background-color: #8B6A4E !important; }
+.stacked-bar .bars .bar-color-7 { background-color: #A48164 !important; }
+.stacked-bar .bars .bar-color-8 { background-color: #A44C73 !important; }
+.stacked-bar .bars .bar-color-9 { background-color: #572038 !important; }
+
+.stacked-bar .bars .bar {
+    background-color: #555;
+    color: #EEE;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: default;
+    overflow: hidden;
+    line-height: $bar-height;
+}
+
+.stacked-bar .bar .bar-label {
+    margin: 0 4px;
+}
+
+$threshold-overhang: 10px;
+$threshold-height: $bar-height + $threshold-overhang;
+
+.stacked-bar .bars .threshold {
+    position: absolute;
+    left: 0;
+    top: -($threshold-overhang * 0.5) - 1px;
+    height: $threshold-height;
+    background-color: white;
+    border-left: dashed #555 2px;
+}
+
+.stacked-bar .stacked-footer {
+    font-size: 0.8em;
+    display: flex;
+    padding-top: 2px;
+}
+
+.stacked-bar .stacked-footer .used,
+.stacked-bar .stacked-footer .free {
+    margin-right: 10px;
+}
+.stacked-bar .stacked-footer .total {
+    margin-left: auto;
+}
+
+.stacked-bar .indicator {
+    font-size: 1.8em;
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+}
+.stacked-bar .indicator:after {
+    display: flex;
+    color: transparent;
+    content: "○";
+    color: #CCC;
+}
+.stacked-bar .indicator.off:after {
+    display: none;
+}
+.stacked-bar .indicator.on:after {
+    color: $bad-color;
+    content: "●";
+}
