@@ -2,7 +2,7 @@
 "use strict";
 
 import QuickVis from "../quickviscore";
-import {createSVGNode, getFormattedNumber} from "../utils";
+import {getFormattedNumber} from "../utils";
 
 function template(vm){
     return `
@@ -63,14 +63,12 @@ export default class Bar extends QuickVis {
     }
 
     focus(val){
-        let start = val
-        let end
+        let end;
         // oooh a range
         if(Array.isArray(val)){
-            start = val[0]
-            end = val[1]
+            end = val[1];
             // use last value for displaying stuff
-            val = end
+            val = end;
         }
 
         let pos = Math.floor(this.data.length * val);

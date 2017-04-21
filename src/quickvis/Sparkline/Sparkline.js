@@ -86,29 +86,31 @@ export default class Sparkline extends QuickVis {
         this.setDrawableArea(bb.width, bb.height);
 
         switch(this.style){
-            case "area":
-                this.fillSparkline()
-                    .drawSparkline()
-                    .drawThreshold();
-                if(this.showLastPoint){
-                    this.drawLastPoint();
-                }
-                break;
-            case "line":
-                this.drawSparkline()
-                    .drawThreshold();
-                if(this.showLastPoint){
-                    this.drawLastPoint();
-                }
-                break;
-            case "bar":
-                this.drawBars()
-                    .drawThreshold();
-                break;
-            case "scatter":
-                this.drawScatter()
-                    .drawThreshold();
-                break;
+        case "area":
+            this.fillSparkline()
+                .drawSparkline()
+                .drawThreshold();
+            if(this.showLastPoint){
+                this.drawLastPoint();
+            }
+            break;
+        case "line":
+            this.drawSparkline()
+                .drawThreshold();
+            if(this.showLastPoint){
+                this.drawLastPoint();
+            }
+            break;
+        case "bar":
+            this.drawBars()
+                .drawThreshold();
+            break;
+        case "scatter":
+            this.drawScatter()
+                .drawThreshold();
+            break;
+        default:
+            break;
         }
 
         this.drawFocusLine();
@@ -123,14 +125,14 @@ export default class Sparkline extends QuickVis {
             return;
         }
 
-        let start = val
-        let end
+        let start = val;
+        let end;
         // oooh a range
         if(Array.isArray(val)){
-            start = val[0]
-            end = val[1]
+            start = val[0];
+            end = val[1];
             // use last value for displaying stuff
-            val = end
+            val = end;
         }
 
         let pxVal = this.xScale(this.xDomain[1] * start);
@@ -189,7 +191,7 @@ export default class Sparkline extends QuickVis {
         let unitsEl = this.el.querySelector(".unit");
         let magnitudeEl = this.el.querySelector(".magnitude");
         lastValEl.innerHTML = this.getFriendly(this.last);
-        unitsEl.innerHTML = this.unit
+        unitsEl.innerHTML = this.unit;
         magnitudeEl.innerHTML = this.getMagnitude(this.last);
 
         if(this.showLastPoint){
@@ -287,8 +289,8 @@ export default class Sparkline extends QuickVis {
 
     drawBars(){
         const BAR_PADDING = 2;
-        let {svg, xScale, yScale} = this,
-            {x2, y2, width} = this.drawableArea,
+        let {svg, xScale} = this,
+            {y2, width} = this.drawableArea,
             barWidth = (width / (this.data.length)) - BAR_PADDING,
             offsetLeft = xScale(0);
 
@@ -308,8 +310,7 @@ export default class Sparkline extends QuickVis {
     }
 
     drawScatter(){
-        let {svg, xScale, yScale} = this,
-            {x2, y2, width} = this.drawableArea;
+        let {svg} = this;
 
         this.data.forEach((dp, i) => {
             svg.appendChild(createSVGNode("circle", {
@@ -327,8 +328,8 @@ export default class Sparkline extends QuickVis {
             return this;
         }
 
-        let {svg, xScale, yScale} = this,
-            {x1, y1, x2, y2} = this.drawableArea;
+        let {svg, yScale} = this,
+            {x1, x2} = this.drawableArea;
         svg.appendChild(createSVGNode("line", {
             x1: x1,
             y1: yScale(this.threshold),
@@ -340,8 +341,8 @@ export default class Sparkline extends QuickVis {
     }
 
     drawFocusLine(){
-        let {svg, xScale, yScale} = this,
-            {x1, y1, x2, y2} = this.drawableArea;
+        let {svg} = this,
+            {y1, y2} = this.drawableArea;
         let focusLineEl = createSVGNode("rect", {
             x: y1 - SPARKLINE_PADDING,
             y: y1 - SPARKLINE_PADDING + FOCUSLINE_WIDTH,

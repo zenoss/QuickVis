@@ -5,7 +5,7 @@ TMP = $(ROOT)/tmp
 NODE_MODULES=$(ROOT)/node_modules
 
 QUICKVIS = $(BUILD)/quickvis.js
-QUICKVIS_SRC = $(shell find . -name "*.js")
+QUICKVIS_SRC = $(shell find . -name "*.js" ! -name "*.spec.js")
 CSS = $(BUILD)/quickvis.css.js
 SASS_SRC = $(shell find . -name "*.scss")
 
@@ -13,6 +13,7 @@ SASS = $(NODE_MODULES)/node-sass/bin/node-sass
 CHOKIDAR = $(NODE_MODULES)/chokidar-cli/index.js
 ROLLUP = $(NODE_MODULES)/rollup/bin/rollup
 ZIP = $(NODE_MODULES)/cross-zip-cli/zip.js
+ESLINT = $(NODE_MODULES)/.bin/eslint
 
 VERSION = $(shell cat $(ROOT)/VERSION)
 QUICKVIS_VERSION_NAME = quickvis-$(VERSION)
@@ -39,8 +40,11 @@ package: $(QUICKVIS_RELEASED)
 	$(ZIP) $(DIST)/$(QUICKVIS_VERSION_NAME) $(QUICKVIS_VERSION_NAME).zip
 	rm -rf $(DIST)/$(QUICKVIS_VERSION_NAME)
 
-build-js: $(QUICKVIS)
+build-js: lint-js $(QUICKVIS)
 build-css: $(CSS)
+
+lint-js: $(QUICKVIS_SRC)
+	$(ESLINT) $(QUICKVIS_SRC)
 
 $(QUICKVIS): $(QUICKVIS_SRC)
 	mkdir -p $(@D)
@@ -68,5 +72,7 @@ watch-js:
 
 watch-css:
 	$(CHOKIDAR) $(SASS_SRC) -c "make build-css"
+
+print-%  : ; @echo $* = $($*)
 
 .PHONY: watch watch-all watch-js watch-css

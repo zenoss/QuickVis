@@ -2,9 +2,7 @@
 "use strict";
 
 import QuickVis from "../quickviscore";
-import {createSVGNode, getFormattedNumber, downsampleData} from "../utils";
-
-const COLOR_PALETTE_LENGTH = 10;
+import {getFormattedNumber, downsampleData} from "../utils";
 
 function winLossTemplate(vm){
     return `
@@ -53,14 +51,14 @@ export default class WinLoss extends QuickVis {
         }
 
         config = Object.assign({}, defaultConfig, config);
-        this.config = config
+        this.config = config;
         this.label = config.label;
         this.hideWinPercent = config.hideWinPercent;
         this.tickCount = config.tickCount;
         this.downsampleFn = config.downsampleFn;
 
         this.data = downsampleData(data, this.tickCount, this.downsampleFn);
-        let [total, win, loss] = this.data.reduce((acc, dp) => {
+        let [total, win] = this.data.reduce((acc, dp) => {
             let wld = this.winLoseOrDraw(dp);
             // if its a draw, dont increment nothin'
             if(wld === 0){
@@ -92,11 +90,11 @@ export default class WinLoss extends QuickVis {
         if(this.data){
             return this.data.slice(-1)[0];
         }
-        return null
+        return null;
     }
 
     lastIsBad(){
-        let last = this.getLast()
+        let last = this.getLast();
         if(last || last === null){
             return false;
         } else {
@@ -120,14 +118,14 @@ export default class WinLoss extends QuickVis {
 
     focus(val){
         if(this.data && this.rendered){
-            let start = val
-            let end
+            let start = val;
+            let end;
             // oooh a range
             if(Array.isArray(val)){
-                start = val[0]
-                end = val[1]
+                start = val[0];
+                end = val[1];
                 // use last value for displaying stuff
-                val = end
+                val = end;
             }
 
             let pos = Math.floor(this.data.length * val);

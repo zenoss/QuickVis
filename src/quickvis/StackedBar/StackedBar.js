@@ -2,7 +2,7 @@
 "use strict";
 
 import QuickVis from "../quickviscore";
-import {createSVGNode, getFormattedNumber} from "../utils";
+import {getFormattedNumber} from "../utils";
 
 const COLOR_PALETTE_LENGTH = 10;
 
