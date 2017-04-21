@@ -7998,30 +7998,33 @@ var Sparkline = function (_QuickVis) {
                                 if (this.showLastPoint) {
                                     this.drawLastPoint();
                                 }
-                                return _context.abrupt("break", 22);
+                                return _context.abrupt("break", 23);
 
                             case 15:
                                 this.drawSparkline().drawThreshold();
                                 if (this.showLastPoint) {
                                     this.drawLastPoint();
                                 }
-                                return _context.abrupt("break", 22);
+                                return _context.abrupt("break", 23);
 
                             case 18:
                                 this.drawBars().drawThreshold();
-                                return _context.abrupt("break", 22);
+                                return _context.abrupt("break", 23);
 
                             case 20:
                                 this.drawScatter().drawThreshold();
-                                return _context.abrupt("break", 22);
+                                return _context.abrupt("break", 23);
 
                             case 22:
+                                return _context.abrupt("break", 23);
+
+                            case 23:
 
                                 this.drawFocusLine();
 
                                 this.rendered = true;
 
-                            case 24:
+                            case 25:
                             case "end":
                                 return _context.stop();
                         }
@@ -8231,9 +8234,7 @@ var Sparkline = function (_QuickVis) {
             var BAR_PADDING = 2;
             var svg = this.svg,
                 xScale = this.xScale,
-                yScale = this.yScale,
                 _drawableArea2 = this.drawableArea,
-                x2 = _drawableArea2.x2,
                 y2 = _drawableArea2.y2,
                 width = _drawableArea2.width,
                 barWidth = width / this.data.length - BAR_PADDING,
@@ -8259,13 +8260,7 @@ var Sparkline = function (_QuickVis) {
         value: function drawScatter() {
             var _this3 = this;
 
-            var svg = this.svg,
-                xScale = this.xScale,
-                yScale = this.yScale,
-                _drawableArea3 = this.drawableArea,
-                x2 = _drawableArea3.x2,
-                y2 = _drawableArea3.y2,
-                width = _drawableArea3.width;
+            var svg = this.svg;
 
 
             this.data.forEach(function (dp, i) {
@@ -8286,13 +8281,10 @@ var Sparkline = function (_QuickVis) {
             }
 
             var svg = this.svg,
-                xScale = this.xScale,
                 yScale = this.yScale,
-                _drawableArea4 = this.drawableArea,
-                x1 = _drawableArea4.x1,
-                y1 = _drawableArea4.y1,
-                x2 = _drawableArea4.x2,
-                y2 = _drawableArea4.y2;
+                _drawableArea3 = this.drawableArea,
+                x1 = _drawableArea3.x1,
+                x2 = _drawableArea3.x2;
 
             svg.appendChild(createSVGNode("line", {
                 x1: x1,
@@ -8307,13 +8299,9 @@ var Sparkline = function (_QuickVis) {
         key: "drawFocusLine",
         value: function drawFocusLine() {
             var svg = this.svg,
-                xScale = this.xScale,
-                yScale = this.yScale,
-                _drawableArea5 = this.drawableArea,
-                x1 = _drawableArea5.x1,
-                y1 = _drawableArea5.y1,
-                x2 = _drawableArea5.x2,
-                y2 = _drawableArea5.y2;
+                _drawableArea4 = this.drawableArea,
+                y1 = _drawableArea4.y1,
+                y2 = _drawableArea4.y2;
 
             var focusLineEl = createSVGNode("rect", {
                 x: y1 - SPARKLINE_PADDING,
@@ -8600,11 +8588,9 @@ var Bar = function (_QuickVis) {
     }, {
         key: "focus",
         value: function focus(val) {
-            var start = val;
             var end = void 0;
             // oooh a range
             if (Array.isArray(val)) {
-                start = val[0];
                 end = val[1];
                 // use last value for displaying stuff
                 val = end;
@@ -8770,10 +8756,9 @@ var WinLoss = function (_QuickVis) {
                 }
                 return acc;
             }, [0, 0, 0]),
-                _data$reduce2 = slicedToArray(_data$reduce, 3),
+                _data$reduce2 = slicedToArray(_data$reduce, 2),
                 total = _data$reduce2[0],
-                win = _data$reduce2[1],
-                loss = _data$reduce2[2];
+                win = _data$reduce2[1];
 
             this.winPercent = win / total * 100;
         }
@@ -8906,22 +8891,6 @@ var VisGrid = function () {
             _this.vis.forEach(function (v) {
                 _this.el.appendChild(v.el);
                 v._render();
-            });
-
-            fastdom.measure(function () {
-                /*
-                let max = [0,0,0,0];
-                const selectors = [".label", ".visualization", ".last-value", ".indicator"];
-                this.vis.forEach(v => {
-                    selectors.forEach((selector, i) => {
-                        let w = v.el.querySelector(selector).getBoundingClientRect().width;
-                        max[i] = Math.max(w, max[i]);
-                    });
-                });
-                console.log(max);
-                */
-
-                var w = _this.el.getBoundingClientRect().width;
             });
         });
     }
