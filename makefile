@@ -69,7 +69,7 @@ PWD = $(shell pwd)
 
 IMAGENAME = build-tools
 # NOTE - this is not the quickvis lib version!
-BUILD_TOOLS_VERSION = 0.0.9-dev
+BUILD_TOOLS_VERSION = 0.0.9
 TAG = zenoss/$(IMAGENAME):$(BUILD_TOOLS_VERSION)
 
 docker-release: yarn-install
