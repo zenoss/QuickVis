@@ -18,7 +18,7 @@ function stackedBarTemplate(vm){
                     barTemplate(vm, {name:"Free", val: vm.free}) :
                     ""}
 
-                ${ vm.threshold !== Infinity ? 
+                ${ vm.threshold !== Infinity ?
                     `<div class="threshold" style="left: ${vm.getThresholdPosition()}%;"></div>` :
                     ""}
 
@@ -94,6 +94,7 @@ export default class StackedBar extends QuickVis {
 
         let free = this.capacity - this.used;
         this.free = free >= 0 ? free : 0;
+        this._render();
     }
 
     validateCapacity(){
