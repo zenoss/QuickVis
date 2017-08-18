@@ -17,9 +17,8 @@ echo "combining $# css files"
 
 CSS=""
 for f in $CSS_FILES; do
-    # css=""
-    # printf -v css "\n/*\n * %s \n */\n%s\n" "$(basename $f)" "$(cat $f)"
-    CSS+="$(cat $f)"
+    # tail trims the first 4 bytes, which are byte order marker
+    CSS+="$(tail --bytes=+4 $f)"
 done
 cat > $OUT_FILE << EOM
 (function(){
