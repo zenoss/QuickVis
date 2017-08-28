@@ -21,7 +21,7 @@ let config = {
     entry: ENTRY,
     dest: DEST,
     moduleName: 'quickvis',
-    format: 'iife',
+    format: 'es',
     sourceMap: true,
     plugins: plugins
 };
