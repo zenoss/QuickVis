@@ -1,7 +1,4 @@
-/* jshint node: true */
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
-import babel from "rollup-plugin-babel";
+/* eslint-env node */
 
 const {ENTRY, DEST} = process.env;
 
@@ -11,12 +8,13 @@ if(!ENTRY || !DEST){
 }
 
 let config = {
-    entry: ENTRY,
-    dest: DEST,
-    moduleName: 'quickvis',
-    format: 'iife',
-    sourceMap: true,
-    plugins: [ resolve(), commonjs(), babel() ]
+    input: ENTRY,
+    name: 'quickvis',
+    sourcemap: true,
+    output: {
+        file: DEST,
+        format: 'iife'
+    }
 };
 
 export default config;

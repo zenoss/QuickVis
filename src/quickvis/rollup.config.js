@@ -18,11 +18,13 @@ if(TRANSPILE){
 }
 
 let config = {
-    entry: ENTRY,
-    dest: DEST,
-    moduleName: 'quickvis',
-    format: 'es',
-    sourceMap: true,
+    input: ENTRY,
+    name: 'quickvis',
+    sourcemap: true,
+    output: {
+        file: DEST,
+        format: 'es'
+    },
     plugins: plugins
 };
 
