@@ -27,7 +27,7 @@ default: dev
 
 dev: build-js build-css
 
-release: TRANSPILE=
+release: TRANSPILE=true
 release: package
 
 $(QUICKVIS_RELEASED): build-js build-css
