@@ -18,9 +18,9 @@ if(TRANSPILE){
 
 let config = {
     input: ENTRY,
-    name: 'quickvis',
-    sourcemap: true,
     output: {
+        name: 'app',
+        sourcemap: true,
         file: DEST,
         format: 'iife'
     },

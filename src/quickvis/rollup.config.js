@@ -15,7 +15,6 @@ let plugins = [ resolve(), commonjs() ];
 if(TRANSPILE){
     console.log("Transpiling...");
     plugins.push(babel({
-        plugins: [ "transform-runtime" ],
         runtimeHelpers: true
     }));
 }
