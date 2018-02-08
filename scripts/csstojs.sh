@@ -17,9 +17,10 @@ echo "combining $# css files"
 
 CSS=""
 for f in $CSS_FILES; do
-    # tail trims the first 4 bytes, which are byte order marker
-    CSS+="$(tail --bytes=+4 $f)"
+    sed -i '1s/^\xEF\xBB\xBF//' $f
+    CSS+="$(cat $f)"
 done
+
 cat > $OUT_FILE << EOM
 (function(){
     var styleEl = document.createElement("style");

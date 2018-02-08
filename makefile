@@ -15,10 +15,10 @@ default: all
 all: quickvis demo
 
 ifeq ($(USE_DOCKER),true)
-release:
+release: clean
 	$(MAKE) docker-release
 else
-release:
+release: clean
 	cd $(SRC)/quickvis && make release
 endif
 

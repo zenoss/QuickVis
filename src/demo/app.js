@@ -1,3 +1,6 @@
+import quickvis from "../../build/quickvis";
+import "../../build/quickvis.css.js";
+
 (function(){
     "use strict";
 
