@@ -1,4 +1,4 @@
-import quickvis from "../quickvis/quickvis";
+import quickvis from "../../build/quickvis";
 import "../../build/quickvis.css.js";
 
 (function(){
