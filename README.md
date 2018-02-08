@@ -32,7 +32,6 @@ make tdd
 
 # build the js lib, run tests, zip lib and map,
 # TODO - tests
-# TODO - zip
 make release
 ```
 
@@ -108,3 +107,7 @@ In order to keep things as reasonable as one can expect in the wild west of webd
 
 ## Some Other Notes
 * QuickVis visualizations will try to fill the entire available space. It is up to the containing DOM element to control size
+
+## TODO
+* tests
+* update demo page with new stuff

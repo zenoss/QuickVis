@@ -14,15 +14,19 @@ if(!ENTRY || !DEST){
 let plugins = [ resolve(), commonjs() ];
 if(TRANSPILE){
     console.log("Transpiling...");
-    plugins.push(babel());
+    plugins.push(babel({
+        runtimeHelpers: true
+    }));
 }
 
 let config = {
-    entry: ENTRY,
-    dest: DEST,
-    moduleName: 'quickvis',
-    format: 'iife',
-    sourceMap: true,
+    input: ENTRY,
+    output: {
+        name: 'quickvis',
+        sourcemap: true,
+        file: DEST,
+        format: 'es'
+    },
     plugins: plugins
 };
 
