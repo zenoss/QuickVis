@@ -22,9 +22,9 @@ if(TRANSPILE){
 
 let config = {
     input: ENTRY,
-    name: 'quickvis',
-    sourcemap: true,
     output: {
+        name: 'quickvis',
+        sourcemap: true,
         file: DEST,
         format: 'es'
     },
