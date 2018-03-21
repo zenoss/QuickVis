@@ -770,11 +770,10 @@ var _defined = function (it) {
 // false -> String#codePointAt
 var _stringAt = function (TO_STRING) {
   return function (that, pos) {
-    var s = String(_defined(that)),
-        i = _toInteger(pos),
-        l = s.length,
-        a,
-        b;
+    var s = String(_defined(that));
+    var i = _toInteger(pos);
+    var l = s.length;
+    var a, b;
     if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff ? TO_STRING ? s.charAt(i) : a : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
@@ -785,12 +784,14 @@ var _library = true;
 
 var _global = createCommonjsModule(function (module) {
   // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-  var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+  var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
   if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var _core = createCommonjsModule(function (module) {
-  var core = module.exports = { version: '2.4.0' };
+  var core = module.exports = { version: '2.5.3' };
   if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
@@ -850,6 +851,7 @@ var _descriptors = !_fails(function () {
 });
 
 var document$1 = _global.document;
+// typeof document.createElement is 'object' in old IE
 var is = _isObject(document$1) && _isObject(document$1.createElement);
 var _domCreate = function (it) {
   return is ? document$1.createElement(it) : {};
@@ -911,18 +913,16 @@ var _hide = _descriptors ? function (object, key, value) {
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F,
-      IS_GLOBAL = type & $export.G,
-      IS_STATIC = type & $export.S,
-      IS_PROTO = type & $export.P,
-      IS_BIND = type & $export.B,
-      IS_WRAP = type & $export.W,
-      exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {}),
-      expProto = exports[PROTOTYPE],
-      target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE],
-      key,
-      own,
-      out;
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var IS_WRAP = type & $export.W;
+  var exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {});
+  var expProto = exports[PROTOTYPE];
+  var target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE];
+  var key, own, out;
   if (IS_GLOBAL) source = name;
   for (key in source) {
     // contains in native
@@ -968,7 +968,7 @@ $export.P = 8; // proto
 $export.B = 16; // bind
 $export.W = 32; // wrap
 $export.U = 64; // safe
-$export.R = 128; // real proto method for `library` 
+$export.R = 128; // real proto method for `library`
 var _export = $export;
 
 var _redefine = _hide;
@@ -988,17 +988,20 @@ var _cof = function (it) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 
+// eslint-disable-next-line no-prototype-builtins
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 
+
 var _toIobject = function (it) {
   return _iobject(_defined(it));
 };
 
 // 7.1.15 ToLength
+
 var min = Math.min;
 var _toLength = function (it) {
   return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -1006,7 +1009,7 @@ var _toLength = function (it) {
 
 var max = Math.max;
 var min$1 = Math.min;
-var _toIndex = function (index, length) {
+var _toAbsoluteIndex = function (index, length) {
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
@@ -1014,17 +1017,20 @@ var _toIndex = function (index, length) {
 // false -> Array#indexOf
 // true  -> Array#includes
 
+
 var _arrayIncludes = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
-    var O = _toIobject($this),
-        length = _toLength(O.length),
-        index = _toIndex(fromIndex, length),
-        value;
+    var O = _toIobject($this);
+    var length = _toLength(O.length);
+    var index = _toAbsoluteIndex(fromIndex, length);
+    var value;
     // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare
     if (IS_INCLUDES && el != el) while (length > index) {
       value = O[index++];
+      // eslint-disable-next-line no-self-compare
       if (value != value) return true;
-      // Array#toIndex ignores holes, Array#includes - not
+      // Array#indexOf ignores holes, Array#includes - not
     } else for (; length > index; index++) if (IS_INCLUDES || index in O) {
       if (O[index] === el) return IS_INCLUDES || index || 0;
     }return !IS_INCLUDES && -1;
@@ -1044,6 +1050,7 @@ var _uid = function (key) {
 };
 
 var shared$1 = _shared('keys');
+
 var _sharedKey = function (key) {
   return shared$1[key] || (shared$1[key] = _uid(key));
 };
@@ -1052,10 +1059,10 @@ var arrayIndexOf = _arrayIncludes(false);
 var IE_PROTO = _sharedKey('IE_PROTO');
 
 var _objectKeysInternal = function (object, names) {
-  var O = _toIobject(object),
-      i = 0,
-      result = [],
-      key;
+  var O = _toIobject(object);
+  var i = 0;
+  var result = [];
+  var key;
   for (key in O) if (key != IE_PROTO) _has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
   while (names.length > i) if (_has(O, key = names[i++])) {
@@ -1076,17 +1083,20 @@ var _objectKeys = Object.keys || function keys(O) {
 
 var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
   _anObject(O);
-  var keys = _objectKeys(Properties),
-      length = keys.length,
-      i = 0,
-      P;
+  var keys = _objectKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
   while (length > i) _objectDp.f(O, P = keys[i++], Properties[P]);
   return O;
 };
 
-var _html = _global.document && document.documentElement;
+var document$2 = _global.document;
+var _html = document$2 && document$2.documentElement;
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+
+
 var IE_PROTO$1 = _sharedKey('IE_PROTO');
 var Empty = function () {/* empty */};
 var PROTOTYPE$1 = 'prototype';
@@ -1094,11 +1104,11 @@ var PROTOTYPE$1 = 'prototype';
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = _domCreate('iframe'),
-      i = _enumBugKeys.length,
-      lt = '<',
-      gt = '>',
-      iframeDocument;
+  var iframe = _domCreate('iframe');
+  var i = _enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
   iframe.style.display = 'none';
   _html.appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -1126,9 +1136,10 @@ var _objectCreate = Object.create || function create(O, Properties) {
 };
 
 var _wks = createCommonjsModule(function (module) {
-  var store = _shared('wks'),
-      Symbol = _global.Symbol,
-      USE_SYMBOL = typeof Symbol == 'function';
+  var store = _shared('wks');
+
+  var Symbol = _global.Symbol;
+  var USE_SYMBOL = typeof Symbol == 'function';
 
   var $exports = module.exports = function (name) {
     return store[name] || (store[name] = USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : _uid)('Symbol.' + name));
@@ -1138,6 +1149,7 @@ var _wks = createCommonjsModule(function (module) {
 });
 
 var def = _objectDp.f;
+
 var TAG = _wks('toStringTag');
 
 var _setToStringTag = function (it, tag, stat) {
@@ -1163,6 +1175,8 @@ var _toObject = function (it) {
 };
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+
+
 var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -1175,7 +1189,7 @@ var _objectGpo = Object.getPrototypeOf || function (O) {
 };
 
 var ITERATOR = _wks('iterator');
-var BUGGY = !([].keys && 'next' in [].keys());
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
 var KEYS = 'keys';
 var VALUES = 'values';
@@ -1201,21 +1215,19 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
       return new Constructor(this, kind);
     };
   };
-  var TAG = NAME + ' Iterator',
-      DEF_VALUES = DEFAULT == VALUES,
-      VALUES_BUG = false,
-      proto = Base.prototype,
-      $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT],
-      $default = $native || getMethod(DEFAULT),
-      $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined,
-      $anyNative = NAME == 'Array' ? proto.entries || $native : $native,
-      methods,
-      key,
-      IteratorPrototype;
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = !BUGGY && $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
   // Fix native
   if ($anyNative) {
     IteratorPrototype = _objectGpo($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype) {
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
@@ -1257,9 +1269,9 @@ _iterDefine(String, 'String', function (iterated) {
   this._i = 0; // next index
   // 21.1.5.2.1 %StringIteratorPrototype%.next()
 }, function () {
-  var O = this._t,
-      index = this._i,
-      point;
+  var O = this._t;
+  var index = this._i;
+  var point;
   if (index >= O.length) return { value: undefined, done: true };
   point = $at(O, index);
   this._i += point.length;
@@ -1280,9 +1292,9 @@ var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   this._k = kind; // kind
   // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
 }, function () {
-  var O = this._t,
-      kind = this._k,
-      index = this._i++;
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
   if (!O || index >= O.length) {
     this._t = undefined;
     return _iterStep(1);
@@ -1297,16 +1309,20 @@ _iterators.Arguments = _iterators.Array;
 
 var TO_STRING_TAG = _wks('toStringTag');
 
-for (var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++) {
-  var NAME = collections[i],
-      Collection = _global[NAME],
-      proto = Collection && Collection.prototype;
+var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' + 'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' + 'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' + 'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' + 'TextTrackList,TouchList').split(',');
+
+for (var i = 0; i < DOMIterables.length; i++) {
+  var NAME = DOMIterables[i];
+  var Collection = _global[NAME];
+  var proto = Collection && Collection.prototype;
   if (proto && !proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
   _iterators[NAME] = _iterators.Array;
 }
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
+
 var TAG$1 = _wks('toStringTag');
+// ES3 wrong here
 var ARG = _cof(function () {
   return arguments;
 }()) == 'Arguments';
@@ -1349,6 +1365,7 @@ var _iterCall = function (iterator, fn, value, entries) {
 };
 
 // check on default Array iterator
+
 var ITERATOR$1 = _wks('iterator');
 var ArrayProto = Array.prototype;
 
@@ -1357,23 +1374,21 @@ var _isArrayIter = function (it) {
 };
 
 var ITERATOR$2 = _wks('iterator');
+
 var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR$2] || it['@@iterator'] || _iterators[_classof(it)];
 };
 
 var _forOf = createCommonjsModule(function (module) {
-  var BREAK = {},
-      RETURN = {};
+  var BREAK = {};
+  var RETURN = {};
   var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
     var iterFn = ITERATOR ? function () {
       return iterable;
-    } : core_getIteratorMethod(iterable),
-        f = _ctx(fn, that, entries ? 2 : 1),
-        index = 0,
-        length,
-        step,
-        iterator,
-        result;
+    } : core_getIteratorMethod(iterable);
+    var f = _ctx(fn, that, entries ? 2 : 1);
+    var index = 0;
+    var length, step, iterator, result;
     if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
     // fast case for arrays with default iterator
     if (_isArrayIter(iterFn)) for (length = _toLength(iterable.length); length > index; index++) {
@@ -1389,10 +1404,12 @@ var _forOf = createCommonjsModule(function (module) {
 });
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
+
+
 var SPECIES = _wks('species');
 var _speciesConstructor = function (O, D) {
-  var C = _anObject(O).constructor,
-      S;
+  var C = _anObject(O).constructor;
+  var S;
   return C === undefined || (S = _anObject(C)[SPECIES]) == undefined ? D : _aFunction(S);
 };
 
@@ -1417,6 +1434,7 @@ var process = _global.process;
 var setTask = _global.setImmediate;
 var clearTask = _global.clearImmediate;
 var MessageChannel = _global.MessageChannel;
+var Dispatch = _global.Dispatch;
 var counter = 0;
 var queue = {};
 var ONREADYSTATECHANGE = 'onreadystatechange';
@@ -1425,6 +1443,7 @@ var channel;
 var port;
 var run = function () {
   var id = +this;
+  // eslint-disable-next-line no-prototype-builtins
   if (queue.hasOwnProperty(id)) {
     var fn = queue[id];
     delete queue[id];
@@ -1437,10 +1456,11 @@ var listener = function (event) {
 // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
 if (!setTask || !clearTask) {
   setTask = function setImmediate(fn) {
-    var args = [],
-        i = 1;
+    var args = [];
+    var i = 1;
     while (arguments.length > i) args.push(arguments[i++]);
     queue[++counter] = function () {
+      // eslint-disable-next-line no-new-func
       _invoke(typeof fn == 'function' ? fn : Function(fn), args);
     };
     defer(counter);
@@ -1453,6 +1473,11 @@ if (!setTask || !clearTask) {
   if (_cof(process) == 'process') {
     defer = function (id) {
       process.nextTick(_ctx(run, id, 1));
+    };
+    // Sphere (JS game engine) Dispatch API
+  } else if (Dispatch && Dispatch.now) {
+    defer = function (id) {
+      Dispatch.now(_ctx(run, id, 1));
     };
     // Browsers with MessageChannel, includes WebWorkers
   } else if (MessageChannel) {
@@ -1517,10 +1542,10 @@ var _microtask = function () {
     notify = function () {
       process$1.nextTick(flush);
     };
-    // browsers with MutationObserver
-  } else if (Observer) {
-    var toggle = true,
-        node = document.createTextNode('');
+    // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
+  } else if (Observer && !(_global.navigator && _global.navigator.standalone)) {
+    var toggle = true;
+    var node = document.createTextNode('');
     new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
     notify = function () {
       node.data = toggle = !toggle;
@@ -1554,6 +1579,45 @@ var _microtask = function () {
   };
 };
 
+// 25.4.1.5 NewPromiseCapability(C)
+
+
+function PromiseCapability(C) {
+  var resolve, reject;
+  this.promise = new C(function ($$resolve, $$reject) {
+    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+    resolve = $$resolve;
+    reject = $$reject;
+  });
+  this.resolve = _aFunction(resolve);
+  this.reject = _aFunction(reject);
+}
+
+var f$1 = function (C) {
+  return new PromiseCapability(C);
+};
+
+var _newPromiseCapability = {
+  f: f$1
+};
+
+var _perform = function (exec) {
+  try {
+    return { e: false, v: exec() };
+  } catch (e) {
+    return { e: true, v: e };
+  }
+};
+
+var _promiseResolve = function (C, x) {
+  _anObject(C);
+  if (_isObject(x) && x.constructor === C) return x;
+  var promiseCapability = _newPromiseCapability.f(C);
+  var resolve = promiseCapability.resolve;
+  resolve(x);
+  return promiseCapability.promise;
+};
+
 var _redefineAll = function (target, src, safe) {
   for (var key in src) {
     if (safe && target[key]) target[key] = src[key];else _hide(target, key, src[key]);
@@ -1580,6 +1644,7 @@ try {
   riter['return'] = function () {
     SAFE_CLOSING = true;
   };
+  // eslint-disable-next-line no-throw-literal
   
 } catch (e) {/* empty */}
 
@@ -1587,8 +1652,8 @@ var _iterDetect = function (exec, skipClosing) {
   if (!skipClosing && !SAFE_CLOSING) return false;
   var safe = false;
   try {
-    var arr = [7],
-        iter = arr[ITERATOR$3]();
+    var arr = [7];
+    var iter = arr[ITERATOR$3]();
     iter.next = function () {
       return { done: safe = true };
     };
@@ -1602,22 +1667,24 @@ var _iterDetect = function (exec, skipClosing) {
 
 var task = _task.set;
 var microtask = _microtask();
+
 var PROMISE = 'Promise';
 var TypeError$1 = _global.TypeError;
 var process$2 = _global.process;
 var $Promise = _global[PROMISE];
-var process$2 = _global.process;
 var isNode$1 = _classof(process$2) == 'process';
 var empty = function () {/* empty */};
 var Internal;
-var GenericPromiseCapability;
+var newGenericPromiseCapability;
+var OwnPromiseCapability;
 var Wrapper;
+var newPromiseCapability$1 = newGenericPromiseCapability = _newPromiseCapability.f;
 
 var USE_NATIVE = !!function () {
   try {
     // correct subclassing with @@species support
-    var promise = $Promise.resolve(1),
-        FakePromise = (promise.constructor = {})[_wks('species')] = function (exec) {
+    var promise = $Promise.resolve(1);
+    var FakePromise = (promise.constructor = {})[_wks('species')] = function (exec) {
       exec(empty, empty);
     };
     // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
@@ -1626,49 +1693,24 @@ var USE_NATIVE = !!function () {
 }();
 
 // helpers
-var sameConstructor = function (a, b) {
-  // with library wrapper special case
-  return a === b || a === $Promise && b === Wrapper;
-};
 var isThenable = function (it) {
   var then;
   return _isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-};
-var newPromiseCapability = function (C) {
-  return sameConstructor($Promise, C) ? new PromiseCapability(C) : new GenericPromiseCapability(C);
-};
-var PromiseCapability = GenericPromiseCapability = function (C) {
-  var resolve, reject;
-  this.promise = new C(function ($$resolve, $$reject) {
-    if (resolve !== undefined || reject !== undefined) throw TypeError$1('Bad Promise constructor');
-    resolve = $$resolve;
-    reject = $$reject;
-  });
-  this.resolve = _aFunction(resolve);
-  this.reject = _aFunction(reject);
-};
-var perform = function (exec) {
-  try {
-    exec();
-  } catch (e) {
-    return { error: e };
-  }
 };
 var notify = function (promise, isReject) {
   if (promise._n) return;
   promise._n = true;
   var chain = promise._c;
   microtask(function () {
-    var value = promise._v,
-        ok = promise._s == 1,
-        i = 0;
+    var value = promise._v;
+    var ok = promise._s == 1;
+    var i = 0;
     var run = function (reaction) {
-      var handler = ok ? reaction.ok : reaction.fail,
-          resolve = reaction.resolve,
-          reject = reaction.reject,
-          domain = reaction.domain,
-          result,
-          then;
+      var handler = ok ? reaction.ok : reaction.fail;
+      var resolve = reaction.resolve;
+      var reject = reaction.reject;
+      var domain = reaction.domain;
+      var result, then;
       try {
         if (handler) {
           if (!ok) {
@@ -1698,12 +1740,11 @@ var notify = function (promise, isReject) {
 };
 var onUnhandled = function (promise) {
   task.call(_global, function () {
-    var value = promise._v,
-        abrupt,
-        handler,
-        console;
-    if (isUnhandled(promise)) {
-      abrupt = perform(function () {
+    var value = promise._v;
+    var unhandled = isUnhandled(promise);
+    var result, handler, console;
+    if (unhandled) {
+      result = _perform(function () {
         if (isNode$1) {
           process$2.emit('unhandledRejection', value, promise);
         } else if (handler = _global.onunhandledrejection) {
@@ -1715,18 +1756,11 @@ var onUnhandled = function (promise) {
       // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
       promise._h = isNode$1 || isUnhandled(promise) ? 2 : 1;
     }promise._a = undefined;
-    if (abrupt) throw abrupt.error;
+    if (unhandled && result.e) throw result.v;
   });
 };
 var isUnhandled = function (promise) {
-  if (promise._h == 1) return false;
-  var chain = promise._a || promise._c,
-      i = 0,
-      reaction;
-  while (chain.length > i) {
-    reaction = chain[i++];
-    if (reaction.fail || !isUnhandled(reaction.promise)) return false;
-  }return true;
+  return promise._h !== 1 && (promise._a || promise._c).length === 0;
 };
 var onHandleUnhandled = function (promise) {
   task.call(_global, function () {
@@ -1749,8 +1783,8 @@ var $reject = function (value) {
   notify(promise, true);
 };
 var $resolve = function (value) {
-  var promise = this,
-      then;
+  var promise = this;
+  var then;
   if (promise._d) return;
   promise._d = true;
   promise = promise._w || promise; // unwrap
@@ -1788,6 +1822,7 @@ if (!USE_NATIVE) {
       $reject.call(this, err);
     }
   };
+  // eslint-disable-next-line no-unused-vars
   Internal = function Promise(executor) {
     this._c = []; // <- awaiting reactions
     this._a = undefined; // <- checked in isUnhandled reactions
@@ -1800,7 +1835,7 @@ if (!USE_NATIVE) {
   Internal.prototype = _redefineAll($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
     then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability(_speciesConstructor(this, $Promise));
+      var reaction = newPromiseCapability$1(_speciesConstructor(this, $Promise));
       reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail = typeof onRejected == 'function' && onRejected;
       reaction.domain = isNode$1 ? process$2.domain : undefined;
@@ -1814,11 +1849,14 @@ if (!USE_NATIVE) {
       return this.then(undefined, onRejected);
     }
   });
-  PromiseCapability = function () {
+  OwnPromiseCapability = function () {
     var promise = new Internal();
     this.promise = promise;
     this.resolve = _ctx($resolve, promise, 1);
     this.reject = _ctx($reject, promise, 1);
+  };
+  _newPromiseCapability.f = newPromiseCapability$1 = function (C) {
+    return C === $Promise || C === Wrapper ? new OwnPromiseCapability(C) : newGenericPromiseCapability(C);
   };
 }
 
@@ -1831,8 +1869,8 @@ Wrapper = _core[PROMISE];
 _export(_export.S + _export.F * !USE_NATIVE, PROMISE, {
   // 25.4.4.5 Promise.reject(r)
   reject: function reject(r) {
-    var capability = newPromiseCapability(this),
-        $$reject = capability.reject;
+    var capability = newPromiseCapability$1(this);
+    var $$reject = capability.reject;
     $$reject(r);
     return capability.promise;
   }
@@ -1840,12 +1878,7 @@ _export(_export.S + _export.F * !USE_NATIVE, PROMISE, {
 _export(_export.S + _export.F * (_library || !USE_NATIVE), PROMISE, {
   // 25.4.4.6 Promise.resolve(x)
   resolve: function resolve(x) {
-    // instanceof instead of internal slot check because we should fix it without replacement native Promise core
-    if (x instanceof $Promise && sameConstructor(x.constructor, this)) return x;
-    var capability = newPromiseCapability(this),
-        $$resolve = capability.resolve;
-    $$resolve(x);
-    return capability.promise;
+    return _promiseResolve(_library && this === Wrapper ? $Promise : this, x);
   }
 });
 _export(_export.S + _export.F * !(USE_NATIVE && _iterDetect(function (iter) {
@@ -1853,17 +1886,17 @@ _export(_export.S + _export.F * !(USE_NATIVE && _iterDetect(function (iter) {
 })), PROMISE, {
   // 25.4.4.1 Promise.all(iterable)
   all: function all(iterable) {
-    var C = this,
-        capability = newPromiseCapability(C),
-        resolve = capability.resolve,
-        reject = capability.reject;
-    var abrupt = perform(function () {
-      var values = [],
-          index = 0,
-          remaining = 1;
+    var C = this;
+    var capability = newPromiseCapability$1(C);
+    var resolve = capability.resolve;
+    var reject = capability.reject;
+    var result = _perform(function () {
+      var values = [];
+      var index = 0;
+      var remaining = 1;
       _forOf(iterable, false, function (promise) {
-        var $index = index++,
-            alreadyCalled = false;
+        var $index = index++;
+        var alreadyCalled = false;
         values.push(undefined);
         remaining++;
         C.resolve(promise).then(function (value) {
@@ -1875,23 +1908,47 @@ _export(_export.S + _export.F * !(USE_NATIVE && _iterDetect(function (iter) {
       });
       --remaining || resolve(values);
     });
-    if (abrupt) reject(abrupt.error);
+    if (result.e) reject(result.v);
     return capability.promise;
   },
   // 25.4.4.4 Promise.race(iterable)
   race: function race(iterable) {
-    var C = this,
-        capability = newPromiseCapability(C),
-        reject = capability.reject;
-    var abrupt = perform(function () {
+    var C = this;
+    var capability = newPromiseCapability$1(C);
+    var reject = capability.reject;
+    var result = _perform(function () {
       _forOf(iterable, false, function (promise) {
         C.resolve(promise).then(capability.resolve, reject);
       });
     });
-    if (abrupt) reject(abrupt.error);
+    if (result.e) reject(result.v);
     return capability.promise;
   }
 });
+
+_export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
+    var C = _speciesConstructor(this, _core.Promise || _global.Promise);
+    var isFunction = typeof onFinally == 'function';
+    return this.then(isFunction ? function (x) {
+      return _promiseResolve(C, onFinally()).then(function () {
+        return x;
+      });
+    } : onFinally, isFunction ? function (e) {
+      return _promiseResolve(C, onFinally()).then(function () {
+        throw e;
+      });
+    } : onFinally);
+  } });
+
+// https://github.com/tc39/proposal-promise-try
+
+
+_export(_export.S, 'Promise', { 'try': function (callbackfn) {
+    var promiseCapability = _newPromiseCapability.f(this);
+    var result = _perform(callbackfn);
+    (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
+    return promiseCapability.promise;
+  } });
 
 var promise = _core.Promise;
 
@@ -1942,27 +1999,30 @@ var asyncToGenerator = createCommonjsModule(function (module, exports) {
 
 var _asyncToGenerator = unwrapExports(asyncToGenerator);
 
-var f$1 = Object.getOwnPropertySymbols;
+var f$2 = Object.getOwnPropertySymbols;
 
 var _objectGops = {
-	f: f$1
-};
-
-var f$2 = {}.propertyIsEnumerable;
-
-var _objectPie = {
 	f: f$2
 };
 
+var f$3 = {}.propertyIsEnumerable;
+
+var _objectPie = {
+	f: f$3
+};
+
 // 19.1.2.1 Object.assign(target, source, ...)
+
+
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
 var _objectAssign = !$assign || _fails(function () {
-  var A = {},
-      B = {},
-      S = Symbol(),
-      K = 'abcdefghijklmnopqrst';
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
   A[S] = 7;
   K.split('').forEach(function (k) {
     B[k] = k;
@@ -1970,17 +2030,17 @@ var _objectAssign = !$assign || _fails(function () {
   return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
 }) ? function assign(target, source) {
   // eslint-disable-line no-unused-vars
-  var T = _toObject(target),
-      aLen = arguments.length,
-      index = 1,
-      getSymbols = _objectGops.f,
-      isEnum = _objectPie.f;
+  var T = _toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = _objectGops.f;
+  var isEnum = _objectPie.f;
   while (aLen > index) {
-    var S = _iobject(arguments[index++]),
-        keys = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S),
-        length = keys.length,
-        j = 0,
-        key;
+    var S = _iobject(arguments[index++]);
+    var keys = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
     while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
   }return T;
 } : $assign;
@@ -2000,9 +2060,10 @@ var _Object$assign = unwrapExports(assign$2);
 
 // most Object methods by ES6 should accept primitives
 
+
 var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY],
-      exp = {};
+  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
   exp[KEY] = exec(fn);
   _export(_export.S + _export.F * _fails(function () {
     fn(1);
@@ -2082,10 +2143,10 @@ var createClass = createCommonjsModule(function (module, exports) {
 
 var _createClass = unwrapExports(createClass);
 
-var f$3 = _wks;
+var f$4 = _wks;
 
 var _wksExt = {
-	f: f$3
+	f: f$4
 };
 
 var iterator = _wksExt.f('iterator');
@@ -2097,9 +2158,10 @@ var iterator$2 = createCommonjsModule(function (module) {
 unwrapExports(iterator$2);
 
 var _meta = createCommonjsModule(function (module) {
-  var META = _uid('meta'),
-      setDesc = _objectDp.f,
-      id = 0;
+  var META = _uid('meta');
+
+  var setDesc = _objectDp.f;
+  var id = 0;
   var isExtensible = Object.isExtensible || function () {
     return true;
   };
@@ -2162,25 +2224,17 @@ var _wksDefine = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$4($Symbol, name, { value: _wksExt.f(name) });
 };
 
-var _keyof = function (object, el) {
-  var O = _toIobject(object),
-      keys = _objectKeys(O),
-      length = keys.length,
-      index = 0,
-      key;
-  while (length > index) if (O[key = keys[index++]] === el) return key;
-};
-
 // all enumerable object keys, includes symbols
 
+
 var _enumKeys = function (it) {
-  var result = _objectKeys(it),
-      getSymbols = _objectGops.f;
+  var result = _objectKeys(it);
+  var getSymbols = _objectGops.f;
   if (getSymbols) {
-    var symbols = getSymbols(it),
-        isEnum = _objectPie.f,
-        i = 0,
-        key;
+    var symbols = getSymbols(it);
+    var isEnum = _objectPie.f;
+    var i = 0;
+    var key;
     while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
   }return result;
 };
@@ -2192,17 +2246,19 @@ var _isArray = Array.isArray || function isArray(arg) {
 };
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
-var f$4 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return _objectKeysInternal(O, hiddenKeys);
 };
 
 var _objectGopn = {
-  f: f$4
+  f: f$5
 };
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
+
 var gOPN = _objectGopn.f;
 var toString$1 = {}.toString;
 
@@ -2216,17 +2272,17 @@ var getWindowNames = function (it) {
   }
 };
 
-var f$5 = function getOwnPropertyNames(it) {
+var f$6 = function getOwnPropertyNames(it) {
   return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(_toIobject(it));
 };
 
 var _objectGopnExt = {
-  f: f$5
+  f: f$6
 };
 
 var gOPD = Object.getOwnPropertyDescriptor;
 
-var f$6 = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P) {
+var f$7 = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = _toIobject(O);
   P = _toPrimitive(P, true);
   if (_ie8DomDefine) try {
@@ -2236,11 +2292,14 @@ var f$6 = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P) {
 };
 
 var _objectGopd = {
-  f: f$6
+  f: f$7
 };
 
 // ECMAScript 6 symbols shim
+
+
 var META = _meta.KEY;
+
 var gOPD$1 = _objectGopd.f;
 var dP$1 = _objectDp.f;
 var gOPN$1 = _objectGopnExt.f;
@@ -2303,10 +2362,10 @@ var $defineProperty$1 = function defineProperty(it, key, D) {
 };
 var $defineProperties = function defineProperties(it, P) {
   _anObject(it);
-  var keys = _enumKeys(P = _toIobject(P)),
-      i = 0,
-      l = keys.length,
-      key;
+  var keys = _enumKeys(P = _toIobject(P));
+  var i = 0;
+  var l = keys.length;
+  var key;
   while (l > i) $defineProperty$1(it, key = keys[i++], P[key]);
   return it;
 };
@@ -2327,20 +2386,20 @@ var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
   return D;
 };
 var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN$1(_toIobject(it)),
-      result = [],
-      i = 0,
-      key;
+  var names = gOPN$1(_toIobject(it));
+  var result = [];
+  var i = 0;
+  var key;
   while (names.length > i) {
     if (!_has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
   }return result;
 };
 var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-  var IS_OP = it === ObjectProto$1,
-      names = gOPN$1(IS_OP ? OPSymbols : _toIobject(it)),
-      result = [],
-      i = 0,
-      key;
+  var IS_OP = it === ObjectProto$1;
+  var names = gOPN$1(IS_OP ? OPSymbols : _toIobject(it));
+  var result = [];
+  var i = 0;
+  var key;
   while (names.length > i) {
     if (_has(AllSymbols, key = names[i++]) && (IS_OP ? _has(ObjectProto$1, key) : true)) result.push(AllSymbols[key]);
   }return result;
@@ -2380,11 +2439,11 @@ if (!USE_NATIVE$1) {
 
 _export(_export.G + _export.W + _export.F * !USE_NATIVE$1, { Symbol: $Symbol });
 
-for (var symbols =
+for (var es6Symbols =
 // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'.split(','), i$1 = 0; symbols.length > i$1;) _wks(symbols[i$1++]);
+'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'.split(','), j = 0; es6Symbols.length > j;) _wks(es6Symbols[j++]);
 
-for (var symbols = _objectKeys(_wks.store), i$1 = 0; symbols.length > i$1;) _wksDefine(symbols[i$1++]);
+for (var wellKnownSymbols = _objectKeys(_wks.store), k = 0; wellKnownSymbols.length > k;) _wksDefine(wellKnownSymbols[k++]);
 
 _export(_export.S + _export.F * !USE_NATIVE$1, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
@@ -2392,9 +2451,9 @@ _export(_export.S + _export.F * !USE_NATIVE$1, 'Symbol', {
     return _has(SymbolRegistry, key += '') ? SymbolRegistry[key] : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(key) {
-    if (isSymbol(key)) return _keyof(SymbolRegistry, key);
-    throw TypeError(key + ' is not a symbol!');
+  keyFor: function keyFor(sym) {
+    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
+    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
   },
   useSetter: function () {
     setter = true;
@@ -2428,16 +2487,14 @@ $JSON && _export(_export.S + _export.F * (!USE_NATIVE$1 || _fails(function () {
   return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
   stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-    var args = [it],
-        i = 1,
-        replacer,
-        $replacer;
+    var args = [it];
+    var i = 1;
+    var replacer, $replacer;
     while (arguments.length > i) args.push(arguments[i++]);
-    replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !_isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
+    $replacer = replacer = args[1];
+    if (!_isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    if (!_isArray(replacer)) replacer = function (key, value) {
+      if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
       if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
@@ -2513,6 +2570,7 @@ var possibleConstructorReturn = createCommonjsModule(function (module, exports) 
 var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+
 var $getOwnPropertyDescriptor$1 = _objectGopd.f;
 
 _objectSap('getOwnPropertyDescriptor', function () {
@@ -2677,7 +2735,7 @@ var _getIterator = unwrapExports(getIterator$2);
  */
 /* eslint-disable require-jsdoc, valid-jsdoc */
 var MapShim = function () {
-    if (typeof Map != 'undefined') {
+    if (typeof Map !== 'undefined') {
         return Map;
     }
 
@@ -2709,7 +2767,7 @@ var MapShim = function () {
             this.__entries__ = [];
         }
 
-        var prototypeAccessors = { size: {} };
+        var prototypeAccessors = { size: { configurable: true } };
 
         /**
          * @returns {boolean}
@@ -2778,9 +2836,10 @@ var MapShim = function () {
          * @returns {void}
          */
         anonymous.prototype.forEach = function (callback, ctx) {
+            var this$1 = this;
             if (ctx === void 0) ctx = null;
 
-            for (var i = 0, list = this.__entries__; i < list.length; i += 1) {
+            for (var i = 0, list = this$1.__entries__; i < list.length; i += 1) {
                 var entry = list[i];
 
                 callback.call(ctx, entry[1], entry[0]);
@@ -2796,7 +2855,25 @@ var MapShim = function () {
 /**
  * Detects whether window and document objects are available in current environment.
  */
-var isBrowser = typeof window != 'undefined' && typeof document != 'undefined' && window.document === document;
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && window.document === document;
+
+// Returns global object of a current environment.
+var global$1$1 = function () {
+    if (typeof global !== 'undefined' && global.Math === Math) {
+        return global;
+    }
+
+    if (typeof self !== 'undefined' && self.Math === Math) {
+        return self;
+    }
+
+    if (typeof window !== 'undefined' && window.Math === Math) {
+        return window;
+    }
+
+    // eslint-disable-next-line no-new-func
+    return Function('return this')();
+}();
 
 /**
  * A shim for the requestAnimationFrame which falls back to the setTimeout if
@@ -2806,7 +2883,10 @@ var isBrowser = typeof window != 'undefined' && typeof document != 'undefined' &
  */
 var requestAnimationFrame$1 = function () {
     if (typeof requestAnimationFrame === 'function') {
-        return requestAnimationFrame;
+        // It's required to use a bounded function because IE sometimes throws
+        // an "Invalid calling object" error if rAF is invoked without the global
+        // object on the left hand side.
+        return requestAnimationFrame.bind(global$1$1);
     }
 
     return function (callback) {
@@ -2900,46 +2980,16 @@ var REFRESH_DELAY = 20;
 // might affect dimensions of observed elements.
 var transitionKeys = ['top', 'right', 'bottom', 'left', 'width', 'height', 'size', 'weight'];
 
-// Detect whether running in IE 11 (facepalm).
-var isIE11 = typeof navigator != 'undefined' && /Trident\/.*rv:11/.test(navigator.userAgent);
-
-// MutationObserver should not be used if running in Internet Explorer 11 as it's
-// implementation is unreliable. Example: https://jsfiddle.net/x2r3jpuz/2/
-//
-// It's a real bummer that there is no other way to check for this issue but to
-// use the UA information.
-var mutationObserverSupported = typeof MutationObserver != 'undefined' && !isIE11;
+// Check if MutationObserver is available.
+var mutationObserverSupported = typeof MutationObserver !== 'undefined';
 
 /**
  * Singleton controller class which handles updates of ResizeObserver instances.
  */
 var ResizeObserverController = function () {
-    /**
-     * Indicates whether DOM listeners have been added.
-     *
-     * @private {boolean}
-     */
     this.connected_ = false;
-
-    /**
-     * Tells that controller has subscribed for Mutation Events.
-     *
-     * @private {boolean}
-     */
     this.mutationEventsAdded_ = false;
-
-    /**
-     * Keeps reference to the instance of MutationObserver.
-     *
-     * @private {MutationObserver}
-     */
     this.mutationsObserver_ = null;
-
-    /**
-     * A list of connected observers.
-     *
-     * @private {Array<ResizeObserverSPI>}
-     */
     this.observers_ = [];
 
     this.onTransitionEnd_ = this.onTransitionEnd_.bind(this);
@@ -2951,6 +3001,24 @@ var ResizeObserverController = function () {
  *
  * @param {ResizeObserverSPI} observer - Observer to be added.
  * @returns {void}
+ */
+
+/**
+ * Holds reference to the controller's instance.
+ *
+ * @private {ResizeObserverController}
+ */
+
+/**
+ * Keeps reference to the instance of MutationObserver.
+ *
+ * @private {MutationObserver}
+ */
+
+/**
+ * Indicates whether DOM listeners have been added.
+ *
+ * @private {boolean}
  */
 ResizeObserverController.prototype.addObserver = function (observer) {
     if (!~this.observers_.indexOf(observer)) {
@@ -3101,7 +3169,7 @@ ResizeObserverController.prototype.disconnect_ = function () {
  * @returns {void}
  */
 ResizeObserverController.prototype.onTransitionEnd_ = function (ref) {
-    var propertyName = ref.propertyName;
+    var propertyName = ref.propertyName;if (propertyName === void 0) propertyName = '';
 
     // Detect whether transition may affect dimensions of an element.
     var isReflowProperty = transitionKeys.some(function (key) {
@@ -3126,11 +3194,6 @@ ResizeObserverController.getInstance = function () {
     return this.instance_;
 };
 
-/**
- * Holds reference to the controller's instance.
- *
- * @private {ResizeObserverController}
- */
 ResizeObserverController.instance_ = null;
 
 /**
@@ -3155,6 +3218,23 @@ var defineConfigurable = function (target, props) {
     return target;
 };
 
+/**
+ * Returns the global object associated with provided element.
+ *
+ * @param {Object} target
+ * @returns {Object}
+ */
+var getWindowOf = function (target) {
+    // Assume that the element is an instance of Node, which means that it
+    // has the "ownerDocument" property from which we can retrieve a
+    // corresponding global object.
+    var ownerGlobal = target && target.ownerDocument && target.ownerDocument.defaultView;
+
+    // Return the local global object if it's not possible extract one from
+    // provided element.
+    return ownerGlobal || global$1$1;
+};
+
 // Placeholder of an empty content rectangle.
 var emptyRect = createRectInit(0, 0, 0, 0);
 
@@ -3176,7 +3256,9 @@ function toFloat(value) {
  * @returns {number}
  */
 function getBordersSize(styles) {
-    var positions = Array.prototype.slice.call(arguments, 1);
+    var positions = [],
+        len = arguments.length - 1;
+    while (len-- > 0) positions[len] = arguments[len + 1];
 
     return positions.reduce(function (size, position) {
         var value = styles['border-' + position + '-width'];
@@ -3243,7 +3325,7 @@ function getHTMLElementContentRect(target) {
         return emptyRect;
     }
 
-    var styles = getComputedStyle(target);
+    var styles = getWindowOf(target).getComputedStyle(target);
     var paddings = getPaddings(styles);
     var horizPad = paddings.left + paddings.right;
     var vertPad = paddings.top + paddings.bottom;
@@ -3311,9 +3393,9 @@ function getHTMLElementContentRect(target) {
 var isSVGGraphicsElement = function () {
     // Some browsers, namely IE and Edge, don't have the SVGGraphicsElement
     // interface.
-    if (typeof SVGGraphicsElement != 'undefined') {
+    if (typeof SVGGraphicsElement !== 'undefined') {
         return function (target) {
-            return target instanceof SVGGraphicsElement;
+            return target instanceof getWindowOf(target).SVGGraphicsElement;
         };
     }
 
@@ -3321,7 +3403,7 @@ var isSVGGraphicsElement = function () {
     // SVGElement and that it has the "getBBox" method.
     // eslint-disable-next-line no-extra-parens
     return function (target) {
-        return target instanceof SVGElement && typeof target.getBBox === 'function';
+        return target instanceof getWindowOf(target).SVGElement && typeof target.getBBox === 'function';
     };
 }();
 
@@ -3332,7 +3414,7 @@ var isSVGGraphicsElement = function () {
  * @returns {boolean}
  */
 function isDocumentElement(target) {
-    return target === document.documentElement;
+    return target === getWindowOf(target).document.documentElement;
 }
 
 /**
@@ -3367,7 +3449,7 @@ function createReadOnlyRect(ref) {
     var height = ref.height;
 
     // If DOMRectReadOnly is available use it as a prototype for the rectangle.
-    var Constr = typeof DOMRectReadOnly != 'undefined' ? DOMRectReadOnly : Object;
+    var Constr = typeof DOMRectReadOnly !== 'undefined' ? DOMRectReadOnly : Object;
     var rect = Object.create(Constr.prototype);
 
     // Rectangle's properties are not writable and non-enumerable.
@@ -3401,32 +3483,10 @@ function createRectInit(x, y, width, height) {
  * provided DOM element and for keeping track of it's changes.
  */
 var ResizeObservation = function (target) {
-    /**
-     * Broadcasted width of content rectangle.
-     *
-     * @type {number}
-     */
     this.broadcastWidth = 0;
-
-    /**
-     * Broadcasted height of content rectangle.
-     *
-     * @type {number}
-     */
     this.broadcastHeight = 0;
-
-    /**
-     * Reference to the last observed content rectangle.
-     *
-     * @private {DOMRectInit}
-     */
     this.contentRect_ = createRectInit(0, 0, 0, 0);
 
-    /**
-     * Reference to the observed element.
-     *
-     * @type {Element}
-     */
     this.target = target;
 };
 
@@ -3435,6 +3495,18 @@ var ResizeObservation = function (target) {
  * have changed since the last broadcast.
  *
  * @returns {boolean}
+ */
+
+/**
+ * Reference to the last observed content rectangle.
+ *
+ * @private {DOMRectInit}
+ */
+
+/**
+ * Broadcasted width of content rectangle.
+ *
+ * @type {number}
  */
 ResizeObservation.prototype.isActive = function () {
     var rect = getContentRect(this.target);
@@ -3472,45 +3544,15 @@ var ResizeObserverEntry = function (target, rectInit) {
 };
 
 var ResizeObserverSPI = function (callback, controller, callbackCtx) {
+    this.activeObservations_ = [];
+    this.observations_ = new MapShim();
+
     if (typeof callback !== 'function') {
         throw new TypeError('The callback provided as parameter 1 is not a function.');
     }
 
-    /**
-     * Collection of resize observations that have detected changes in dimensions
-     * of elements.
-     *
-     * @private {Array<ResizeObservation>}
-     */
-    this.activeObservations_ = [];
-
-    /**
-     * Registry of the ResizeObservation instances.
-     *
-     * @private {Map<Element, ResizeObservation>}
-     */
-    this.observations_ = new MapShim();
-
-    /**
-     * Reference to the callback function.
-     *
-     * @private {ResizeObserverCallback}
-     */
     this.callback_ = callback;
-
-    /**
-     * Reference to the associated ResizeObserverController.
-     *
-     * @private {ResizeObserverController}
-     */
     this.controller_ = controller;
-
-    /**
-     * Public ResizeObserver instance which will be passed to the callback
-     * function and used as a value of it's "this" binding.
-     *
-     * @private {ResizeObserver}
-     */
     this.callbackCtx_ = callbackCtx;
 };
 
@@ -3519,6 +3561,26 @@ var ResizeObserverSPI = function (callback, controller, callbackCtx) {
  *
  * @param {Element} target - Element to be observed.
  * @returns {void}
+ */
+
+/**
+ * Registry of the ResizeObservation instances.
+ *
+ * @private {Map<Element, ResizeObservation>}
+ */
+
+/**
+ * Public ResizeObserver instance which will be passed to the callback
+ * function and used as a value of it's "this" binding.
+ *
+ * @private {ResizeObserver}
+ */
+
+/**
+ * Collection of resize observations that have detected changes in dimensions
+ * of elements.
+ *
+ * @private {Array<ResizeObservation>}
  */
 ResizeObserverSPI.prototype.observe = function (target) {
     if (!arguments.length) {
@@ -3530,7 +3592,7 @@ ResizeObserverSPI.prototype.observe = function (target) {
         return;
     }
 
-    if (!(target instanceof Element)) {
+    if (!(target instanceof getWindowOf(target).Element)) {
         throw new TypeError('parameter 1 is not of type "Element".');
     }
 
@@ -3565,7 +3627,7 @@ ResizeObserverSPI.prototype.unobserve = function (target) {
         return;
     }
 
-    if (!(target instanceof Element)) {
+    if (!(target instanceof getWindowOf(target).Element)) {
         throw new TypeError('parameter 1 is not of type "Element".');
     }
 
@@ -3656,17 +3718,16 @@ ResizeObserverSPI.prototype.hasActive = function () {
 // Registry of internal observers. If WeakMap is not available use current shim
 // for the Map collection as it has all required methods and because WeakMap
 // can't be fully polyfilled anyway.
-var observers = typeof WeakMap != 'undefined' ? new WeakMap() : new MapShim();
+var observers = typeof WeakMap !== 'undefined' ? new WeakMap() : new MapShim();
 
 /**
  * ResizeObserver API. Encapsulates the ResizeObserver SPI implementation
  * exposing only those methods and properties that are defined in the spec.
  */
-var ResizeObserver$1 = function (callback) {
-    if (!(this instanceof ResizeObserver$1)) {
-        throw new TypeError('Cannot call a class as a function');
+var ResizeObserver = function (callback) {
+    if (!(this instanceof ResizeObserver)) {
+        throw new TypeError('Cannot call a class as a function.');
     }
-
     if (!arguments.length) {
         throw new TypeError('1 argument required, but only 0 present.');
     }
@@ -3679,7 +3740,7 @@ var ResizeObserver$1 = function (callback) {
 
 // Expose public methods of ResizeObserver.
 ['observe', 'unobserve', 'disconnect'].forEach(function (method) {
-    ResizeObserver$1.prototype[method] = function () {
+    ResizeObserver.prototype[method] = function () {
         return (ref = observers.get(this))[method].apply(ref, arguments);
         var ref;
     };
@@ -3687,12 +3748,11 @@ var ResizeObserver$1 = function (callback) {
 
 var index = function () {
     // Export existing implementation if available.
-    if (typeof ResizeObserver != 'undefined') {
-        // eslint-disable-next-line no-undef
-        return ResizeObserver;
+    if (typeof global$1$1.ResizeObserver !== 'undefined') {
+        return global$1$1.ResizeObserver;
     }
 
-    return ResizeObserver$1;
+    return ResizeObserver;
 }();
 
 var fastdom = createCommonjsModule(function (module) {
@@ -3741,6 +3801,7 @@ var fastdom = createCommonjsModule(function (module) {
        * schedules a new frame if need be.
        *
        * @param  {Function} fn
+       * @param  {Object} ctx the context to be bound to `fn` (optional).
        * @public
        */
       measure: function (fn, ctx) {
@@ -3756,6 +3817,7 @@ var fastdom = createCommonjsModule(function (module) {
        * a new frame if need be.
        *
        * @param  {Function} fn
+       * @param  {Object} ctx the context to be bound to `fn` (optional).
        * @public
        */
       mutate: function (fn, ctx) {
@@ -3919,9 +3981,9 @@ var fastdom = createCommonjsModule(function (module) {
     var exports = win.fastdom = win.fastdom || new FastDom(); // jshint ignore:line
 
     // Expose to CJS & AMD
-    if ((typeof undefined)[0] == 'f') undefined(function () {
+    if (typeof undefined == 'function') undefined(function () {
       return exports;
-    });else if ('object'[0] == 'o') module.exports = exports;
+    });else module.exports = exports;
   }(typeof window !== 'undefined' ? window : commonjsGlobal);
 });
 
@@ -4314,7 +4376,7 @@ var Sparkline = function (_QuickVis) {
     }, {
         key: "_render",
         value: function () {
-            var _ref = _asyncToGenerator(regenerator.mark(function _callee() {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
                 var bb;
                 return regenerator.wrap(function _callee$(_context) {
                     while (1) {
@@ -5048,18 +5110,15 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) {
   
 }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike /*, mapfn = undefined, thisArg = undefined*/) {
-    var O = _toObject(arrayLike),
-        C = typeof this == 'function' ? this : Array,
-        aLen = arguments.length,
-        mapfn = aLen > 1 ? arguments[1] : undefined,
-        mapping = mapfn !== undefined,
-        index = 0,
-        iterFn = core_getIteratorMethod(O),
-        length,
-        result,
-        step,
-        iterator;
+  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
+    var O = _toObject(arrayLike);
+    var C = typeof this == 'function' ? this : Array;
+    var aLen = arguments.length;
+    var mapfn = aLen > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    var index = 0;
+    var iterFn = core_getIteratorMethod(O);
+    var length, result, step, iterator;
     if (mapping) mapfn = _ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
     // if object isn't iterable or it's array with default iterator - use simple case
     if (iterFn != undefined && !(C == Array && _isArrayIter(iterFn))) {
@@ -5110,9 +5169,12 @@ var toConsumableArray = createCommonjsModule(function (module, exports) {
 var _toConsumableArray = unwrapExports(toConsumableArray);
 
 var ITERATOR$4 = _wks('iterator');
+
 var core_isIterable = _core.isIterable = function (it) {
   var O = Object(it);
-  return O[ITERATOR$4] !== undefined || '@@iterator' in O || _iterators.hasOwnProperty(_classof(O));
+  return O[ITERATOR$4] !== undefined || '@@iterator' in O
+  // eslint-disable-next-line no-prototype-builtins
+  || _iterators.hasOwnProperty(_classof(O));
 };
 
 var isIterable = core_isIterable;
