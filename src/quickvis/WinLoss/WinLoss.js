@@ -54,7 +54,7 @@ export default class WinLoss extends QuickVis {
         this.config = config;
         this.label = config.label;
         this.hideWinPercent = config.hideWinPercent;
-        this.tickCount = config.tickCount;
+        this.tickCount = config.tickCount || data.length;
         this.downsampleFn = config.downsampleFn;
 
         this.data = downsampleData(data, this.tickCount, this.downsampleFn);
