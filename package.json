@@ -1,6 +1,6 @@
 {
   "name": "quickvis",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "put in some data, get a visualization, done",
   "main": "dist/quickvis.js",
   "scripts": {},
