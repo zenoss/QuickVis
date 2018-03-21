@@ -156,7 +156,7 @@ import "../../build/quickvis.css.js";
 
     var barEl = document.querySelector(".bar-wrap");
     var bar = new Bar(
-        [65,63,73,82,50,41,93,63,11,57],
+        57,
         {
             label: "simple",
             capacity: 100,
@@ -164,7 +164,18 @@ import "../../build/quickvis.css.js";
         }
     );
     barEl.appendChild(bar.el);
-    focusables.push(bar);
+
+    var barEl2 = document.querySelector(".bar2-wrap");
+    var bar2 = new Bar(
+        [65,63,73,82,50,41,93,63,11,57],
+        {
+            label: "simple",
+            capacity: 100,
+            threshold: 50
+        }
+    );
+    barEl2.appendChild(bar2.el);
+    focusables.push(bar2);
 
     // bar grids
     var gridEl = document.querySelector(".grid-wrap");
@@ -195,9 +206,10 @@ import "../../build/quickvis.css.js";
         }
         data.push(val);
     }
-    var wl = new WinLoss(data, {
+    var wl = new WinLoss(
+    [1,0,1,1,1,null,null,1,0,1,1,0,1,1],
+    {
         label: "win or lose",
-        tickCount: 15
     });
     winLossEl.appendChild(wl.el);
     focusables.push(wl);
