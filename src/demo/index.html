@@ -48,11 +48,11 @@
                 </div>
 
                 <pre class="code">
-let sparky = new quickvis.Sparkline({
-    metric: "Horses",
-});
-document.body.appendChild(sparky.el);
-sparky.render([1, 4, 7, 18, 24, 98, 97, 90]);</pre>
+let sparky = new quickvis.Sparkline(
+    [1, 4, 7, 18, 24, 98, 97, 90],
+    { metric: "Horses" }
+);
+document.body.appendChild(sparky.el);</pre>
             </div>
 
             <h2>Other configuration options</h2>
@@ -63,14 +63,15 @@ sparky.render([1, 4, 7, 18, 24, 98, 97, 90]);</pre>
                 </div>
 
                 <pre class="code">
-let sparky = new quickvis.Sparkline({
-    metric: "Narwhals",
-    style: "area",
-    unit: "❤",
-    annotation: "out of 100"
-});
-document.body.appendChild(sparky.el);
-sparky.render([1, 4, 7, 18, 24, 98, 97, 90]);</pre>
+let sparky = new quickvis.Sparkline(
+    [1, 4, 7, 18, 24, 98, 97, 90],
+    {
+        metric: "Narwhals",
+        style: "area",
+        unit: "❤",
+        annotation: "out of 100"
+    }
+);</pre>
             </div>
 
             <h2>Automatic formatting of large numbers</h2>
@@ -81,15 +82,15 @@ sparky.render([1, 4, 7, 18, 24, 98, 97, 90]);</pre>
                 </div>
 
                 <pre class="code">
-let sparky = new quickvis.Sparkline({
-    metric: "Camels",
-});
-document.body.appendChild(sparky.el);
-sparky.render(
+let sparky = new quickvis.Sparkline(
     [916575094, 37473322, 783412004,
     787777074, 957795371, 291285024,
-    847501582, 265160769, 71343712, 979961954]
-);</pre>
+    847501582, 265160769, 71343712, 979961954],
+    {
+        metric: "Camels"
+    }
+);
+document.body.appendChild(sparky.el);</pre>
             </div>
 
             <h2>Threshold</h2>
@@ -100,13 +101,15 @@ sparky.render(
                 </div>
 
                 <pre class="code">
-let sparky = new quickvis.Sparkline({
-    metric: "Turtles",
-    style: "line",
-    threshold: "50"
-});
-document.body.appendChild(sparky.el);
-sparky.render([1, 4, 7, 18, 24, 98, 97, 90]);</pre>
+let sparky = new quickvis.Sparkline(
+    [1, 4, 7, 18, 24, 98, 97, 90],
+    {
+        metric: "Turtles",
+        style: "line",
+        threshold: "50"
+    }
+);
+document.body.appendChild(sparky.el);</pre>
             </div>
 
             <h2>Force range to include threshold</h2>
@@ -117,14 +120,16 @@ sparky.render([1, 4, 7, 18, 24, 98, 97, 90]);</pre>
                 </div>
 
                 <pre class="code">
-let sparky = new quickvis.Sparkline({
-    metric: "Ducks",
-    style: "line",
-    threshold: "50",
-    thresholdForce: true
-});
-document.body.appendChild(sparky.el);
-sparky.render([10, 41, 17, 18, 24, 20, 22, 23]);</pre>
+let sparky = new quickvis.Sparkline(
+    [10, 41, 17, 18, 24, 20, 22, 23],
+    {
+        metric: "Ducks",
+        style: "line",
+        threshold: "50",
+        thresholdForce: true
+    }
+);
+document.body.appendChild(sparky.el);</pre>
             </div>
 
             <h2>Various graph styles</h2>
@@ -136,15 +141,15 @@ sparky.render([10, 41, 17, 18, 24, 20, 22, 23]);</pre>
 
                 <pre class="code">
 ["line", "area", "bar", "scatter"].forEach(style => {
-    let sparky = new quickvis.Sparkline({
-        metric: style,
-        style: style,
-        threshold: 50
-    });
-    document.body.appendChild(sparky.el);
-    sparky.render(
-        [1, 4, 7, 18, 24, 95, 90, Math.random() * 100]
+    let sparky = new quickvis.Sparkline(
+        [1, 4, 7, 18, 24, 98, 97, Math.random() * 100],
+        {
+            metric: style,
+            style: style,
+            threshold: 50
+        }
     );
+    document.body.appendChild(sparky.el);
 });</pre>
             </div>
 
@@ -152,27 +157,57 @@ sparky.render([10, 41, 17, 18, 24, 20, 22, 23]);</pre>
             <h1>Simple Bar</h1>
             <p>Simple bars just show a value, but like, a bar!</p><br>
 
-            <h2>Hi</h2>
+            <h2>Single Value</h2>
             <div class="quickvis-example">
                 <div class="vis">
                     <div class="bar-wrap" style="width: 100%;"></div>
                 </div>
                 <pre class="code">
-// TODO
-                </pre>
+let bar = new Bar(
+    57,
+    {
+        label: "simple",
+        capacity: 100,
+        threshold: 50
+    }
+);
+document.body.appendChild(bar.el);</pre>
+            </div>
+
+            <h2>Timeseries Data</h2>
+            <p>Pass in an array of values and the simple bar can update to match the focused time, just like sparklines.</p><br>
+            <div class="quickvis-example">
+                <div class="vis">
+                    <div class="bar2-wrap" style="width: 100%;"></div>
+                </div>
+                <pre class="code">
+let bar = new Bar(
+    [65,63,73,82,50,41,93,63,11,57],
+    {
+        label: "simple",
+        capacity: 100,
+        threshold: 50
+    }
+);
+document.body.appendChild(bar.el);</pre>
             </div>
 
             <a class="anchor" id="winloss"></a>
             <h1>Win Loss</h1>
-            <p>Shows binary data over time</p>
+            <p>Shows binary data over time. 1 represents a win, 0 a loss, and null is a draw.</p>
             <div class="quickvis-example">
                 <div class="vis">
                     <div class="win-loss-wrap"></div>
                 </div>
 
                 <pre class="code">
-// TODO
-</pre>
+let wl = new WinLoss(
+    [1,0,1,1,1,null,null,1,0,1,1,0,1,1],
+    {
+        label: "win or lose"
+    }
+);
+document.body.appendChild(wl.el);</pre>
             </div>
 
             <a class="anchor" id="grid"></a>
@@ -184,8 +219,24 @@ sparky.render([10, 41, 17, 18, 24, 20, 22, 23]);</pre>
                 </div>
 
                 <pre class="code">
-// TODO
-</pre>
+let vis = [
+    new Sparkline([98,72,6,18,18,123,95,38,1023,11],
+        {label: "horses", threshold: 500}),
+    new Sparkline([30,32,33,56,22,46,56,43,24,94],
+        {label: "cats"}),
+    new Sparkline([30,32,33,56,22,0,0,0,0,94],
+        {label: "cat arms", style: "bar", unit: ""}),
+    new WinLoss([1,1,1,1,0,0,null,null,0,0,1,1,1,0,1,1],
+        {label: "horses2cat"}),
+    new WinLoss([1,1,0,0,1,0,1,1,1,1,0,1,1,0,1,1],
+        {label: "humans"}),
+    new Bar([65,63,73,82,50,41,93,63,11,57], {
+        label: "bear bar",
+        capacity: 100,
+        threshold: 75})
+];
+let grid = new VisGrid({vis: vis});
+document.body.appendChild(grid.el);</pre>
             </div>
 
             <a class="anchor" id="stacked"></a>
@@ -199,16 +250,14 @@ sparky.render([10, 41, 17, 18, 24, 20, 22, 23]);</pre>
                     <div class="stacked"></div>
                 </div>
                 <pre class="code" style="width: 50%;">
-let stacked = new quickvis.StackedBar();
-document.body.appendChild(stacked.el);
-stacked.render([
+let stacked = new quickvis.StackedBar([
     { val: 20000 },
     { val: 30000 },
     { val: 1120 },
     { val: 20000 },
     { val: 105000 }
 ]);
-                </pre>
+document.body.appendChild(stacked.el);</pre>
             </div>
 
             <h2>Labels</h2>
@@ -218,18 +267,17 @@ stacked.render([
                     <div class="stacked"></div>
                 </div>
                 <pre class="code" style="width: 50%;">
-let stacked = new quickvis.StackedBar({
-    name: "My Disk",
-});
-document.body.appendChild(stacked.el);
-stacked.render([
-    { name: "Games", val: 20000 },
-    { name: "Jim", val: 30000 },
-    { name: "Autoexec.bat", val: 1120 },
-    { name: "Program Files", val: 20000 },
-    { name: "pagefile.sys", val: 105000 }
-]);
-                </pre>
+let stacked = new quickvis.StackedBar(
+    [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ],
+    { name: "My Disk" }
+);
+document.body.appendChild(stacked.el);</pre>
             </div>
 
             <h2>Capacity</h2>
@@ -239,19 +287,20 @@ stacked.render([
                     <div class="stacked"></div>
                 </div>
                 <pre class="code" style="width: 50%;">
-let stacked = new quickvis.StackedBar({
-    name: "My Disk",
-    capacity: 200000
-});
-document.body.appendChild(stacked.el);
-stacked.render([
-    { name: "Games", val: 20000 },
-    { name: "Jim", val: 30000 },
-    { name: "Autoexec.bat", val: 1120 },
-    { name: "Program Files", val: 20000 },
-    { name: "pagefile.sys", val: 105000 }
-]);
-                </pre>
+let stacked = new quickvis.StackedBar(
+    [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ],
+    {
+        name: "My Disk",
+        capacity: 200000
+    }
+);
+document.body.appendChild(stacked.el);</pre>
             </div>
 
             <h2>Threshold</h2>
@@ -261,20 +310,21 @@ stacked.render([
                     <div class="stacked"></div>
                 </div>
                 <pre class="code" style="width: 50%;">
-let stacked = new quickvis.StackedBar({
-    name: "My Disk",
-    capacity: 200000,
-    threshold: 200000 * 0.8
-});
-document.body.appendChild(stacked.el);
-stacked.render([
-    { name: "Games", val: 20000 },
-    { name: "Jim", val: 30000 },
-    { name: "Autoexec.bat", val: 1120 },
-    { name: "Program Files", val: 20000 },
-    { name: "pagefile.sys", val: 105000 }
-]);
-                </pre>
+let stacked = new quickvis.StackedBar(
+    [
+        { name: "Games", val: 20000 },
+        { name: "Jim", val: 30000 },
+        { name: "Autoexec.bat", val: 1120 },
+        { name: "Program Files", val: 20000 },
+        { name: "pagefile.sys", val: 105000 }
+    ],
+    {
+        name: "My Disk",
+        capacity: 200000,
+        threshold: 200000 * 0.8
+    }
+);
+document.body.appendChild(stacked.el);</pre>
             </div>
 
 
