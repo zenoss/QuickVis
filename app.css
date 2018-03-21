@@ -200,6 +200,15 @@ ul {
     width: 200px;
 }
 
+.quickvis-example .vis .bar-grid-wrap,
+.quickvis-example .vis .win-loss-wrap {
+    width: 100%;
+}
+
+.vis .sparkline .graph .sparkline-focus {
+    stroke: mediumorchid;
+}
+
 .quickvis-example .vis .stacked {
     width: 100%;
 }
@@ -233,7 +242,7 @@ body.night {
 .night .sparkline .last .last-val {
     color: white;
 }
-.night .sparkline .last .units {
+.night .sparkline .last .unit {
     color: #AAA;
 }
 .night .sparkline .annotation {
@@ -242,6 +251,9 @@ body.night {
 
 .night .sparkline .graph .sparkline-threshold {
     stroke: #444;
+}
+.night .sparkline .graph .sparkline-focus {
+    stroke: white;
 }
 
 .night .sparkline .indicator.on:after {
