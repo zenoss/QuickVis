@@ -72,7 +72,7 @@ The version convention is for the `develop` branch to have the next release vers
 
 7. You will be on the `develop` branch again. While on `develop` branch, edit the the `VERSION` file to
 be the next development version. For example, if you just released version 1.1.1, then change `VERSION` to
-`1.1.2-dev`.
+`1.1.2-dev`. Don't forget to update the version in `package.json` (bump version number, don't include `-dev`).
 
 8. Check in `develop` version bump and push.
   * `make release` to bump the library version
