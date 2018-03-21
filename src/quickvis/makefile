@@ -18,7 +18,7 @@ ESLINT = $(NODE_MODULES)/.bin/eslint
 VERSION = $(shell cat $(ROOT)/VERSION)
 QUICKVIS_VERSION_NAME = quickvis-$(VERSION)
 DIST = $(ROOT)/dist
-QUICKVIS_RELEASED = $(DIST)/$(QUICKVIS_VERSION_NAME).js
+QUICKVIS_RELEASED = $(DIST)/quickvis.js
 
 # whether or not to transpile js
 TRANSPILE=

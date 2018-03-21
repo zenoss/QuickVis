@@ -2,7 +2,7 @@
   "name": "quickvis",
   "version": "0.3.1",
   "description": "put in some data, get a visualization, done",
-  "main": "src/app.js",
+  "main": "dist/quickvis.js",
   "scripts": {},
   "author": "John Matos",
   "dependencies": {
