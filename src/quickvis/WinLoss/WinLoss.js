@@ -6,7 +6,7 @@ import {getFormattedNumber, downsampleData} from "../utils";
 
 function winLossTemplate(vm){
     return `
-        <div class="label">${vm.label}</div>
+        <div class="label"><div class="label-text">${vm.label}</div></div>
         <div class="visualization">
             <div class="topsies">
                 ${vm.data
