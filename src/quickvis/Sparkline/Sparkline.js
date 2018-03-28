@@ -9,7 +9,7 @@ import {linearScale, createSVGNode, getFormattedNumber} from "../utils";
 // logic.
 function template(vm){
     return `
-        <div class="label">${vm.label}</div>
+        <div class="label"><div class="label-text">${vm.label}</div></div>
         <div class="visualization">
             <svg class="graph"></svg>
         </div>
@@ -21,7 +21,6 @@ function template(vm){
         <div class="indicator ${vm.getIndicatorStatus()}"></div>
     `;
 }
-
 const SPARKLINE_PADDING = 4;
 const SPARKLINE_DATA_PADDING = 1;
 const FOCUSLINE_WIDTH = 2;

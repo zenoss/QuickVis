@@ -4309,9 +4309,8 @@ downsampleData.MAX = function (slice) {
 // here as possible. Prefer to create viewmodel methods to handle
 // logic.
 function template(vm) {
-    return "\n        <div class=\"label\">" + vm.label + "</div>\n        <div class=\"visualization\">\n            <svg class=\"graph\"></svg>\n        </div>\n        <div class=\"last-value\">\n            <div class=\"value\" style=\"" + (vm.hideLast ? "display:none;" : "") + "\">" + vm.getFriendly(vm.last) + "</div>\n            <div class=\"magnitude\">" + vm.getMagnitude(vm.last) + "</div>\n            <div class=\"unit\">" + vm.unit + "</div>\n        </div>\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
+    return "\n        <div class=\"label\"><div class=\"label-text\">" + vm.label + "</div></div>\n        <div class=\"visualization\">\n            <svg class=\"graph\"></svg>\n        </div>\n        <div class=\"last-value\">\n            <div class=\"value\" style=\"" + (vm.hideLast ? "display:none;" : "") + "\">" + vm.getFriendly(vm.last) + "</div>\n            <div class=\"magnitude\">" + vm.getMagnitude(vm.last) + "</div>\n            <div class=\"unit\">" + vm.unit + "</div>\n        </div>\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
 }
-
 var SPARKLINE_PADDING = 4;
 var SPARKLINE_DATA_PADDING = 1;
 var FOCUSLINE_WIDTH = 2;
@@ -4958,7 +4957,7 @@ var StackedBar = function (_QuickVis) {
 
 /*global console: true */
 function template$1(vm) {
-    return "\n        <div class=\"label\">" + vm.label + "</div>\n        <div class=\"visualization\">\n            <div class=\"bars\">\n                <div class=\"bar\" style=\"flex: " + vm.getFocusedVal() + " 0 0;\" title=\"" + vm.getTitle(name, vm.getFocusedVal()) + "\"></div>\n                <div class=\"bar bar-free\" style=\"flex: " + vm.getFreeVal() + " 0 0;\" title=\"" + vm.getFreeVal() + " Free\"></div>\n                " + (vm.threshold !== Infinity ? "<div class=\"threshold\" style=\"left: " + vm.getThresholdPosition() + "%;\"></div>" : "") + "\n            </div>\n\n        </div>\n        <div class=\"last-value\">\n            <div class=\"value\">" + vm.getFocusedVal() + "</div>\n            <div class=\"magnitude\">" + vm.getFocusedMagnitude() + "</div>\n            <div class=\"unit\">" + vm.unit + "</div>\n        </div>\n\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
+    return "\n        <div class=\"label\"><div class=\"label-text\">" + vm.label + "</div></div>\n        <div class=\"visualization\">\n            <div class=\"bars\">\n                <div class=\"bar\" style=\"flex: " + vm.getFocusedVal() + " 0 0;\" title=\"" + vm.getTitle(name, vm.getFocusedVal()) + "\"></div>\n                <div class=\"bar bar-free\" style=\"flex: " + vm.getFreeVal() + " 0 0;\" title=\"" + vm.getFreeVal() + " Free\"></div>\n                " + (vm.threshold !== Infinity ? "<div class=\"threshold\" style=\"left: " + vm.getThresholdPosition() + "%;\"></div>" : "") + "\n            </div>\n\n        </div>\n        <div class=\"last-value\">\n            <div class=\"value\">" + vm.getFocusedVal() + "</div>\n            <div class=\"magnitude\">" + vm.getFocusedMagnitude() + "</div>\n            <div class=\"unit\">" + vm.unit + "</div>\n        </div>\n\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
 }
 
 var defaultConfig$2 = {
@@ -5239,7 +5238,7 @@ var _slicedToArray = unwrapExports(slicedToArray);
 
 /*global console: true */
 function winLossTemplate(vm) {
-    return "\n        <div class=\"label\">" + vm.label + "</div>\n        <div class=\"visualization\">\n            <div class=\"topsies\">\n                " + vm.data.map(function (dp) {
+    return "\n        <div class=\"label\"><div class=\"label-text\">" + vm.label + "</div></div>\n        <div class=\"visualization\">\n            <div class=\"topsies\">\n                " + vm.data.map(function (dp) {
         return vm.winLoseOrDraw(dp);
     }).map(function (wld) {
         return wld === 1 ? true : false;

@@ -6,7 +6,7 @@ import {getFormattedNumber} from "../utils";
 
 function template(vm){
     return `
-        <div class="label">${vm.label}</div>
+        <div class="label"><div class="label-text">${vm.label}</div></div>
         <div class="visualization">
             <div class="bars">
                 <div class="bar" style="flex: ${vm.getFocusedVal()} 0 0;" title="${vm.getTitle(name, vm.getFocusedVal())}"></div>
