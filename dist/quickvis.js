@@ -4309,7 +4309,7 @@ downsampleData.MAX = function (slice) {
 // here as possible. Prefer to create viewmodel methods to handle
 // logic.
 function template(vm) {
-    return "\n        <div class=\"label\"><div class=\"label-text\">" + vm.label + "</div></div>\n        <div class=\"visualization\">\n            <svg class=\"graph\"></svg>\n        </div>\n        <div class=\"last-value\">\n            <div class=\"value\" style=\"" + (vm.hideLast ? "display:none;" : "") + "\">" + vm.getFriendly(vm.last) + "</div>\n            <div class=\"magnitude\">" + vm.getMagnitude(vm.last) + "</div>\n            <div class=\"unit\">" + vm.unit + "</div>\n        </div>\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
+    return "\n        <div class=\"label\"><div class=\"label-text\">" + vm.label + "</div></div>\n        <div class=\"visualization\">\n            <svg class=\"graph\"></svg>\n        </div>\n        <div class=\"last-value\">\n            <div class=\"value\" style=\"" + (vm.hideLast ? "display:none;" : "") + "\">" + vm.getFriendly(vm.last) + "</div>\n            <div class=\"magnitude\" style=\"" + (vm.hideLast ? "display:none;" : "") + "\">" + vm.getMagnitude(vm.last) + "</div>\n            <div class=\"unit\" style=\"" + (vm.hideLast ? "display:none;" : "") + "\">" + vm.unit + "</div>\n        </div>\n        <div class=\"indicator " + vm.getIndicatorStatus() + "\"></div>\n    ";
 }
 var SPARKLINE_PADDING = 4;
 var SPARKLINE_DATA_PADDING = 1;

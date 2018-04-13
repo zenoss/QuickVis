@@ -15,8 +15,8 @@ function template(vm){
         </div>
         <div class="last-value">
             <div class="value" style="${vm.hideLast ? "display:none;" : ""}">${vm.getFriendly(vm.last)}</div>
-            <div class="magnitude">${vm.getMagnitude(vm.last)}</div>
-            <div class="unit">${vm.unit}</div>
+            <div class="magnitude" style="${vm.hideLast ? "display:none;" : ""}">${vm.getMagnitude(vm.last)}</div>
+            <div class="unit" style="${vm.hideLast ? "display:none;" : ""}">${vm.unit}</div>
         </div>
         <div class="indicator ${vm.getIndicatorStatus()}"></div>
     `;
