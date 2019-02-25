@@ -22,14 +22,6 @@ make
 # bring up the demo page with livereload for active development
 make watch
 
-# run unit tests
-# TODO - reimplement this
-make test
-
-# continuously run unit tests for active development
-# TODO - reimplement this
-make tdd
-
 # build the js lib, run tests, zip lib and map,
 # TODO - tests
 make release
@@ -107,7 +99,3 @@ In order to keep things as reasonable as one can expect in the wild west of webd
 
 ## Some Other Notes
 * QuickVis visualizations will try to fill the entire available space. It is up to the containing DOM element to control size
-
-## TODO
-* tests
-* update demo page with new stuff

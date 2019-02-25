@@ -22,7 +22,6 @@
     "chokidar-cli": "^1.2.0",
     "cross-zip-cli": "^1.0.0",
     "eslint": "^3.19.0",
-    "http-server": "^0.9.0",
     "jshint": "^2.9.4",
     "livereload": "^0.6.0",
     "node-sass": "^4.7.2",
